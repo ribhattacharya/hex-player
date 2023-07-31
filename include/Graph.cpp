@@ -39,7 +39,7 @@ public:
     void createNodes();
     void createEdges();
 
-    Node*& getNode(int, int);
+    Node* getNode(int, int);
     
     void printGraph();
 };
@@ -77,7 +77,7 @@ void Graph::createEdges() {
     }
 }
 
-Node*& Graph::getNode(int i, int j) {
+Node* Graph::getNode(int i, int j) {
     return nodes[i][j];
 }
 
