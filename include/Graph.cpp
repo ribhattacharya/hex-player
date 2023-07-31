@@ -2,11 +2,15 @@
 #define GRAPH_H
 
 #include<iostream>
+#include<iomanip>
 #include<vector>
 
 using std::vector;
 using std::cout;
 using std::endl;
+using std::setw;
+using std::left;
+using std::right;
 
 class Node {
     /*
@@ -16,11 +20,11 @@ class Node {
     vector<Node*> neighbours;
 
 public:
-    Node(int identifier = -1): ID(identifier) {}
+    Node(int identifier = -1): ID(identifier), neighbours({}) {}
     
     const int getID () {return ID;}
-    vector<Node*> getNeighbours() {return neighbours;}
-    void setNeighbours(vector<Node*> neighbours) {this->neighbours = neighbours;}
+    const vector<Node*>& getNeighbours() {return neighbours;}
+    void setNeighbours(vector<Node*>& neighbours) {this->neighbours = neighbours;}
 };
 
 class Graph {
@@ -31,53 +35,63 @@ class Graph {
     vector<vector<Node*> > nodes;
 
 public:
-    Graph(int s): SIZE(s), nodes(SIZE, vector<Node*>(SIZE)) {
-        // Create vector of nodes
-        int num_nodes = 0;
-        for (int i = 0; i < SIZE; i++)
-            for (int j = 0; j < SIZE; j++)
-                nodes[i][j] = new Node(num_nodes++);
-        
-        // Create edges
-        num_nodes = 0;
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                cout << "Node " << num_nodes++ << " : ";
-                vector<vector<int> > directions {
-                    {i, j-1}, {i-1, j}, {i-1, j+1}, 
-                    {i, j+1}, {i+1, j}, {i+1, j-1}
-                };
-                
-                for (auto dir : directions) {
-                    int ii = dir[0], jj = dir[1];
-                    vector<Node*> neighbours;
-                    
-                    if (ii >= 0 && ii < SIZE && jj >= 0 && jj < SIZE){
-                        neighbours.push_back(nodes[ii][jj]);
-                        // cout << "(" << ii << "," << jj << "), "; 
-                    }
-                    nodes[i][j]->setNeighbours(neighbours);
-                    for (auto neighbour: nodes[i][j]->getNeighbours())
-                        cout << neighbour->getID() << " ";
-                }
-                cout << endl;
-            }
-        }
-        cout << "Contructor invoked!" << endl;
-    }
+    Graph(int);
+    void createNodes();
+    void createEdges();
 
-    void printGraph() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                auto neighbours = nodes[i][j]->getNeighbours();
-                cout << "Node " << nodes[i][j]->getID() << ": " << nodes[i][j]->getNeighbours().size();
-                for (auto neighbour :neighbours)
-                    cout << neighbour->getID() << " ";
-                cout << endl;
+    Node*& getNode(int, int);
+    
+    void printGraph();
+};
+
+Graph::Graph(int s): SIZE(s), nodes(SIZE, vector<Node*>(SIZE)) {
+    cout << "Contructor invoked!" << endl;
+    
+    createNodes();
+    createEdges();
+}
+
+void Graph::createNodes() {
+    int num_nodes = 0;
+    for (int i = 0; i < SIZE; i++)
+        for (int j = 0; j < SIZE; j++)
+            nodes[i][j] = new Node(num_nodes++);
+}
+
+void Graph::createEdges() {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            vector<vector<int> > directions { // 6 directions
+                {i, j-1}, {i-1, j}, {i-1, j+1}, 
+                {i, j+1}, {i+1, j}, {i+1, j-1}
+            };
+            
+            vector<Node*> neighbours;
+            for (const auto dir :directions) {
+                int ii = dir[0], jj = dir[1];    
+                if (ii >= 0 && ii < SIZE && jj >= 0 && jj < SIZE)
+                    neighbours.push_back(nodes[ii][jj]);
             }
+            nodes[i][j]->setNeighbours(neighbours);
         }
     }
-};
+}
+
+Node*& Graph::getNode(int i, int j) {
+    return nodes[i][j];
+}
+
+void Graph::printGraph() {
+    cout << "Node # " << " Neighbours" << endl;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            cout << left << setw(8) << nodes[i][j]->getID();
+            for (const auto neighbour :nodes[i][j]->getNeighbours())
+                cout << neighbour->getID() << " ";
+            cout << endl;
+        }
+    }
+}
 
 int main(int argc, char** argv) {
     Graph graph(5);
