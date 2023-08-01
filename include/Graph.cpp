@@ -4,6 +4,7 @@
 #include<iostream>
 #include<iomanip>
 #include<vector>
+#include<string>
 
 using std::vector;
 using std::cout;
@@ -12,15 +13,18 @@ using std::setw;
 using std::left;
 using std::right;
 
+enum class Player {HUMAN, COMP, NONE};
+
 class Node {
     /*
     DESC: Create the nodes and helper functions.
     */
     const int ID;
+    Player player;
     vector<Node*> neighbours;
 
 public:
-    Node(int identifier = -1): ID(identifier), neighbours({}) {}
+    Node(int identifier): ID(identifier), player(Player::NONE), neighbours({}) {}
     
     const int getID () {return ID;}
     const vector<Node*>& getNeighbours() {return neighbours;}
@@ -36,26 +40,28 @@ class Graph {
 
 public:
     Graph(int);
-    void createNodes();
-    void createEdges();
-
-    Node* getNode(int, int);
+    ~Graph();
     
+    void createEdges();
+    Node* getNode(int, int);
     void printGraph();
 };
 
 Graph::Graph(int s): SIZE(s), nodes(SIZE, vector<Node*>(SIZE)) {
-    cout << "Contructor invoked!" << endl;
+    cout << "Initialized board with size = " << SIZE << ".\n" << endl;
     
-    createNodes();
-    createEdges();
-}
-
-void Graph::createNodes() {
     int num_nodes = 0;
     for (int i = 0; i < SIZE; i++)
         for (int j = 0; j < SIZE; j++)
             nodes[i][j] = new Node(num_nodes++);
+    
+    createEdges();
+}
+
+Graph::~Graph() {
+    for (int i = 0; i < SIZE; i++)
+        for (int j = 0; j < SIZE; j++)
+            nodes[i][j] = (delete nodes[i][j], nullptr);
 }
 
 void Graph::createEdges() {
@@ -94,7 +100,17 @@ void Graph::printGraph() {
 }
 
 int main(int argc, char** argv) {
-    Graph graph(5);
+    int board_size = 5;
+    if (argc > 1) {
+        try {
+            board_size = std::stoi(argv[1]);
+        } catch (const std::exception& e) {
+            std::cerr << "Error: Invalid board size argument! Should be an integer, given '"<< argv[1] << "'.\n";
+            return 1;
+        }
+    }
+    
+    Graph graph(board_size);
     graph.printGraph();
     return 0;
 }
