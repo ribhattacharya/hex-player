@@ -85,6 +85,7 @@ Graph::Graph(int s) : SIZE(s), nodes(SIZE, vector<Node *>(SIZE))
             nodes[i][j] = new Node(num_nodes++);
 
     createEdges();
+    printGraph();
 }
 
 Graph::~Graph()

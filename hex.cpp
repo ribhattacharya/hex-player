@@ -36,7 +36,6 @@ int main(int argc, char **argv)
     }
 
     Graph graph(board_size);
-    graph.printGraph();
     graph.playGame();
     return 0;
 }
