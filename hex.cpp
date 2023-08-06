@@ -10,18 +10,33 @@ This program implements a single player Hex game against the computer.
 
 Program description: 
 */
+
+
 #include<iostream>
 #include<cstdlib>
 
 #include "include/Graph.h"
-#include "include/ShortestPath.h"
+// #include "include/ShortestPath.h"
 
 
-int main(int argc, char **argv) {
-    srand(time(0));     // Output is provided with srand(7);
-    
-    Graph graph(50, 0.2, 1, 10, false);         // Create graph
-    ShortestPath shortest_path(1, 27, graph);   // Initialize shortest path
-    
+int main(int argc, char **argv)
+{
+    int board_size = 5;
+    if (argc > 1)
+    {
+        try
+        {
+            board_size = std::stoi(argv[1]);
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "Error: Invalid board size argument! Should be an integer, given '" << argv[1] << "'.\n";
+            return 1;
+        }
+    }
+
+    Graph graph(board_size);
+    graph.printGraph();
+    graph.playGame();
     return 0;
 }

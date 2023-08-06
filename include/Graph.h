@@ -2,19 +2,21 @@
 #define GRAPH_H
 
 #include <iostream>
+#include <cstdlib>
 #include <iomanip>
 #include <vector>
 #include <string>
 #include <unordered_map>
 
+using std::cin;
 using std::cout;
 using std::endl;
 using std::left;
 using std::right;
 using std::setw;
+using std::string;
 using std::unordered_map;
 using std::vector;
-using std::string;
 
 enum class Player
 {
@@ -22,11 +24,6 @@ enum class Player
     COMP,
     NONE
 };
-
-unordered_map<Player, char> symbols = {
-    {Player::HUMAN, 'X'},
-    {Player::COMP, 'O'},
-    {Player::NONE, '.'}};
 
 class Node
 {
@@ -43,8 +40,7 @@ public:
     const int getID() { return ID; }
     const vector<Node *> &getNeighbours() { return neighbours; }
     void setPlayer(Player p) { player = p; }
-    Player getPlayer() { return player; }
-    char getPlayerSymbol() { return symbols[player]; }
+    const Player getPlayer() { return player; }
     void setNeighbours(vector<Node *> &neighbours) { this->neighbours = neighbours; }
 };
 
@@ -55,6 +51,10 @@ class Graph
     */
     const int SIZE;
     vector<vector<Node *>> nodes;
+    unordered_map<Player, char> symbols = {
+        {Player::HUMAN, 'X'},
+        {Player::COMP, 'O'},
+        {Player::NONE, '.'}};
 
 public:
     Graph(int);
@@ -62,6 +62,14 @@ public:
 
     void createEdges();
     Node *getNode(int, int);
+
+    void playGame();
+    void makeHumanMove();
+    void makeComputerMove();
+    const Player checkWinner();
+
+    const char getPlayerSymbol(Player);
+
     void printGraph();
     void printGraphData();
 };
@@ -115,6 +123,73 @@ void Graph::createEdges()
 
 Node *Graph::getNode(int i, int j) { return nodes[i][j]; }
 
+void Graph::playGame()
+{
+    int count = 2;
+    while (count--)
+    {
+        makeHumanMove();
+        // if (checkWinner() != Player::NONE)
+        //     break;
+        makeComputerMove();
+        // if (checkWinner() != Player::NONE)
+        //     break;
+    }
+
+    switch (checkWinner())
+    {
+    case Player::HUMAN:
+        cout << "\nYou win!" << endl;
+        break;
+
+    case Player::COMP:
+        cout << "\nComputer wins!" << endl;
+        break;
+
+    default:
+        cout << "\nGame ends in a draw!" << endl;
+        break;
+    }
+}
+
+void Graph::makeHumanMove()
+{
+    int row = 0, col = 0;
+    do
+    {
+        cout << "Your move!\n";
+        cout << "Enter row (1-indexed): ";
+        cin >> row;
+        cout << "Enter column (1-indexed): ";
+        cin >> col;
+
+        // 1-indexed rows and columns into 0-indexed
+        row--;
+        col--;
+    } while (nodes[row][col]->getPlayer() != Player::NONE);
+
+    nodes[row][col]->setPlayer(Player::HUMAN);
+
+    system("clear");
+    printGraph();
+}
+
+void Graph::makeComputerMove()
+{
+    static int row = 4, col = 4;
+    nodes[row--][col--]->setPlayer(Player::COMP);
+
+    system("clear");
+    printGraph();
+}
+
+const Player Graph::checkWinner()
+{
+    return Player::HUMAN;
+}
+
+const char Graph::getPlayerSymbol(const Player p) { return symbols[p]; }
+
 void Graph::printGraph()
 {
     int margin = 0;
@@ -123,10 +198,13 @@ void Graph::printGraph()
         cout << string(margin++, ' ');
         for (int j = 0; j < SIZE; j++)
         {
+            Player p = nodes[i][j]->getPlayer();
+            const char player_symbol = getPlayerSymbol(p);
+
             if (j == SIZE - 1)
-                cout << nodes[i][j]->getPlayerSymbol();
+                cout << player_symbol;
             else
-                cout << nodes[i][j]->getPlayerSymbol() << " - ";
+                cout << player_symbol << " - ";
         }
         cout << '\n';
         if (i != SIZE - 1)
@@ -155,27 +233,6 @@ void Graph::printGraphData()
             cout << endl;
         }
     }
-}
-
-int main(int argc, char **argv)
-{
-    int board_size = 5;
-    if (argc > 1)
-    {
-        try
-        {
-            board_size = std::stoi(argv[1]);
-        }
-        catch (const std::exception &e)
-        {
-            std::cerr << "Error: Invalid board size argument! Should be an integer, given '" << argv[1] << "'.\n";
-            return 1;
-        }
-    }
-
-    Graph graph(board_size);
-    graph.printGraph();
-    return 0;
 }
 
 #endif // GRAPH_H
