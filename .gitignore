@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# MacOS files/dirs
+.DS_Store
+.vscode
+*.dSYM

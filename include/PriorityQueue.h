@@ -9,7 +9,10 @@
 #include<queue>
 #include<unordered_set>
 
-using namespace std;
+using std::unordered_set;
+using std::priority_queue;
+using std::pair;
+using std::make_pair;
 
 typedef pair<int, int> Pair;
 

@@ -16,8 +16,6 @@
 using namespace std;
 
 
-
-
 class ShortestPath {
     /*
     DESC: Implements the shortest path algorithm and processes the data to compute paths anhd distances.
@@ -47,7 +45,6 @@ public:
         */
         dijkstra();
         computePaths();
-        computeAverageDist();
         printResults();
     }
 
@@ -112,21 +109,6 @@ public:
         } 
     }
 
-    double computeAverageDist() {
-        /*
-        DESC: Return the average distance between start and all other nodes.
-
-        OUTPUTS:
-            double avg: Average distance
-        */
-        int count = 0;
-        for (int i = 0; i < G.getNumNodes(); i++)
-            if (i != start && nodes[i].getCostFromStart() < INT_MAX) // Skip the disconnected and start node
-                avg += static_cast<double>(nodes[i].getCostFromStart() - avg) / ++count;
-
-        return avg;
-    }
-
     void printResults() {
         /*
         DESC: Print all the results.
@@ -153,8 +135,7 @@ public:
         // 3. Is path found from start to goal? (Yes/No)
         // 4. Average distance from start to any other node in the graph.
         cout << "\nPath found from " << start << " to " << goal << "? "
-             << ((nodes[goal].getCostFromStart() < INT_MAX)? "Yes." : "No.")
-             << " Average distance between two nodes is " << avg << ".\n";
+             << ((nodes[goal].getCostFromStart() < INT_MAX)? "Yes." : "No.") << '\n';
         
     }
 };

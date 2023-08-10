@@ -2,11 +2,14 @@
 #define GRAPH_H
 
 #include <iostream>
+#include <random>
 #include <cstdlib>
 #include <iomanip>
 #include <vector>
 #include <string>
 #include <unordered_map>
+
+#include "Node.h"
 
 using std::cin;
 using std::cout;
@@ -17,32 +20,9 @@ using std::setw;
 using std::string;
 using std::unordered_map;
 using std::vector;
-
-enum class Player
-{
-    HUMAN,
-    COMP,
-    NONE
-};
-
-class Node
-{
-    /*
-    DESC: Create the nodes and helper functions.
-    */
-    const int ID;
-    Player player;
-    vector<Node *> neighbours;
-
-public:
-    Node(int identifier) : ID(identifier), player(Player::NONE), neighbours({}) {}
-
-    const int getID() { return ID; }
-    const vector<Node *> &getNeighbours() { return neighbours; }
-    void setPlayer(Player p) { player = p; }
-    const Player getPlayer() { return player; }
-    void setNeighbours(vector<Node *> &neighbours) { this->neighbours = neighbours; }
-};
+using std::random_device;
+using std::mt19937;
+using std::uniform_int_distribution;
 
 class Graph
 {
@@ -64,12 +44,16 @@ public:
     Node *getNode(int, int);
 
     void playGame();
-    void makeHumanMove();
-    void makeComputerMove();
+    bool isValidMove(Node *);
     const Player checkWinner();
 
-    const char getPlayerSymbol(Player);
+    Node *getHumanMove();
+    void makeHumanMove();
+    
+    Node *getRandomMove();
+    void makeComputerMove();
 
+    const char getPlayerSymbol(Player);
     void printGraph();
     void printGraphData();
 };
@@ -130,11 +114,12 @@ void Graph::playGame()
     while (count--)
     {
         makeHumanMove();
-        // if (checkWinner() != Player::NONE)
-        //     break;
+        if (checkWinner() == Player::HUMAN)
+            break;
+
         makeComputerMove();
-        // if (checkWinner() != Player::NONE)
-        //     break;
+        if (checkWinner() == Player::COMP)
+            break;
     }
 
     switch (checkWinner())
@@ -153,32 +138,68 @@ void Graph::playGame()
     }
 }
 
-void Graph::makeHumanMove()
+bool Graph::isValidMove(Node *node)
+{
+    if (node->getPlayer() == Player::NONE)
+        return true;
+
+    cout << "Invalid move!\n";
+    return false;
+}
+
+Node *Graph::getHumanMove()
 {
     int row = 0, col = 0;
-    do
+    cout << "Enter row (1-indexed): ";
+    cin >> row;
+    cout << "Enter column (1-indexed): ";
+    cin >> col;
+
+    // Convert 1-indexed rows and columns into 0-indexed
+    return nodes[--row][--col];
+}
+
+void Graph::makeHumanMove()
+{
+    Node *played_node = getHumanMove();
+
+    while (!isValidMove(played_node))
     {
-        cout << "Your move!\n";
-        cout << "Enter row (1-indexed): ";
-        cin >> row;
-        cout << "Enter column (1-indexed): ";
-        cin >> col;
+        cout << "Try again!\n";
+        played_node = getHumanMove();
+    }
 
-        // 1-indexed rows and columns into 0-indexed
-        row--;
-        col--;
-    } while (nodes[row][col]->getPlayer() != Player::NONE);
-
-    nodes[row][col]->setPlayer(Player::HUMAN);
+    played_node->setPlayer(Player::HUMAN);
 
     system("clear");
     printGraph();
 }
 
+Node *Graph::getRandomMove(){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    
+    // Define the range for the distribution
+    std::uniform_int_distribution<> dis(1, SIZE);
+
+    // Generate a single random integer
+    int row = dis(gen);
+    int col = dis(gen);
+
+    return nodes[--row][--col];
+}
+
 void Graph::makeComputerMove()
 {
-    static int row = 4, col = 4;
-    nodes[row--][col--]->setPlayer(Player::COMP);
+    Node *played_node = getRandomMove();
+
+    while (!isValidMove(played_node))
+    {
+        cout << "Try again!\n";
+        played_node = getRandomMove();
+    }
+
+    played_node->setPlayer(Player::COMP);
 
     system("clear");
     printGraph();
@@ -186,7 +207,7 @@ void Graph::makeComputerMove()
 
 const Player Graph::checkWinner()
 {
-    return Player::HUMAN;
+    return Player::NONE;
 }
 
 const char Graph::getPlayerSymbol(const Player p) { return symbols[p]; }
