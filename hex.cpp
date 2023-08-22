@@ -21,7 +21,7 @@ Program description:
 
 int main(int argc, char **argv)
 {
-    int board_size = 5;
+    int board_size = 4;
     if (argc > 1)
     {
         try
