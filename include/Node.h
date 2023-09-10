@@ -3,14 +3,10 @@
 
 #include <vector>
 
+#include "player/enumPlayer.h"
+
 using std::vector;
 
-enum class Player
-{
-    HUMAN,
-    COMP,
-    NONE
-};
 
 class Node
 {
@@ -24,11 +20,11 @@ class Node
 public:
     Node(int identifier) : ID(identifier), player(Player::NONE), neighbours() {}
 
-    const int getID() { return ID; }
-    const vector<Node *> &getNeighbours() { return neighbours; }
-    void setPlayer(Player p) { player = p; }
-    const Player getPlayer() { return player; }
-    void setNeighbours(vector<Node *> &neighbours) { this->neighbours = neighbours; }
+    int GetID() const { return ID; }
+    vector<Node *> &GetNeighbours() { return neighbours; }
+    void SetNeighbours(vector<Node *> &neighbours) { this->neighbours = neighbours; }
+    Player GetPlayer() { return player; }
+    void SetPlayer(Player p) { player = p; }
 };
 
 #endif // NODE_H
