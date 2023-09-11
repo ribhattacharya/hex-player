@@ -23,7 +23,6 @@
 
 #include "node.h"
 #include "player/enumPlayer.h"
-#include "player/IPlayer.h"
 #include "utility.h"
 
 using std::cin;
@@ -42,36 +41,55 @@ using std::unordered_set;
 using std::vector;
 
 // TODO: Add Monte Carlo code
+// TODO: Add comments
 class Graph
 {
     /*
     DESC: Graph class to create and process the graph.
     */
-    const int SIZE;
-    vector<vector<Node *>> nodes;
+    int SIZE;
+    vector<node_vect> nodes;
     void createEdges();
+
     template <typename T>
-    bool IsInSet(T node, unordered_set<T>& set) const;
+    bool IsInSet(T node, unordered_set<T> &set) const;
 
 public:
+    Graph() {}
     Graph(int);
+    Graph(const Graph &other);
     ~Graph();
 
+    int GetSize() { return SIZE; }
     Node *GetNode(Pair) const;
     bool IsAvailable(Pair idx) const;
     void SetPlayer(Pair, Player);
-    bool IsBridgeFormed(IPlayer *) const;
+    bool IsBridgeFormed(node_set, node_set, Player) const;
+    void printGraph() const;
 };
 
-Graph::Graph(int s) : SIZE(s), nodes(SIZE, vector<Node *>(SIZE))
+Graph::Graph(int s) : SIZE(s), nodes(SIZE, node_vect(SIZE))
 {
-    cout << "Initialized board with size = " << SIZE << ".\n"
-         << endl;
+    cout << "Initialized board with size = " << SIZE << ".\n\n";
 
     for (int i = 0; i < SIZE; i++)
         for (int j = 0; j < SIZE; j++)
-            nodes[i][j] = new Node(i * SIZE + j);
+            nodes[i][j] = new Node(i, j, i * SIZE + j);
 
+    createEdges();
+}
+
+Graph::Graph(const Graph &other) : SIZE(other.SIZE)
+{
+    // Create a new vector of nodes with the same size
+    nodes = vector<node_vect>(SIZE, node_vect(SIZE));
+
+    // Copy the content of each node from the other graph
+    // Assuming Node has its own copy constructor or clone method
+    for (int i = 0; i < SIZE; i++)
+        for (int j = 0; j < SIZE; j++)
+            nodes[i][j] = new Node(*other.nodes[i][j]);
+    
     createEdges();
 }
 
@@ -99,7 +117,7 @@ void Graph::createEdges()
                 {i + 1, j},
                 {i + 1, j - 1}};
 
-            vector<Node *> neighbours;
+            node_vect neighbours;
             for (const auto dir : directions)
             {
                 int ii = dir[0], jj = dir[1];
@@ -132,12 +150,8 @@ bool Graph::IsInSet(T node, unordered_set<T> &set) const
     return set.find(node) != set.end();
 }
 
-bool Graph::IsBridgeFormed(IPlayer *player) const
+bool Graph::IsBridgeFormed(node_set STARTS, node_set GOALS, Player playertype) const
 {
-    unordered_set<Node *> STARTS = player->GetStarts();
-    unordered_set<Node *> GOALS = player->GetGoals();
-    Player playertype = player->GetPlayerType();
-
     /*
     If one start node branches into a tree, then it will not lead to a goal iff
     it is a detached tree. In that case, all the nodes will be addeed to CLOSED
@@ -150,7 +164,7 @@ bool Graph::IsBridgeFormed(IPlayer *player) const
     */
 
     queue<Node *> OPEN;
-    unordered_set<Node *> CLOSED;
+    node_set CLOSED;
 
     for (auto start : STARTS)
     {
@@ -178,6 +192,50 @@ bool Graph::IsBridgeFormed(IPlayer *player) const
     }
 
     return false;
+}
+
+void Graph::printGraph() const
+{
+
+    unordered_map<Player, char> symbols = {
+        {Player::HUMAN, 'X'},
+        {Player::COMP, 'O'},
+        {Player::NONE, '.'}};
+
+    cout << string(3, ' ');
+    for (int col = static_cast<int>('a'), j = 0; j < SIZE; j++, col++)
+    {
+        cout << '|' << static_cast<char>(col) << '|';
+        if (j != SIZE - 1)
+            cout << string(1, ' ');
+    }
+    cout << "\n";
+
+    for (int margin = 0, i = 0, row = static_cast<int>('a'); i < SIZE; i++, row++)
+    {
+        cout << string(margin++, ' ');
+        cout << '|' << static_cast<char>(row) << '|' << string(1, ' ');
+        for (int j = 0; j < SIZE; j++)
+        {
+            Pair idx = std::make_pair(i, j);
+            Player p = GetNode(idx)->GetPlayer();
+            const char player_symbol = symbols[p];
+
+            cout << player_symbol;
+            if (j != SIZE - 1)
+                cout << " - ";
+        }
+        cout << '\n';
+        if (i != SIZE - 1)
+        {
+            cout << string(margin++ + 4, ' ');
+            for (int j = 0; j < SIZE - 1; j++)
+            {
+                cout << "\\ / ";
+            }
+            cout << "\\" << '\n';
+        }
+    }
 }
 
 #endif // GRAPH_H

@@ -13,10 +13,11 @@ class HumanPlayer : public IPlayer
 public:
     HumanPlayer(string name) : IPlayer(Player::HUMAN, name) {}
     ~HumanPlayer() {}
-    Pair GetMove(int) override;
+    Pair GetMove(Graph &) override;
+    // void PassGraph(Graph &) override {}
 };
 
-Pair HumanPlayer::GetMove(int SIZE)
+Pair HumanPlayer::GetMove(Graph &g)
 {
     char row = 'a', col = 'a';
     cout << "Enter row: ";

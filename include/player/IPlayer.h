@@ -6,6 +6,7 @@
 #include <string>
 #include "enumPlayer.h"
 #include "../utility.h"
+#include "../graph.h"
 
 using std::string;
 using std::unordered_map;
@@ -15,39 +16,36 @@ class IPlayer
 {
     Player playerType;
     string playerName;
-    unordered_set<Node *> STARTS, GOALS;
+    node_set STARTS, GOALS;
 
 public:
     IPlayer(Player type, string nm) : playerType(type), playerName(nm) {}
-    void SetStarts(vector<Node *>);
-    unordered_set<Node *> &GetStarts();
-    void SetGoals(vector<Node *>);
-    unordered_set<Node *> &GetGoals();
+    void SetStarts(node_vect);
+    node_set &GetStarts();
+    void SetGoals(node_vect);
+    node_set &GetGoals();
     string GetPlayerName() const { return playerName; }
     Player GetPlayerType() const { return playerType; }
 
-    virtual ~IPlayer()
-    {
-        STARTS.clear();
-        GOALS.clear();
-    }
-    virtual Pair GetMove(int) = 0;
+    // virtual void PassGraph(Graph &) = 0;
+    virtual ~IPlayer() {}
+    virtual Pair GetMove(Graph &) = 0;
 };
 
-void IPlayer::SetStarts(vector<Node *> nodes)
+void IPlayer::SetStarts(node_vect nodes)
 {
-    for (auto start : nodes)
-        STARTS.insert(start);
+    STARTS.clear();
+    STARTS.insert(nodes.begin(), nodes.end());
 }
 
-unordered_set<Node *> &IPlayer::GetStarts() { return STARTS; }
+node_set &IPlayer::GetStarts() { return STARTS; }
 
-void IPlayer::SetGoals(vector<Node *> nodes)
+void IPlayer::SetGoals(node_vect nodes)
 {
-    for (auto goal : nodes)
-        GOALS.insert(goal);
+    GOALS.clear();
+    GOALS.insert(nodes.begin(), nodes.end());
 }
 
-unordered_set<Node *> &IPlayer::GetGoals() { return GOALS; }
+node_set &IPlayer::GetGoals() { return GOALS; }
 
 #endif // ABSTRACT_PLAYER

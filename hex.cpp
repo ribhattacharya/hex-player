@@ -18,19 +18,19 @@ Program description:
 int main(int argc, char **argv)
 {
     int boardSize = 4;
-    if (argc > 1)
-    {
-        try
-        {
-            boardSize = std::stoi(argv[1]);
-        }
-        catch (const std::exception &e)
-        {
-            std::cerr << "Error: Invalid board size argument! Should be an integer, given '" << argv[1] << "'.\n";
-            std::cout << "Enter board size: ";
-            cin >> boardSize;
-        }
-    }
+    // if (argc > 1)
+    // {
+    //     try
+    //     {
+    //         boardSize = std::stoi(argv[1]);
+    //     }
+    //     catch (const std::exception &e)
+    //     {
+    //         std::cerr << "Error: Invalid board size argument! Should be an integer, given '" << argv[1] << "'.\n";
+    //         std::cout << "Enter board size: ";
+    //         cin >> boardSize;
+    //     }
+    // }
 
     // int HumanPlayer::humanCount = 0;
 

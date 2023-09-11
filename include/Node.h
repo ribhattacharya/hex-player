@@ -3,10 +3,10 @@
 
 #include <vector>
 
+#include "utility.h"
 #include "player/enumPlayer.h"
 
 using std::vector;
-
 
 class Node
 {
@@ -14,15 +14,17 @@ class Node
     DESC: Create the nodes and helper functions.
     */
     const int ID;
+    const Pair idx;
     Player player;
-    vector<Node *> neighbours;
+    node_vect neighbours;
 
 public:
-    Node(int identifier) : ID(identifier), player(Player::NONE), neighbours() {}
+    Node(int i, int j, int id) : ID(id), idx(std::make_pair(i, j)), player(Player::NONE), neighbours() {}
 
     int GetID() const { return ID; }
-    vector<Node *> &GetNeighbours() { return neighbours; }
-    void SetNeighbours(vector<Node *> &neighbours) { this->neighbours = neighbours; }
+    Pair GetIdx() const { return idx; }
+    node_vect &GetNeighbours() { return neighbours; }
+    void SetNeighbours(node_vect &neighbours) { this->neighbours = neighbours; }
     Player GetPlayer() { return player; }
     void SetPlayer(Player p) { player = p; }
 };
