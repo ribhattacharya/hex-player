@@ -103,7 +103,7 @@ void Board::playGame()
 
             if (checkWinner(player))
             {
-                cout << player->GetPlayerName() << " wins!\n";
+                cout << '\n' << player->GetPlayerName() << " wins!\n";
                 return;
             }
         }
@@ -129,7 +129,7 @@ void Board::MakeMove(IPlayer *player)
 
     while (!g.IsAvailable(idx))
     {
-        cout << "Node not available, try again!\n";
+        cout << idx << "Node not available, try again!\n";
         idx = player->GetMove(gCopy);
     }
     

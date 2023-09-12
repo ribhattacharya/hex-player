@@ -89,7 +89,7 @@ Graph::Graph(const Graph &other) : SIZE(other.SIZE)
     for (int i = 0; i < SIZE; i++)
         for (int j = 0; j < SIZE; j++)
             nodes[i][j] = new Node(*other.nodes[i][j]);
-    
+
     createEdges();
 }
 
@@ -141,7 +141,9 @@ bool Graph::IsAvailable(Pair idx) const
 
 void Graph::SetPlayer(Pair idx, Player playertype)
 {
+    // cout << "setting " << idx << " to be " << playertype << "\n";
     GetNode(idx)->SetPlayer(playertype);
+    // cout << "set " << idx << " to be " << GetNode(idx)->GetPlayer() << "\n";
 }
 
 template <typename T>
@@ -162,27 +164,47 @@ bool Graph::IsBridgeFormed(node_set STARTS, node_set GOALS, Player playertype) c
     If not, then going through it again wouldn't help. So we can skip start nodes if they
     are part of CLOSED already.
     */
+    // cout << "\n\ninside brige function\n\n";
+    // for (auto start : STARTS)
+    //     cout << start->GetIdx() << " ";
+    // cout << '\n';
+    // for (auto goal : GOALS)
+    //     cout << goal->GetIdx() << " ";
+    // cout << '\n';
+
+    // for (auto row : nodes)
+    //     for (auto node : row)
+    //         cout << node << " " << node->GetIdx() << " has " << node->GetPlayer() << '\n';
 
     queue<Node *> OPEN;
     node_set CLOSED;
 
     for (auto start : STARTS)
     {
+        // cout << "\nexpanding node " << start->GetIdx() << " " << start << " of type " << start->GetPlayer() << '\n';
+        // for (auto neighbour : start->GetNeighbours())
+        //     cout << "node " << start->GetIdx() << " is " << start->GetPlayer()
+        //          << " and has neighbour " << neighbour->GetIdx() << " of type " << neighbour->GetPlayer() << '\n';
+
         if (start->GetPlayer() != playertype || IsInSet(start, CLOSED))
             continue;
-
+        // cout << "\nfirst step cleared";
         OPEN.push(start);
         while (!OPEN.empty())
         {
+            // cout << "\ninside while loop";
             Node *nodeToExpand = OPEN.front();
             OPEN.pop();
             CLOSED.insert(nodeToExpand);
+            // cout << "\nexpanding " << nodeToExpand->GetIdx();
 
             if (GOALS.find(nodeToExpand) != GOALS.end())
                 return true;
-
+            // cout << "\nisnt in GOALS";
             for (auto neighbour : nodeToExpand->GetNeighbours())
             {
+                // cout << nodeToExpand->GetIdx() << " has neighbour " << neighbour->GetIdx() << '\n';
+                // cout << neighbour->GetIdx() << " has " << neighbour->GetPlayer() << '\n';
                 if (neighbour->GetPlayer() != playertype || IsInSet(neighbour, CLOSED))
                     continue;
 

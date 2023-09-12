@@ -12,7 +12,7 @@ class CompPlayer : public IPlayer
     Pair RandomMove(int);
 
 public:
-    CompPlayer(string name) : IPlayer(Player::COMP, name), NTRIALS(10) {}
+    CompPlayer(string name) : IPlayer(Player::COMP, name), NTRIALS(100) {}
     ~CompPlayer() {}
     Pair GetMove(Graph &) override;
     // void PassGraph(Graph &g) override;
@@ -20,10 +20,10 @@ public:
 
 Pair CompPlayer::MonteCarloMove(Graph &curGraph)
 {
-    cout << "ADDRESS OF POINTERED GRAPH " << &curGraph << '\n';
+    // cout << "ADDRESS OF POINTERED GRAPH " << &curGraph << '\n';
     vector<Pair> avaiableMoves;
-    cout << "something wrong is happening\n";
-    cout << curGraph.GetSize() << " ";
+    // cout << "something wrong is happening\n";
+    // cout << curGraph.GetSize() << " ";
 
     // Collect all available nodes, can be optiizzed to maintain such a vector.
     for (size_t i = 0; i < curGraph.GetSize(); i++)
@@ -31,15 +31,15 @@ Pair CompPlayer::MonteCarloMove(Graph &curGraph)
         for (size_t j = 0; j < curGraph.GetSize(); j++)
         {
             Pair idx = std::make_pair(i, j);
-            cout << i << j << " ";
+            // cout << i << j << " ";
             if (curGraph.IsAvailable(idx))
                 avaiableMoves.push_back(idx);
         }
     }
-    cout << "Created available\n";
+    // cout << "Created available\n";
     // Seed the random number generator
     std::random_device rd;
-    std::mt19937 gen(rd());
+    std::mt19937 gen(42);
 
     int maxWins = 0;
     Pair maxWinsMove;
@@ -50,17 +50,19 @@ Pair CompPlayer::MonteCarloMove(Graph &curGraph)
         int winsForEvalMove = 0;
         char pause;
 
-        for (auto moves : avaiableMoves)
-            cout << moves << " ";
-        cout << "\nEvaluating move" << evalMove << '\n';
-        for (auto neighbours : curGraph.GetNode(evalMove)->GetNeighbours()) cout << neighbours->GetIdx() << " ";
-        cout << "Press y to continue: ";
-        cin >> pause;
+        // for (auto moves : avaiableMoves)
+        //     cout << moves << " ";
+        // // cout << "\nEvaluating move" << evalMove << '\n';
+        // for (auto neighbours : curGraph.GetNode(evalMove)->GetNeighbours())
+        //     cout << neighbours->GetIdx() << " ";
+        // cout << "Press y to continue: ";
+        // cin >> pause;
 
         for (size_t trial = 0; trial < NTRIALS; trial++)
         {
             Graph simGraph(curGraph);
             simGraph.SetPlayer(evalMove, Player::COMP); // make eval move by COMP
+            // cout << "\nBack into the main loop " << simGraph.GetNode(evalMove) << " " << evalMove << " has " << simGraph.GetNode(evalMove)->GetPlayer() << '\n';
 
             vector<Pair> simAvailableMoves = avaiableMoves;
             simAvailableMoves.erase(simAvailableMoves.begin() + i); // remove evalMove from simulation
@@ -73,6 +75,7 @@ Pair CompPlayer::MonteCarloMove(Graph &curGraph)
                 Pair next_move = simAvailableMoves[randIdx];
                 simAvailableMoves.erase(simAvailableMoves.begin() + randIdx);
                 simGraph.SetPlayer(next_move, Player::HUMAN);
+                // cout << "Now in simulation " << simGraph.GetNode(next_move) << " " << next_move << " has " << simGraph.GetNode(next_move)->GetPlayer() << '\n';
 
                 if (!simAvailableMoves.empty())
                 {
@@ -81,37 +84,50 @@ Pair CompPlayer::MonteCarloMove(Graph &curGraph)
                     Pair next_move = simAvailableMoves[randIdx];
                     simAvailableMoves.erase(simAvailableMoves.begin() + randIdx);
                     simGraph.SetPlayer(next_move, Player::COMP);
+                    // cout << "Now in simulation " << simGraph.GetNode(next_move) << " " << next_move << " has " << simGraph.GetNode(next_move)->GetPlayer() << '\n';
                 }
             }
+            // std::cout << "\x1B[2J\x1B[H"; // Clear screen
+            // simGraph.printGraph();
 
-            simGraph.printGraph();
+            // node_set STARTS = GetStarts();
+            // node_set GOALS = GetGoals();
+            node_set starts, goals;
 
-            node_set STARTS = GetStarts();
-            node_set GOALS = GetGoals();
-            // Player playerType = GetPlayerType();
-
-            if (simGraph.IsBridgeFormed(STARTS, GOALS, Player::COMP))
+            for (int k = 0; k < simGraph.GetSize(); k++)
             {
-                cout << "\n\nComputer wins this round, total wins are: " << ++winsForEvalMove << '\n';
-            }
+                Pair startIdx = std::make_pair(0, k);
+                Pair goalIdx = std::make_pair(simGraph.GetSize() - 1, k);
 
-            cout << "Wins for this move: " << winsForEvalMove << '\n';
-            cout << "Press y to continue: ";
-            cin >> pause;
-            cout << "\n\n";
-            
-            if (winsForEvalMove > maxWins)
+                starts.insert(simGraph.GetNode(startIdx));
+                goals.insert(simGraph.GetNode(goalIdx));
+            }
+            // Player playerType = GetPlayerType();
+            // cout << "\n\ninside simulation loop function printing STARTS\n\n";
+            // for (auto start : starts)
+            //     cout << start << " " << start->GetIdx() << " has " << start->GetPlayer() << '\n';
+
+            if (simGraph.IsBridgeFormed(starts, goals, Player::COMP))
+            {
+                winsForEvalMove++;
+                // cout << "\n\nComputer wins this round, total wins are: " << ++winsForEvalMove << '\n';
+            }
+        }
+        if (winsForEvalMove > maxWins)
             {
                 maxWins = winsForEvalMove;
                 maxWinsMove = evalMove;
             }
-        }
+        // cout << "Wins for move " << evalMove << " : " << winsForEvalMove << '\n';
+        // cout << "Press y to continue: ";
+        // cin >> pause;
+        // cout << "\n\n";
     }
-    cout << "Selected AI move: " << maxWinsMove;
+    cout << "\nSelected AI move: " << maxWinsMove;
 
-    char pause;
-    cout << "Press y to continue: ";
-    cin >> pause;
+    // char pause;
+    // cout << "Press y to continue: ";
+    // cin >> pause;
 
     return maxWinsMove;
 }
