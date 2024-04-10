@@ -40,7 +40,7 @@ using std::unordered_map;
 using std::unordered_set;
 using std::vector;
 
-// TODO: Add Monte Carlo code
+// TODO: Major Refactor Monte Carlo code
 // TODO: Add comments
 class Graph
 {

@@ -33,7 +33,9 @@ int main(int argc, char **argv)
     }
 
     // int HumanPlayer::humanCount = 0;
-
+    // TODO: Choose first player
+    // TODO: Show human orientation during human move
+    // TODO: Send NTRIALS as program input parameter
     vector<IPlayer *> players = {new CompPlayer("Computer"), new HumanPlayer("Human")};
     
     Board hexBoard(boardSize, players);

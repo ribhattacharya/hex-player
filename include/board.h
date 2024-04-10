@@ -43,10 +43,10 @@ Board::Board(int s, vector<IPlayer *> players) : SIZE(s), g(s)
     cout << "Main graph address: " << &g << '\n';
     this->players = players;
 
-    assert(this->players.size() == 2);
+    // assert(this->players.size() == 2);
 
-    SaveStartAndGoalNodes(players[0], "vertical");
-    SaveStartAndGoalNodes(players[1], "horizontal");
+    SaveStartAndGoalNodes(players[1], "vertical");
+    SaveStartAndGoalNodes(players[0], "horizontal");
 
     // for (auto player : players)
     // {

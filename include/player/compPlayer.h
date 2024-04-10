@@ -94,10 +94,11 @@ Pair CompPlayer::MonteCarloMove(Graph &curGraph)
             // node_set GOALS = GetGoals();
             node_set starts, goals;
 
+            // TODO: make this modular
             for (int k = 0; k < simGraph.GetSize(); k++)
             {
-                Pair startIdx = std::make_pair(0, k);
-                Pair goalIdx = std::make_pair(simGraph.GetSize() - 1, k);
+                Pair startIdx = std::make_pair(k, 0);
+                Pair goalIdx = std::make_pair(k, simGraph.GetSize() - 1);
 
                 starts.insert(simGraph.GetNode(startIdx));
                 goals.insert(simGraph.GetNode(goalIdx));
