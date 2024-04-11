@@ -6,6 +6,8 @@
 #include "include/player/human_player.hpp"
 #include "include/computer_logic/monte_carlo.hpp"
 #include "include/board/board.hpp"
+#include "include/enums.hpp"
+#include "include/player/player_factory.hpp"
 
 int main(int argc, char **argv)
 {
@@ -28,19 +30,25 @@ int main(int argc, char **argv)
     // TODO: Choose first player
     // TODO: Show human orientation during human move
 
-    std::cout << "Enter no. of trials for the Monte Carlo simulation: ";
-    int nTrials;
-    std::cin >> nTrials;
-    std::shared_ptr<IComputerLogic> computerLogic = std::make_shared<MonteCarlo>(nTrials);
-    std::shared_ptr<IPlayer> compPlayer = std::make_shared<CompPlayer>("Computer Monte-Carlo", computerLogic);
 
-    std::cout<< "Enter name of human player: ";
-    std::string humanName = "Rishabh";
-    std::cin >> humanName;
-    std::shared_ptr<IPlayer> humanPlayer = std::make_shared<HumanPlayer>(humanName);
+    std::shared_ptr<IPlayer> compPlayer = PlayerFactory::CreateCompPlayer(ComputerLogic::MONTE_CARLO);
+    std::shared_ptr<IPlayer> humanPlayer = PlayerFactory::CreateHumanPlayer("Tony Stark");
+    std::vector<std::shared_ptr<IPlayer>> players(2);
 
-    std::cout << compPlayer->GetPlayerName() << " vs. " << humanPlayer->GetPlayerName() << '\n';
-    std::vector<std::shared_ptr<IPlayer>> players = {compPlayer, humanPlayer};
+    std::cout << "Who should go first? Enter 1 for computer and 2 for human: ";
+    int firstPlayer;
+    std::cin >> firstPlayer;
+
+    if (firstPlayer == 1)
+    {
+        std::cout << "Computer goes first.\n";
+        players = {compPlayer, humanPlayer};
+    }
+    else
+    {
+        std::cout << "Human goes first.\n";
+        players = {humanPlayer, compPlayer};
+    }
     
     Board hexBoard(boardSize, players);
     hexBoard.playGame();

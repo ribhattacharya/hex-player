@@ -1,5 +1,5 @@
-#ifndef UTILITY
-#define UTILITY
+#ifndef UTILITY_H
+#define UTILITY_H
 
 #include <ostream>
 #include <unordered_set>
@@ -14,4 +14,4 @@ std::ostream &operator<<(std::ostream &os, const std::unordered_set<Node *> &val
 
 std::ostream &operator<<(std::ostream &os, const std::vector<Node *> &value);
 
-#endif // UTILITY
+#endif // UTILITY_H

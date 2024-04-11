@@ -1,10 +1,10 @@
-#ifndef HUMAN_PLAYER
-#define HUMAN_PLAYER
+#ifndef HUMAN_PLAYER_H
+#define HUMAN_PLAYER_H
 
 #include <string>
 
 #include "IPlayer.hpp"
-#include "enum_player.hpp"
+#include "../enums.hpp"
 #include "../graph/graph.hpp"
 #include "../custom_types.hpp"
 
@@ -21,4 +21,4 @@ public:
     Pair DecideNextMove(Graph &) const override;
 };
 
-#endif // HUMAN_PLAYER
+#endif // HUMAN_PLAYER_H

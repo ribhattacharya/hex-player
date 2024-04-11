@@ -1,9 +1,9 @@
-#ifndef PLAYER
-#define PLAYER
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <string>
 
-#include "enum_player.hpp"
+#include "../enums.hpp"
 #include "../graph/graph.hpp"
 #include "../custom_types.hpp"
 
@@ -33,4 +33,4 @@ public:
 
 // node_set &IPlayer::GetGoals() { return GOALS; }
 
-#endif // PLAYER
+#endif // PLAYER_H

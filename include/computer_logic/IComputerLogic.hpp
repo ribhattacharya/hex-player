@@ -1,5 +1,5 @@
-#ifndef COMPUTER_LOGIC
-#define COMPUTER_LOGIC
+#ifndef COMPUTER_LOGIC_H
+#define COMPUTER_LOGIC_H
 
 #include <iostream>
 
@@ -13,4 +13,4 @@ public:
     virtual Pair DecideNextMove(Graph &) const = 0;
 };
 
-#endif // COMPUTER_LOGIC
+#endif // COMPUTER_LOGIC_H

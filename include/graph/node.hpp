@@ -1,9 +1,9 @@
-#ifndef NODE
-#define NODE
+#ifndef NODE_H
+#define NODE_H
 
 #include <vector>
 
-#include "../player/enum_player.hpp"
+#include "../enums.hpp"
 #include "../custom_types.hpp"
 
 class Node
@@ -24,4 +24,4 @@ public:
     void SetNeighbours(std::vector<Node *> &neighbours);
 };
 
-#endif // NODE
+#endif // NODE_H

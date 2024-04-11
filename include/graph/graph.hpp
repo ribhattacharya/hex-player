@@ -1,5 +1,5 @@
-#ifndef GRAPH
-#define GRAPH
+#ifndef GRAPH_H
+#define GRAPH_H
 
 #include <iostream>
 #include <random>
@@ -12,7 +12,7 @@
 #include <queue>
 
 #include "node.hpp"
-#include "../player/enum_player.hpp"
+#include "../enums.hpp"
 #include "../custom_types.hpp"
 
 // TODO: Major Refactor Monte Carlo code
@@ -43,4 +43,4 @@ public:
     void printGraph() const;
 };
 
-#endif // GRAPH
+#endif // GRAPH_H

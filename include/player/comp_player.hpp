@@ -1,11 +1,11 @@
-#ifndef COMP_PLAYER
-#define COMP_PLAYER
+#ifndef COMP_PLAYER_H
+#define COMP_PLAYER_H
 
 #include <string>
 
 #include "../computer_logic/IComputerLogic.hpp"
 #include "IPlayer.hpp"
-#include "enum_player.hpp"
+#include "../enums.hpp"
 #include "../custom_types.hpp"
 
 class CompPlayer : public IPlayer
@@ -24,4 +24,4 @@ public:
     Pair DecideNextMove(Graph &) const override;
 };
 
-#endif // COMP_PLAYER
+#endif // COMP_PLAYER_H

@@ -1,5 +1,5 @@
-#ifndef MONTE_CARLO
-#define MONTE_CARLO
+#ifndef MONTE_CARLO_H
+#define MONTE_CARLO_H
 
 #include <iostream>
 
@@ -15,4 +15,4 @@ public:
     Pair DecideNextMove(Graph &) const override;
 };
 
-#endif // MONTE_CARLO
+#endif // MONTE_CARLO_H

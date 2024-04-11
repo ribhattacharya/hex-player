@@ -1,5 +1,5 @@
-#ifndef BOARD
-#define BOARD
+#ifndef BOARD_H
+#define BOARD_H
 
 #include <iostream>
 #include <vector>
@@ -31,4 +31,4 @@ public:
     void playGame();
 };
 
-#endif // BOARD
+#endif // BOARD_H
