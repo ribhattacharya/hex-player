@@ -27,7 +27,6 @@ int main(int argc, char **argv)
     }
 
     // int HumanPlayer::humanCount = 0;
-    // TODO: Choose first player
     // TODO: Show human orientation during human move
 
 

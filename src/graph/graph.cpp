@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <queue>
+#include <memory>
 
 #include "../../include/graph/graph.hpp"
 
@@ -15,13 +16,13 @@ using std::string;
 using std::unordered_set;
 using std::queue;
 
-Graph::Graph(int s) : SIZE(s), nodes(SIZE, std::vector<Node *>(SIZE))
+Graph::Graph(int s) : SIZE(s), nodes(SIZE, std::vector<std::shared_ptr<Node>>(SIZE))
 {
     cout << "Initialized board with size = " << SIZE << ".\n\n";
 
     for (int i = 0; i < SIZE; i++)
         for (int j = 0; j < SIZE; j++)
-            nodes[i][j] = new Node(i, j, i * SIZE + j);
+            nodes[i][j] = std::make_shared<Node>(i, j, i * SIZE + j);
 
     createEdges();
 }
@@ -29,23 +30,15 @@ Graph::Graph(int s) : SIZE(s), nodes(SIZE, std::vector<Node *>(SIZE))
 Graph::Graph(const Graph &other) : SIZE(other.SIZE)
 {
     // Create a new vector of nodes with the same size
-    nodes = vector<std::vector<Node *>>(SIZE, std::vector<Node *>(SIZE));
+    nodes = vector<std::vector<std::shared_ptr<Node>>>(SIZE, std::vector<std::shared_ptr<Node>>(SIZE));
 
     // Copy the content of each node from the other graph
     // Assuming Node has its own copy constructor or clone method
     for (int i = 0; i < SIZE; i++)
         for (int j = 0; j < SIZE; j++)
-            nodes[i][j] = new Node(*other.nodes[i][j]);
+            nodes[i][j] = std::make_shared<Node>(*other.nodes[i][j]);
 
     createEdges();
-}
-
-/// @brief Graph destructor, deletes all nodes.
-Graph::~Graph()
-{
-    for (int i = 0; i < SIZE; i++)
-        for (int j = 0; j < SIZE; j++)
-            nodes[i][j] = (delete nodes[i][j], nullptr);
 }
 
 /// @brief Create edges between all nodes.
@@ -64,7 +57,7 @@ void Graph::createEdges()
                 {i + 1, j},
                 {i + 1, j - 1}};
 
-            std::vector<Node *> neighbours;
+            std::vector<std::shared_ptr<Node>> neighbours;
             for (const auto dir : directions)
             {
                 int ii = dir[0], jj = dir[1];
@@ -78,7 +71,7 @@ void Graph::createEdges()
 
 int Graph::GetSize() { return SIZE; }
 
-Node *Graph::GetNode(Pair idx) const
+std::shared_ptr<Node> Graph::GetNode(Pair idx) const
 {
     return nodes[idx.first][idx.second];
 }
@@ -101,7 +94,7 @@ bool Graph::IsInSet(T node, unordered_set<T> &set) const
     return set.find(node) != set.end();
 }
 
-bool Graph::IsBridgeFormed(std::unordered_set<Node *> STARTS, std::unordered_set<Node *> GOALS, Player playertype) const
+bool Graph::IsBridgeFormed(std::unordered_set<std::shared_ptr<Node>> STARTS, std::unordered_set<std::shared_ptr<Node>> GOALS, Player playertype) const
 {
     /*
     If one start node branches into a tree, then it will not lead to a goal iff
@@ -125,8 +118,8 @@ bool Graph::IsBridgeFormed(std::unordered_set<Node *> STARTS, std::unordered_set
     //     for (auto node : row)
     //         cout << node << " " << node->GetIDX() << " has " << node->GetPlayer() << '\n';
 
-    queue<Node *> OPEN;
-    std::unordered_set<Node *> CLOSED;
+    queue<std::shared_ptr<Node> > OPEN;
+    std::unordered_set<std::shared_ptr<Node> > CLOSED;
 
     for (auto start : STARTS)
     {
@@ -142,7 +135,7 @@ bool Graph::IsBridgeFormed(std::unordered_set<Node *> STARTS, std::unordered_set
         while (!OPEN.empty())
         {
             // cout << "\ninside while loop";
-            Node *nodeToExpand = OPEN.front();
+            std::shared_ptr<Node> nodeToExpand = OPEN.front();
             OPEN.pop();
             CLOSED.insert(nodeToExpand);
             // cout << "\nexpanding " << nodeToExpand->GetIDX();
@@ -165,6 +158,7 @@ bool Graph::IsBridgeFormed(std::unordered_set<Node *> STARTS, std::unordered_set
     return false;
 }
 
+// TODO: Move printing to utility class
 void Graph::printGraph() const
 {
     unordered_map<Player, char> symbols;

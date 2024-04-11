@@ -84,7 +84,7 @@ Pair MonteCarlo::DecideNextMove(Graph &curGraph) const
 
             // node_set STARTS = GetStarts();
             // node_set GOALS = GetGoals();
-            std::unordered_set<Node *> starts, goals;
+            std::unordered_set<std::shared_ptr<Node> > starts, goals;
 
             // TODO: make this modular
             for (int k = 0; k < simGraph.GetSize(); k++)

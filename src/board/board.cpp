@@ -12,15 +12,15 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Board::Board(int s, std::vector<std::shared_ptr<IPlayer> > players) : _SIZE(s), _g(s)
+Board::Board(int s, const std::vector<std::shared_ptr<IPlayer> > players) : _SIZE(s), _g(s)
 {
     cout << "Main graph address: " << &_g << '\n';
     this->_players = players;
 
     // assert(this->_players.size() == 2);
 
-    _saveStartAndGoalNodes(_players[1], "vertical");
-    _saveStartAndGoalNodes(_players[0], "horizontal");
+    _saveStartAndGoalNodes(_players[0], "vertical");
+    _saveStartAndGoalNodes(_players[1], "horizontal");
 
     // for (auto player : _players)
     // {
@@ -60,8 +60,8 @@ void Board::_saveStartAndGoalNodes(std::shared_ptr<IPlayer> player, string orien
 bool Board::_checkWinner(std::shared_ptr<IPlayer> player)
 {
     Player playerType = player->GetPlayerType();
-    std::unordered_set<Node *> starts = {_starts[playerType]};
-    std::unordered_set<Node *> goals {_goals[playerType]};
+    std::unordered_set<std::shared_ptr<Node> > starts = {_starts[playerType]};
+    std::unordered_set<std::shared_ptr<Node> > goals {_goals[playerType]};
 
     return _g.IsBridgeFormed(starts, goals, playerType);
 }
@@ -155,7 +155,6 @@ void Board::playGame()
 //     }
 // }
 
-// TODO: Move printing to utility class
 // void Board::printGraphData() const
 // {
 //     cout << "Node # "

@@ -23,7 +23,7 @@ class Graph
     DESC: Graph class to create and process the graph.
     */
     int SIZE;
-    std::vector<std::vector<Node *> > nodes;
+    std::vector<std::vector<std::shared_ptr<Node> > > nodes;
     void createEdges();
 
     template <typename T>
@@ -33,13 +33,13 @@ public:
     Graph() {}
     Graph(int);
     Graph(const Graph &other);
-    ~Graph();
+    ~Graph() {}
 
     int GetSize();
-    Node *GetNode(Pair) const;
+    std::shared_ptr<Node> GetNode(Pair) const;
     bool IsAvailable(Pair idx) const;
     void SetPlayer(Pair, Player);
-    bool IsBridgeFormed(std::unordered_set<Node *>, std::unordered_set<Node *>, Player) const;
+    bool IsBridgeFormed(std::unordered_set<std::shared_ptr<Node> >, std::unordered_set<std::shared_ptr<Node> >, Player) const;
     void printGraph() const;
 };
 

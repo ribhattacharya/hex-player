@@ -10,6 +10,6 @@ Player Node::GetPlayer() { return _player; }
 
 void Node::SetPlayer(Player p) { _player = p; }
 
-std::vector<Node *> Node::GetNeighbours() { return _neighbours; }
+std::vector<std::shared_ptr<Node> > Node::GetNeighbours() { return _neighbours; }
 
-void Node::SetNeighbours(std::vector<Node *> &neighbours) { this->_neighbours = neighbours; }
+void Node::SetNeighbours(std::vector<std::shared_ptr<Node> > &neighbours) { this->_neighbours = neighbours; }

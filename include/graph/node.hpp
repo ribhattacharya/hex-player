@@ -11,7 +11,7 @@ class Node
     const Pair _IDX;
     const int _ID;
     Player _player;
-    std::vector<Node *> _neighbours;
+    std::vector<std::shared_ptr<Node> > _neighbours;
 
 public:
     Node(int i, int j, int id);
@@ -20,8 +20,8 @@ public:
     int GetID() const;
     Player GetPlayer();
     void SetPlayer(Player p);
-    std::vector<Node *> GetNeighbours();
-    void SetNeighbours(std::vector<Node *> &neighbours);
+    std::vector<std::shared_ptr<Node> > GetNeighbours();
+    void SetNeighbours(std::vector<std::shared_ptr<Node> > &neighbours);
 };
 
 #endif // NODE_H
