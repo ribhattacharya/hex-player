@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "player/enum_player.hpp"
-#include "custom_types.hpp"
+#include "../player/enum_player.hpp"
+#include "../custom_types.hpp"
 
 class Node
 {

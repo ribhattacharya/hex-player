@@ -11,7 +11,7 @@
 #include <unordered_set>
 #include <queue>
 
-#include "../node.hpp"
+#include "node.hpp"
 #include "../player/enum_player.hpp"
 #include "../custom_types.hpp"
 

@@ -3,7 +3,7 @@
 #include <string>
 
 #include "../../include/board/board.hpp"
-#include "../../include/node.hpp"
+#include "../../include/graph/node.hpp"
 #include "../../include/player/IPlayer.hpp"
 #include "../../include/utility.hpp"
 

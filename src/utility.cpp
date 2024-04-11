@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "../include/utility.hpp"
-#include "../include/node.hpp"
+#include "../include/graph/node.hpp"
 
 // TODO: Change these to shared_ptrs
 std::ostream &operator<<(std::ostream &os, const Pair &value)

@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     int nTrials;
     std::cin >> nTrials;
     std::shared_ptr<IComputerLogic> computerLogic = std::make_shared<MonteCarlo>(nTrials);
-    std::shared_ptr<IPlayer> compPlayer = std::make_shared<CompPlayer>("Monte Carlo Computer", computerLogic);
+    std::shared_ptr<IPlayer> compPlayer = std::make_shared<CompPlayer>("Computer Monte-Carlo", computerLogic);
 
     std::cout<< "Enter name of human player: ";
     std::string humanName = "Rishabh";

@@ -1,4 +1,4 @@
-#include "../include/node.hpp"
+#include "../../include/graph/node.hpp"
 
 Node::Node(int i, int j, int id) : _IDX(std::make_pair(i, j)), _ID(id), _player(Player::NONE), _neighbours() {}
 

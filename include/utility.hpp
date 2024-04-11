@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "custom_types.hpp"
-#include "node.hpp"
+#include "graph/node.hpp"
 
 std::ostream &operator<<(std::ostream &os, const Pair &value);
 
