@@ -1,6 +1,3 @@
-#ifndef UTILITY
-#define UTILITY
-
 #include <ostream>
 #include <unordered_set>
 #include <vector>
@@ -32,5 +29,3 @@ std::ostream &operator<<(std::ostream &os, const std::vector<Node *> &value)
     os << "]\n";
     return os;
 }
-
-#endif // UTILITY

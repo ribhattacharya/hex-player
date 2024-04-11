@@ -5,8 +5,8 @@
 #include <unordered_set>
 #include <vector>
 
-#include "../include/custom_types.hpp"
-#include "../include/node.hpp"
+#include "custom_types.hpp"
+#include "node.hpp"
 
 std::ostream &operator<<(std::ostream &os, const Pair &value);
 

@@ -1,16 +1,3 @@
-/*
-Implement a Hex player
-C++ for C Programmers: Part B
-Week 2
-Rishabh Bhattacharya
-Jul 29th, 2023
-
-This program implements a single player Hex game against the computer.
-
-
-Program description:
-*/
-
 #include <iostream>
 #include <vector>
 #include <memory>
