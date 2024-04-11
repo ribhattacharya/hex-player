@@ -1,24 +1,16 @@
-#ifndef COMP_PLAYER
-#define COMP_PLAYER
+#include <iostream>
+#include <vector>
 
-#include "IPlayer.h"
-#include "../graph.h"
+#include "include/computer_logic/monte_carlo.hpp"
+#include "include/utility.h"
 
-class CompPlayer : public IPlayer
-{
-    int NTRIALS;
-    // Graph *curGraph;
-    Pair MonteCarloMove(Graph &);
-    Pair RandomMove(int);
+using std::cin;
+using std::cout;
+using std::vector;
 
-public:
-    CompPlayer(string name) : IPlayer(Player::COMP, name), NTRIALS(100) {}
-    ~CompPlayer() {}
-    Pair GetMove(Graph &) override;
-    // void PassGraph(Graph &g) override;
-};
+MonteCarlo::MonteCarlo(int nTrials) : _nTrials(nTrials) {}
 
-Pair CompPlayer::MonteCarloMove(Graph &curGraph)
+Pair MonteCarlo::DecideNextMove(Graph &curGraph) const override
 {
     // cout << "ADDRESS OF POINTERED GRAPH " << &curGraph << '\n';
     vector<Pair> avaiableMoves;
@@ -54,7 +46,7 @@ Pair CompPlayer::MonteCarloMove(Graph &curGraph)
         //     cout << moves << " ";
         // // cout << "\nEvaluating move" << evalMove << '\n';
         // for (auto neighbours : curGraph.GetNode(evalMove)->GetNeighbours())
-        //     cout << neighbours->GetIdx() << " ";
+        //     cout << neighbours->GetIDX() << " ";
         // cout << "Press y to continue: ";
         // cin >> pause;
 
@@ -106,7 +98,7 @@ Pair CompPlayer::MonteCarloMove(Graph &curGraph)
             // Player playerType = GetPlayerType();
             // cout << "\n\ninside simulation loop function printing STARTS\n\n";
             // for (auto start : starts)
-            //     cout << start << " " << start->GetIdx() << " has " << start->GetPlayer() << '\n';
+            //     cout << start << " " << start->GetIDX() << " has " << start->GetPlayer() << '\n';
 
             if (simGraph.IsBridgeFormed(starts, goals, Player::COMP))
             {
@@ -132,32 +124,3 @@ Pair CompPlayer::MonteCarloMove(Graph &curGraph)
 
     return maxWinsMove;
 }
-
-Pair CompPlayer::RandomMove(int SIZE)
-{
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    // Define the range for the distribution
-    std::uniform_int_distribution<> dis(0, SIZE - 1);
-
-    // Generate a single random integer
-    int row = dis(gen), col = dis(gen);
-
-    return std::make_pair(row, col);
-}
-
-Pair CompPlayer::GetMove(Graph &g)
-{
-    return MonteCarloMove(g);
-}
-
-// void CompPlayer::PassGraph(Graph &g)
-// {
-//     cout << "Argyument after passing address: " << &g << '\n';
-//     curGraph = &g;
-//     cout << "curGraph graph address: " << curGraph << '\n';
-//     std::cout << "Copied graph size : " << curGraph.GetSize() << "\n\n";
-// }
-
-#endif // COMP_PLAYER
