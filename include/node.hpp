@@ -3,15 +3,15 @@
 
 #include <vector>
 
-#include "utility.hpp"
 #include "player/enum_player.hpp"
+#include "custom_types.hpp"
 
 class Node
 {
     const Pair _IDX;
     const int _ID;
     Player _player;
-    node_vect _neighbours;
+    std::vector<Node *> _neighbours;
 
 public:
     Node(int i, int j, int id);
@@ -20,8 +20,8 @@ public:
     int GetID() const;
     Player GetPlayer();
     void SetPlayer(Player p);
-    node_vect GetNeighbours() { return _neighbours; }
-    void SetNeighbours(node_vect &neighbours) { this->_neighbours = neighbours; }
+    std::vector<Node *> GetNeighbours();
+    void SetNeighbours(std::vector<Node *> &neighbours);
 };
 
 #endif // NODE

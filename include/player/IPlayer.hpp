@@ -4,14 +4,14 @@
 #include <string>
 
 #include "enum_player.hpp"
-#include "../utility.hpp"
 #include "../graph/graph.hpp"
+#include "../custom_types.hpp"
 
 // TODO: Make sure all signatures are consistent (have argument names and types)
 class IPlayer
 {
 public:
-    virtual ~IPlayer()  = default;
+    virtual ~IPlayer() {};
     virtual std::string GetPlayerName() const = 0;
     virtual Player GetPlayerType() const = 0;
     virtual Pair DecideNextMove(Graph &) const = 0;

@@ -13,7 +13,7 @@
 
 #include "../node.hpp"
 #include "../player/enum_player.hpp"
-#include "../utility.hpp"
+#include "../custom_types.hpp"
 
 // TODO: Major Refactor Monte Carlo code
 // TODO: Add comments
@@ -23,7 +23,7 @@ class Graph
     DESC: Graph class to create and process the graph.
     */
     int SIZE;
-    std::vector<node_vect> nodes;
+    std::vector<std::vector<Node *> > nodes;
     void createEdges();
 
     template <typename T>
@@ -39,7 +39,7 @@ public:
     Node *GetNode(Pair) const;
     bool IsAvailable(Pair idx) const;
     void SetPlayer(Pair, Player);
-    bool IsBridgeFormed(node_set, node_set, Player) const;
+    bool IsBridgeFormed(std::unordered_set<Node *>, std::unordered_set<Node *>, Player) const;
     void printGraph() const;
 };
 

@@ -15,10 +15,10 @@ Program description:
 #include <vector>
 #include <memory>
 
+#include "include/player/comp_player.hpp"
 #include "include/player/human_player.hpp"
-// #include "include/player/comp_player.hpp"
-// #include "include/computer_logic/monte_carlo.hpp"
-// #include "include/board/board.hpp"
+#include "include/computer_logic/monte_carlo.hpp"
+#include "include/board/board.hpp"
 
 int main(int argc, char **argv)
 {
@@ -41,26 +41,22 @@ int main(int argc, char **argv)
     // TODO: Choose first player
     // TODO: Show human orientation during human move
 
-    // std::cout << "Enter no. of trials for the Monte Carlo simulation: ";
-    // int nTrials;
-    // std::cin >> nTrials;
-    // std::shared_ptr<IComputerLogic> computerLogic = std::make_shared<MonteCarlo>(nTrials);
-    // std::shared_ptr<IPlayer> compPlayer = std::make_shared<CompPlayer>("Monte Carlo Computer", computerLogic);
-    // std::cout << compPlayer->GetPlayerName();
+    std::cout << "Enter no. of trials for the Monte Carlo simulation: ";
+    int nTrials;
+    std::cin >> nTrials;
+    std::shared_ptr<IComputerLogic> computerLogic = std::make_shared<MonteCarlo>(nTrials);
+    std::shared_ptr<IPlayer> compPlayer = std::make_shared<CompPlayer>("Monte Carlo Computer", computerLogic);
 
     std::cout<< "Enter name of human player: ";
     std::string humanName = "Rishabh";
-    // std::cin >> humanName;
-    HumanPlayer *humanPlayer = new HumanPlayer(humanName);
+    std::cin >> humanName;
+    std::shared_ptr<IPlayer> humanPlayer = std::make_shared<HumanPlayer>(humanName);
 
-    std::cout << humanPlayer->GetPlayerName() << '\n';
-
-    delete humanPlayer;
+    std::cout << compPlayer->GetPlayerName() << " vs. " << humanPlayer->GetPlayerName() << '\n';
+    std::vector<std::shared_ptr<IPlayer>> players = {compPlayer, humanPlayer};
     
-    // std::vector<std::shared_ptr<IPlayer>> players = {compPlayer, humanPlayer};
-    
-    // Board hexBoard(boardSize, players);
-    // hexBoard.playGame();
+    Board hexBoard(boardSize, players);
+    hexBoard.playGame();
     
     return 0;
 }

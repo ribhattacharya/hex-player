@@ -6,6 +6,7 @@
 #include "../computer_logic/IComputerLogic.hpp"
 #include "IPlayer.hpp"
 #include "enum_player.hpp"
+#include "../custom_types.hpp"
 
 class CompPlayer : public IPlayer
 {
@@ -16,6 +17,7 @@ private:
 
 public:
     CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic);
+    ~CompPlayer() {}
 
     std::string GetPlayerName() const override;
     Player GetPlayerType() const override;

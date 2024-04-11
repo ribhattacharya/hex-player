@@ -1,22 +1,26 @@
-#include<vector>
+#include <iostream>
+#include <vector>
+#include <string>
 
-#include "include/board/board.hpp"
-#include "include/node.hpp"
-#include "include/player/IPlayer.hpp"
-#include "include/utility.hpp"
+#include "../../include/board/board.hpp"
+#include "../../include/node.hpp"
+#include "../../include/player/IPlayer.hpp"
+#include "../../include/utility.hpp"
 
 using std::vector;
 using std::cout;
+using std::endl;
+using std::string;
 
-Board::Board(int s, std::vector<std::shared_ptr<IPlayer>> players) : _SIZE(s), _g(s)
+Board::Board(int s, std::vector<std::shared_ptr<IPlayer> > players) : _SIZE(s), _g(s)
 {
     cout << "Main graph address: " << &_g << '\n';
     this->_players = players;
 
     // assert(this->_players.size() == 2);
 
-    SaveStartAndGoalNodes(_players[1], "vertical");
-    SaveStartAndGoalNodes(_players[0], "horizontal");
+    _saveStartAndGoalNodes(_players[1], "vertical");
+    _saveStartAndGoalNodes(_players[0], "horizontal");
 
     // for (auto player : _players)
     // {
@@ -33,8 +37,6 @@ Board::Board(int s, std::vector<std::shared_ptr<IPlayer>> players) : _SIZE(s), _
 
 void Board::_saveStartAndGoalNodes(std::shared_ptr<IPlayer> player, string orientation)
 {
-    vector<Node *> starts(_SIZE), goals(_SIZE);
-
     for (int k = 0; k < _SIZE; k++)
     {
         Pair startIdx, goalIdx;
@@ -50,32 +52,29 @@ void Board::_saveStartAndGoalNodes(std::shared_ptr<IPlayer> player, string orien
             goalIdx = std::make_pair(k, _SIZE - 1);
         }
 
-        starts[k] = _g.GetNode(startIdx);
-        goals[k] = _g.GetNode(goalIdx);
+        _starts[player->GetPlayerType()].insert(_g.GetNode(startIdx));
+        _goals[player->GetPlayerType()].insert(_g.GetNode(goalIdx));
     }
-
-    player->SetStarts(starts);
-    player->SetGoals(goals);
 }
 
-bool Board::_checkWinner(std::shared_ptr<IPlayer> player) const
+bool Board::_checkWinner(std::shared_ptr<IPlayer> player)
 {
-    node_set STARTS = player->GetStarts();
-    node_set GOALS = player->GetGoals();
     Player playerType = player->GetPlayerType();
+    std::unordered_set<Node *> starts = {_starts[playerType]};
+    std::unordered_set<Node *> goals {_goals[playerType]};
 
-    return _g.IsBridgeFormed(STARTS, GOALS, playerType);
+    return _g.IsBridgeFormed(starts, goals, playerType);
 }
 
 void Board::_makeMove(std::shared_ptr<IPlayer> player)
 {
     Graph gCopy(_g);
-    Pair idx = player->GetMove(gCopy);
+    Pair idx = player->DecideNextMove(gCopy);
 
     while (!_g.IsAvailable(idx))
     {
-        cout << idx << "Node not available, try again!\n";
-        idx = player->GetMove(gCopy);
+        std::cout << idx << "Node not available, try again!\n";
+        idx = player->DecideNextMove(gCopy);
     }
     
 
@@ -93,13 +92,13 @@ void Board::playGame()
     {   int instance = 0;
         for (auto player : _players)
         {   
-            MakeMove(player);
+            _makeMove(player);
             // cout << "make move" << ++instance << "\n";
             // Graph gCopy(_g);
             // cout << "Argument before passing address: " << &gCopy << '\n';
             // _players[1]->PassGraph(gCopy);
 
-            if (checkWinner(player))
+            if (_checkWinner(player))
             {
                 cout << '\n' << player->GetPlayerName() << " wins!\n";
                 return;

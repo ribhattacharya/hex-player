@@ -6,6 +6,7 @@
 #include "IPlayer.hpp"
 #include "enum_player.hpp"
 #include "../graph/graph.hpp"
+#include "../custom_types.hpp"
 
 class HumanPlayer : public IPlayer
 {

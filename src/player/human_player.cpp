@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "../include/player/human_player.hpp"
+#include "../../include/player/human_player.hpp"
 
 // using std::cin;
 // using std::cout;
@@ -9,11 +9,11 @@
 
 HumanPlayer::HumanPlayer(std::string name) : _playerName(name) {}
 
-std::string HumanPlayer::GetPlayerName() const override { return _playerName; }
+std::string HumanPlayer::GetPlayerName() const { return _playerName; }
 
-Player HumanPlayer::GetPlayerType() const override { return _playerType; }
+Player HumanPlayer::GetPlayerType() const { return _playerType; }
 
-Pair HumanPlayer::DecideNextMove(Graph &g) const override
+Pair HumanPlayer::DecideNextMove(Graph &g) const
 {
     char row = 'a', col = 'a';
     std::cout << "Enter row: ";

@@ -29,6 +29,7 @@
 # Executables
 *.app
 *.exe
+*.out
 
 # MacOS files/dirs
 .DS_Store

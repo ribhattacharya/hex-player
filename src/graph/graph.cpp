@@ -1,6 +1,21 @@
-#include "include/graph/graph.hpp"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <queue>
 
-Graph::Graph(int s) : SIZE(s), nodes(SIZE, node_vect(SIZE))
+#include "../../include/graph/graph.hpp"
+
+using std::vector;
+using std::unordered_map;
+using std::cout;
+using std::endl;
+using std::string;
+using std::unordered_set;
+using std::queue;
+
+Graph::Graph(int s) : SIZE(s), nodes(SIZE, std::vector<Node *>(SIZE))
 {
     cout << "Initialized board with size = " << SIZE << ".\n\n";
 
@@ -14,7 +29,7 @@ Graph::Graph(int s) : SIZE(s), nodes(SIZE, node_vect(SIZE))
 Graph::Graph(const Graph &other) : SIZE(other.SIZE)
 {
     // Create a new vector of nodes with the same size
-    nodes = vector<node_vect>(SIZE, node_vect(SIZE));
+    nodes = vector<std::vector<Node *>>(SIZE, std::vector<Node *>(SIZE));
 
     // Copy the content of each node from the other graph
     // Assuming Node has its own copy constructor or clone method
@@ -41,7 +56,7 @@ void Graph::createEdges()
         for (int j = 0; j < SIZE; j++)
         {
             // 6 directions
-            vector<vector<int>> directions{
+            vector<vector<int> > directions{
                 {i, j - 1},
                 {i - 1, j},
                 {i - 1, j + 1},
@@ -49,7 +64,7 @@ void Graph::createEdges()
                 {i + 1, j},
                 {i + 1, j - 1}};
 
-            node_vect neighbours;
+            std::vector<Node *> neighbours;
             for (const auto dir : directions)
             {
                 int ii = dir[0], jj = dir[1];
@@ -86,7 +101,7 @@ bool Graph::IsInSet(T node, unordered_set<T> &set) const
     return set.find(node) != set.end();
 }
 
-bool Graph::IsBridgeFormed(node_set STARTS, node_set GOALS, Player playertype) const
+bool Graph::IsBridgeFormed(std::unordered_set<Node *> STARTS, std::unordered_set<Node *> GOALS, Player playertype) const
 {
     /*
     If one start node branches into a tree, then it will not lead to a goal iff
@@ -111,7 +126,7 @@ bool Graph::IsBridgeFormed(node_set STARTS, node_set GOALS, Player playertype) c
     //         cout << node << " " << node->GetIDX() << " has " << node->GetPlayer() << '\n';
 
     queue<Node *> OPEN;
-    node_set CLOSED;
+    std::unordered_set<Node *> CLOSED;
 
     for (auto start : STARTS)
     {
@@ -152,11 +167,10 @@ bool Graph::IsBridgeFormed(node_set STARTS, node_set GOALS, Player playertype) c
 
 void Graph::printGraph() const
 {
-
-    unordered_map<Player, char> symbols = {
-        {Player::HUMAN, 'X'},
-        {Player::COMP, 'O'},
-        {Player::NONE, '.'}};
+    unordered_map<Player, char> symbols;
+    symbols.insert(std::make_pair(Player::HUMAN, 'X'));
+    symbols.insert(std::make_pair(Player::COMP, 'O'));
+    symbols.insert(std::make_pair(Player::NONE, '.'));
 
     cout << string(3, ' ');
     for (int col = static_cast<int>('a'), j = 0; j < SIZE; j++, col++)

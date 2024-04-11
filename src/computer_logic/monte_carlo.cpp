@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 
-#include "include/computer_logic/monte_carlo.hpp"
-#include "include/utility.h"
+#include "../../include/computer_logic/monte_carlo.hpp"
+#include "../../include/utility.hpp"
 
 using std::cin;
 using std::cout;
@@ -10,7 +10,7 @@ using std::vector;
 
 MonteCarlo::MonteCarlo(int nTrials) : _nTrials(nTrials) {}
 
-Pair MonteCarlo::DecideNextMove(Graph &curGraph) const override
+Pair MonteCarlo::DecideNextMove(Graph &curGraph) const
 {
     // cout << "ADDRESS OF POINTERED GRAPH " << &curGraph << '\n';
     vector<Pair> avaiableMoves;
@@ -50,7 +50,7 @@ Pair MonteCarlo::DecideNextMove(Graph &curGraph) const override
         // cout << "Press y to continue: ";
         // cin >> pause;
 
-        for (size_t trial = 0; trial < NTRIALS; trial++)
+        for (size_t trial = 0; trial < _nTrials; trial++)
         {
             Graph simGraph(curGraph);
             simGraph.SetPlayer(evalMove, Player::COMP); // make eval move by COMP
@@ -84,7 +84,7 @@ Pair MonteCarlo::DecideNextMove(Graph &curGraph) const override
 
             // node_set STARTS = GetStarts();
             // node_set GOALS = GetGoals();
-            node_set starts, goals;
+            std::unordered_set<Node *> starts, goals;
 
             // TODO: make this modular
             for (int k = 0; k < simGraph.GetSize(); k++)
@@ -116,7 +116,7 @@ Pair MonteCarlo::DecideNextMove(Graph &curGraph) const override
         // cin >> pause;
         // cout << "\n\n";
     }
-    cout << "\nSelected AI move: " << maxWinsMove;
+    std::cout << "\nSelected AI move: " << maxWinsMove;
 
     // char pause;
     // cout << "Press y to continue: ";

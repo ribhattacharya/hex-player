@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "../graph/graph.hpp"
-#include "../utility.hpp"
+#include "../custom_types.hpp"
 
 class IComputerLogic
 {
