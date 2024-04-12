@@ -17,7 +17,6 @@ private:
 
 public:
     CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic);
-    ~CompPlayer() {}
 
     std::string GetPlayerName() const override;
     Player GetPlayerType() const override;
