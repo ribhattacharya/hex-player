@@ -29,8 +29,13 @@
 # Executables
 *.app
 *.exe
+*.out
 
 # MacOS files/dirs
 .DS_Store
 .vscode
 *.dSYM
+.cache
+
+# Build files
+/build

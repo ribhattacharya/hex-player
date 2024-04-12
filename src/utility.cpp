@@ -1,26 +1,18 @@
-#ifndef UTILITY_H
-#define UTILITY_H
-
+#include <ostream>
 #include <unordered_set>
 #include <vector>
-// #include "node.h"
 
-class Node;
+#include "../include/utility.hpp"
+#include "../include/graph/node.hpp"
 
-using std::unordered_set;
-using std::vector;
-
-typedef std::pair<int, int> Pair;
-typedef unordered_set<Node *> node_set;
-typedef vector<Node *> node_vect;
-
+// TODO: Change these to shared_ptrs
 std::ostream &operator<<(std::ostream &os, const Pair &value)
 {
     os << "(" << value.first << "," << value.second << ")";
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const node_set &value)
+std::ostream &operator<<(std::ostream &os, const std::unordered_set<std::shared_ptr<Node> > &value)
 {
     os << '(';
     for (auto val : value)
@@ -29,7 +21,7 @@ std::ostream &operator<<(std::ostream &os, const node_set &value)
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const node_vect &value)
+std::ostream &operator<<(std::ostream &os, const std::vector<std::shared_ptr<Node> > &value)
 {
     os << '[';
     for (auto val : value)
@@ -37,5 +29,3 @@ std::ostream &operator<<(std::ostream &os, const node_vect &value)
     os << "]\n";
     return os;
 }
-
-#endif // UTILITY_H
