@@ -12,7 +12,7 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Board::Board(int s, const std::vector<std::shared_ptr<IPlayer> > players) : _SIZE(s), _g(s)
+Board::Board(int size, const std::vector<std::shared_ptr<IPlayer> > &players) : _SIZE(size), _g(size)
 {
     cout << "Main graph address: " << &_g << '\n';
     this->_players = players;

@@ -25,8 +25,7 @@ class Board
     // void printGraphData() const;
 
 public:
-    Board(int, std::vector<std::shared_ptr<IPlayer> >);
-    ~Board() {}
+    Board(int size, const std::vector<std::shared_ptr<IPlayer> > &players);
 
     void playGame();
 };
