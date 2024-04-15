@@ -11,7 +11,6 @@
 #include <unordered_set>
 #include <queue>
 
-#include "node.hpp"
 #include "../enums.hpp"
 #include "../custom_types.hpp"
 
@@ -23,24 +22,21 @@ class Graph
     DESC: Graph class to create and process the graph.
     */
     int SIZE;
-    std::vector<std::vector<std::shared_ptr<Node> > > nodes;
+    vvspNode nodes;
     void createEdges();
 
     template <typename T>
     bool IsInSet(T node, std::unordered_set<T> &set) const;
 
 public:
-    Graph() {}
     Graph(int);
     Graph(const Graph &other);
-    ~Graph() {}
 
-    int GetSize();
-    std::shared_ptr<Node> GetNode(Pair) const;
+    int GetSize() const;
+    spNode GetNode(Pair) const;
     bool IsAvailable(Pair idx) const;
     void SetPlayer(Pair, Player);
-    bool IsBridgeFormed(std::unordered_set<std::shared_ptr<Node> >, std::unordered_set<std::shared_ptr<Node> >, Player) const;
-    void printGraph() const;
+    bool IsBridgeFormed(uspNode, uspNode, Player) const;
 };
 
 #endif // GRAPH_H

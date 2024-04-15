@@ -7,16 +7,14 @@
 #include <memory>
 
 #include "../../include/graph/graph.hpp"
+#include "../../include/graph/node.hpp"
 
 using std::vector;
-using std::unordered_map;
 using std::cout;
-using std::endl;
 using std::string;
 using std::unordered_set;
-using std::queue;
 
-Graph::Graph(int s) : SIZE(s), nodes(SIZE, std::vector<std::shared_ptr<Node>>(SIZE))
+Graph::Graph(int s) : SIZE(s), nodes(SIZE, vspNode(SIZE))
 {
     cout << "Initialized board with size = " << SIZE << ".\n\n";
 
@@ -30,7 +28,7 @@ Graph::Graph(int s) : SIZE(s), nodes(SIZE, std::vector<std::shared_ptr<Node>>(SI
 Graph::Graph(const Graph &other) : SIZE(other.SIZE)
 {
     // Create a new vector of nodes with the same size
-    nodes = vector<std::vector<std::shared_ptr<Node>>>(SIZE, std::vector<std::shared_ptr<Node>>(SIZE));
+    nodes = vvspNode(SIZE, vspNode(SIZE));
 
     // Copy the content of each node from the other graph
     // Assuming Node has its own copy constructor or clone method
@@ -57,7 +55,7 @@ void Graph::createEdges()
                 {i + 1, j},
                 {i + 1, j - 1}};
 
-            std::vector<std::shared_ptr<Node>> neighbours;
+            vspNode neighbours;
             for (const auto dir : directions)
             {
                 int ii = dir[0], jj = dir[1];
@@ -69,9 +67,9 @@ void Graph::createEdges()
     }
 }
 
-int Graph::GetSize() { return SIZE; }
+int Graph::GetSize() const { return SIZE; }
 
-std::shared_ptr<Node> Graph::GetNode(Pair idx) const
+spNode Graph::GetNode(Pair idx) const
 {
     return nodes[idx.first][idx.second];
 }
@@ -94,7 +92,7 @@ bool Graph::IsInSet(T node, unordered_set<T> &set) const
     return set.find(node) != set.end();
 }
 
-bool Graph::IsBridgeFormed(std::unordered_set<std::shared_ptr<Node>> STARTS, std::unordered_set<std::shared_ptr<Node>> GOALS, Player playertype) const
+bool Graph::IsBridgeFormed(uspNode STARTS, uspNode GOALS, Player playertype) const
 {
     /*
     If one start node branches into a tree, then it will not lead to a goal iff
@@ -118,8 +116,8 @@ bool Graph::IsBridgeFormed(std::unordered_set<std::shared_ptr<Node>> STARTS, std
     //     for (auto node : row)
     //         cout << node << " " << node->GetIDX() << " has " << node->GetPlayer() << '\n';
 
-    queue<std::shared_ptr<Node> > OPEN;
-    std::unordered_set<std::shared_ptr<Node> > CLOSED;
+    qspNode OPEN;
+    uspNode CLOSED;
 
     for (auto start : STARTS)
     {
@@ -135,7 +133,7 @@ bool Graph::IsBridgeFormed(std::unordered_set<std::shared_ptr<Node>> STARTS, std
         while (!OPEN.empty())
         {
             // cout << "\ninside while loop";
-            std::shared_ptr<Node> nodeToExpand = OPEN.front();
+            spNode nodeToExpand = OPEN.front();
             OPEN.pop();
             CLOSED.insert(nodeToExpand);
             // cout << "\nexpanding " << nodeToExpand->GetIDX();
@@ -156,48 +154,4 @@ bool Graph::IsBridgeFormed(std::unordered_set<std::shared_ptr<Node>> STARTS, std
     }
 
     return false;
-}
-
-// TODO: Move printing to utility class
-void Graph::printGraph() const
-{
-    unordered_map<Player, char> symbols;
-    symbols.insert(std::make_pair(Player::HUMAN, 'X'));
-    symbols.insert(std::make_pair(Player::COMP, 'O'));
-    symbols.insert(std::make_pair(Player::NONE, '.'));
-
-    cout << string(3, ' ');
-    for (int col = static_cast<int>('a'), j = 0; j < SIZE; j++, col++)
-    {
-        cout << '|' << static_cast<char>(col) << '|';
-        if (j != SIZE - 1)
-            cout << string(1, ' ');
-    }
-    cout << "\n";
-
-    for (int margin = 0, i = 0, row = static_cast<int>('a'); i < SIZE; i++, row++)
-    {
-        cout << string(margin++, ' ');
-        cout << '|' << static_cast<char>(row) << '|' << string(1, ' ');
-        for (int j = 0; j < SIZE; j++)
-        {
-            Pair idx = std::make_pair(i, j);
-            Player p = GetNode(idx)->GetPlayer();
-            const char player_symbol = symbols[p];
-
-            cout << player_symbol;
-            if (j != SIZE - 1)
-                cout << " - ";
-        }
-        cout << '\n';
-        if (i != SIZE - 1)
-        {
-            cout << string(margin++ + 4, ' ');
-            for (int j = 0; j < SIZE - 1; j++)
-            {
-                cout << "\\ / ";
-            }
-            cout << "\\" << '\n';
-        }
-    }
 }

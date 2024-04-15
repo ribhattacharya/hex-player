@@ -11,7 +11,8 @@ class Node
     const Pair _IDX;
     const int _ID;
     Player _player;
-    std::vector<std::shared_ptr<Node> > _neighbours;
+    // TODO: possible optimization here in &_neighbours
+    vspNode _neighbours;
 
 public:
     Node(int i, int j, int id);
@@ -20,8 +21,8 @@ public:
     int GetID() const;
     Player GetPlayer();
     void SetPlayer(Player p);
-    std::vector<std::shared_ptr<Node> > GetNeighbours();
-    void SetNeighbours(std::vector<std::shared_ptr<Node> > &neighbours);
+    vspNode GetNeighbours();
+    void SetNeighbours(vspNode &neighbours);
 };
 
 #endif // NODE_H

@@ -1,11 +1,15 @@
-#include <ostream>
+#include <iostream>
 #include <unordered_set>
+#include <unordered_map>
 #include <vector>
+#include <string>
 
 #include "../include/utility.hpp"
 #include "../include/graph/node.hpp"
 
-// TODO: Change these to shared_ptrs
+using std::cout;
+using std::string;
+
 std::ostream &operator<<(std::ostream &os, const Pair &value)
 {
     os << "(" << value.first << "," << value.second << ")";
@@ -28,4 +32,49 @@ std::ostream &operator<<(std::ostream &os, const std::vector<std::shared_ptr<Nod
         os << val << ", ";
     os << "]\n";
     return os;
+}
+
+void printGraph(const Graph &g)
+{
+    int SIZE = g.GetSize();
+
+    std::unordered_map<Player, char> symbols;
+    symbols.insert(std::make_pair(Player::HUMAN, 'X'));
+    symbols.insert(std::make_pair(Player::COMP, 'O'));
+    symbols.insert(std::make_pair(Player::NONE, '.'));
+
+    cout << string(3, ' ');
+    for (int col = static_cast<int>('a'), j = 0; j < SIZE; j++, col++)
+    {
+        cout << '|' << static_cast<char>(col) << '|';
+        if (j != SIZE - 1)
+            cout << string(1, ' ');
+    }
+    cout << "\n";
+
+    for (int margin = 0, i = 0, row = static_cast<int>('a'); i < SIZE; i++, row++)
+    {
+        cout << string(margin++, ' ');
+        cout << '|' << static_cast<char>(row) << '|' << string(1, ' ');
+        for (int j = 0; j < SIZE; j++)
+        {
+            Pair idx = std::make_pair(i, j);
+            Player p = g.GetNode(idx)->GetPlayer();
+            const char player_symbol = symbols[p];
+
+            cout << player_symbol;
+            if (j != SIZE - 1)
+                cout << " - ";
+        }
+        cout << '\n';
+        if (i != SIZE - 1)
+        {
+            cout << string(margin++ + 4, ' ');
+            for (int j = 0; j < SIZE - 1; j++)
+            {
+                cout << "\\ / ";
+            }
+            cout << "\\" << '\n';
+        }
+    }
 }

@@ -12,11 +12,9 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Board::Board(int size, const std::vector<std::shared_ptr<IPlayer> > &players) : _SIZE(size), _g(size)
+Board::Board(int size, std::vector<std::shared_ptr<IPlayer> > &players) : _SIZE(size), _g(size), _players(players)
 {
-    cout << "Main graph address: " << &_g << '\n';
-    this->_players = players;
-
+    // cout << "Main graph address: " << &_g << '\n';
     // assert(this->_players.size() == 2);
 
     _saveStartAndGoalNodes(_players[0], "vertical");
@@ -32,7 +30,7 @@ Board::Board(int size, const std::vector<std::shared_ptr<IPlayer> > &players) : 
     //     }
     // }
 
-    _g.printGraph();
+    printGraph(_g);
 }
 
 void Board::_saveStartAndGoalNodes(std::shared_ptr<IPlayer> player, string orientation)
@@ -82,7 +80,7 @@ void Board::_makeMove(std::shared_ptr<IPlayer> player)
     _g.SetPlayer(idx, playertype);
 
     std::cout << "\x1B[2J\x1B[H"; // Clear screen
-    _g.printGraph();
+    printGraph(_g);
 }
 
 void Board::playGame()

@@ -13,7 +13,7 @@ class Board
 {
     int _SIZE;
     Graph _g;
-    std::vector<std::shared_ptr<IPlayer> > _players;
+    std::vector<std::shared_ptr<IPlayer> > &_players;
     std::unordered_map<Player, std::unordered_set<std::shared_ptr<Node> > > _starts;
     std::unordered_map<Player, std::unordered_set<std::shared_ptr<Node> > > _goals;
 
@@ -25,7 +25,7 @@ class Board
     // void printGraphData() const;
 
 public:
-    Board(int size, const std::vector<std::shared_ptr<IPlayer> > &players);
+    Board(int size, std::vector<std::shared_ptr<IPlayer> > &players);
 
     void playGame();
 };

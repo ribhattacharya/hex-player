@@ -6,12 +6,14 @@
 #include <vector>
 
 #include "custom_types.hpp"
-#include "graph/node.hpp"
+#include "graph/graph.hpp"
 
 std::ostream &operator<<(std::ostream &os, const Pair &value);
 
-std::ostream &operator<<(std::ostream &os, const std::unordered_set<std::shared_ptr<Node> > &value);
+std::ostream &operator<<(std::ostream &os, const uspNode &value);
 
-std::ostream &operator<<(std::ostream &os, const std::vector<std::shared_ptr<Node> > &value);
+std::ostream &operator<<(std::ostream &os, const vspNode &value);
+
+void printGraph(const Graph &g);
 
 #endif // UTILITY_H

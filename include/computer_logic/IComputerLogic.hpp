@@ -6,6 +6,7 @@
 #include "../graph/graph.hpp"
 #include "../custom_types.hpp"
 
+// TODO: Add timer for all computer logic and make NVI pattern
 class IComputerLogic
 {
 public:
