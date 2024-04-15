@@ -92,7 +92,7 @@ bool Graph::IsInSet(T node, unordered_set<T> &set) const
     return set.find(node) != set.end();
 }
 
-bool Graph::IsBridgeFormed(uspNode STARTS, uspNode GOALS, Player playertype) const
+bool Graph::IsBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) const
 {
     /*
     If one start node branches into a tree, then it will not lead to a goal iff

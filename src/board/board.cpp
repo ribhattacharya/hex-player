@@ -7,12 +7,11 @@
 #include "../../include/player/IPlayer.hpp"
 #include "../../include/utility.hpp"
 
-using std::vector;
 using std::cout;
 using std::endl;
 using std::string;
 
-Board::Board(int size, std::vector<std::shared_ptr<IPlayer> > &players) : _SIZE(size), _g(size), _players(players)
+Board::Board(int size, vspIPlayer players) : _SIZE(size), _g(size), _players(players)
 {
     // cout << "Main graph address: " << &_g << '\n';
     // assert(this->_players.size() == 2);
@@ -33,7 +32,7 @@ Board::Board(int size, std::vector<std::shared_ptr<IPlayer> > &players) : _SIZE(
     printGraph(_g);
 }
 
-void Board::_saveStartAndGoalNodes(std::shared_ptr<IPlayer> player, string orientation)
+void Board::_saveStartAndGoalNodes(spIPlayer player, string orientation)
 {
     for (int k = 0; k < _SIZE; k++)
     {
@@ -55,24 +54,24 @@ void Board::_saveStartAndGoalNodes(std::shared_ptr<IPlayer> player, string orien
     }
 }
 
-bool Board::_checkWinner(std::shared_ptr<IPlayer> player)
+bool Board::_checkWinner(spIPlayer player)
 {
     Player playerType = player->GetPlayerType();
-    std::unordered_set<std::shared_ptr<Node> > starts = {_starts[playerType]};
-    std::unordered_set<std::shared_ptr<Node> > goals {_goals[playerType]};
+    uspNode starts = {_starts[playerType]};
+    uspNode goals {_goals[playerType]};
 
     return _g.IsBridgeFormed(starts, goals, playerType);
 }
 
-void Board::_makeMove(std::shared_ptr<IPlayer> player)
+void Board::_makeMove(spIPlayer player)
 {
-    Graph gCopy(_g);
-    Pair idx = player->DecideNextMove(gCopy);
+    // Graph gCopy(_g);
+    Pair idx = player->DecideNextMove(_g);
 
     while (!_g.IsAvailable(idx))
     {
         std::cout << idx << "Node not available, try again!\n";
-        idx = player->DecideNextMove(gCopy);
+        idx = player->DecideNextMove(_g);
     }
     
 

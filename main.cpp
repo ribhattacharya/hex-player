@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 
+#include "include/player/IPlayer.hpp"
 #include "include/player/comp_player.hpp"
 #include "include/player/human_player.hpp"
 #include "include/computer_logic/monte_carlo.hpp"
@@ -29,9 +30,9 @@ int main(int argc, char **argv)
     // TODO: Show player orientation during its move every screen refresh
 
 
-    std::shared_ptr<IPlayer> compPlayer = PlayerFactory::CreateCompPlayer(ComputerLogic::MONTE_CARLO);
-    std::shared_ptr<IPlayer> humanPlayer = PlayerFactory::CreateHumanPlayer("Tony Stark");
-    std::vector<std::shared_ptr<IPlayer> > players(2);
+    spIPlayer compPlayer = PlayerFactory::CreateCompPlayer(ComputerLogic::MONTE_CARLO);
+    spIPlayer humanPlayer = PlayerFactory::CreateHumanPlayer("Tony Stark");
+    vspIPlayer players(2);
 
     std::cout << "Who should go first? Enter 1 for computer and 2 for human: ";
     int firstPlayer;

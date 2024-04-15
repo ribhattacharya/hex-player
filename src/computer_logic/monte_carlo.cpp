@@ -4,13 +4,13 @@
 #include "../../include/computer_logic/monte_carlo.hpp"
 #include "../../include/utility.hpp"
 
-using std::cin;
-using std::cout;
 using std::vector;
 
 MonteCarlo::MonteCarlo(int nTrials) : _nTrials(nTrials) {}
 
-Pair MonteCarlo::DecideNextMove(Graph &curGraph) const
+// TODO: Major Refactor Monte Carlo code
+// TODO: Add comments
+Pair MonteCarlo::DecideNextMove(const Graph &curGraph) const
 {
     // cout << "ADDRESS OF POINTERED GRAPH " << &curGraph << '\n';
     vector<Pair> avaiableMoves;
@@ -84,7 +84,7 @@ Pair MonteCarlo::DecideNextMove(Graph &curGraph) const
 
             // node_set STARTS = GetStarts();
             // node_set GOALS = GetGoals();
-            std::unordered_set<std::shared_ptr<Node> > starts, goals;
+            uspNode starts, goals;
 
             // TODO: make this modular
             for (int k = 0; k < simGraph.GetSize(); k++)

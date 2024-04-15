@@ -12,7 +12,7 @@ private:
 
 public:
     MonteCarlo(int nTrials);
-    Pair DecideNextMove(Graph &) const override;
+    Pair DecideNextMove(const Graph &) const override;
 };
 
 #endif // MONTE_CARLO_H

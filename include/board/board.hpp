@@ -8,24 +8,26 @@
 
 #include "../player/IPlayer.hpp"
 #include "../graph/graph.hpp"
+#include "../graph/node.hpp"
+#include "../custom_types.hpp"
 
 class Board
 {
     int _SIZE;
     Graph _g;
-    std::vector<std::shared_ptr<IPlayer> > &_players;
-    std::unordered_map<Player, std::unordered_set<std::shared_ptr<Node> > > _starts;
-    std::unordered_map<Player, std::unordered_set<std::shared_ptr<Node> > > _goals;
+    vspIPlayer _players;
+    std::unordered_map<Player, uspNode > _starts;
+    std::unordered_map<Player, uspNode > _goals;
 
-    void _saveStartAndGoalNodes(std::shared_ptr<IPlayer>, std::string);
-    bool _checkWinner(std::shared_ptr<IPlayer>);
-    void _makeMove(std::shared_ptr<IPlayer>);
+    void _saveStartAndGoalNodes(spIPlayer, std::string);
+    bool _checkWinner(spIPlayer);
+    void _makeMove(spIPlayer);
 
     // void printGraph() const;
     // void printGraphData() const;
 
 public:
-    Board(int size, std::vector<std::shared_ptr<IPlayer> > &players);
+    Board(int size, vspIPlayer players);
 
     void playGame();
 };

@@ -11,11 +11,10 @@
 #include <unordered_set>
 #include <queue>
 
+#include "node.hpp"
 #include "../enums.hpp"
 #include "../custom_types.hpp"
 
-// TODO: Major Refactor Monte Carlo code
-// TODO: Add comments
 class Graph
 {
     /*
@@ -36,7 +35,7 @@ public:
     spNode GetNode(Pair) const;
     bool IsAvailable(Pair idx) const;
     void SetPlayer(Pair, Player);
-    bool IsBridgeFormed(uspNode, uspNode, Player) const;
+    bool IsBridgeFormed(uspNode &, uspNode &, Player) const;
 };
 
 #endif // GRAPH_H

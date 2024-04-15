@@ -16,7 +16,7 @@ std::ostream &operator<<(std::ostream &os, const Pair &value)
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const std::unordered_set<std::shared_ptr<Node> > &value)
+std::ostream &operator<<(std::ostream &os, const uspNode &value)
 {
     os << '(';
     for (auto val : value)
@@ -25,7 +25,7 @@ std::ostream &operator<<(std::ostream &os, const std::unordered_set<std::shared_
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const std::vector<std::shared_ptr<Node> > &value)
+std::ostream &operator<<(std::ostream &os, const vspNode &value)
 {
     os << '[';
     for (auto val : value)

@@ -5,8 +5,6 @@
 #include "../../include/player/comp_player.hpp"
 #include "../../include/computer_logic/IComputerLogic.hpp"
 
-using std::cin;
-using std::cout;
 using std::string;
 
 CompPlayer::CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic) : _playerName(name), _computerLogic(computerLogic) {}
@@ -15,7 +13,7 @@ string CompPlayer::GetPlayerName() const { return _playerName; }
 
 Player CompPlayer::GetPlayerType() const { return _playerType; }
 
-Pair CompPlayer::DecideNextMove(Graph &g) const { return _computerLogic->DecideNextMove(g); }
+Pair CompPlayer::DecideNextMove(const Graph &g) const { return _computerLogic->DecideNextMove(g); }
 
 // Pair CompPlayer::RandomMove(int SIZE)
 // {

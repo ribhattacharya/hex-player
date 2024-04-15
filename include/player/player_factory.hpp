@@ -9,8 +9,8 @@
 class PlayerFactory
 {
 public:
-    static std::shared_ptr<IPlayer> CreateHumanPlayer(std::string name);
-    static std::shared_ptr<IPlayer> CreateCompPlayer(ComputerLogic computerLogic);
+    static spIPlayer CreateHumanPlayer(std::string name);
+    static spIPlayer CreateCompPlayer(ComputerLogic computerLogic);
 };
 
 #endif // PLAYER_FACTORY_H

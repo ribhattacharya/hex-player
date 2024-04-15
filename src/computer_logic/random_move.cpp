@@ -7,7 +7,7 @@
 
 RandomMove::RandomMove() {}
 
-Pair RandomMove::DecideNextMove(Graph &curGraph) const
+Pair RandomMove::DecideNextMove(const Graph &curGraph) const
 {
     std::random_device rd;
     std::mt19937 gen(rd());

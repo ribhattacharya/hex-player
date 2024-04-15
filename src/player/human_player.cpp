@@ -13,7 +13,7 @@ std::string HumanPlayer::GetPlayerName() const { return _playerName; }
 
 Player HumanPlayer::GetPlayerType() const { return _playerType; }
 
-Pair HumanPlayer::DecideNextMove(Graph &g) const
+Pair HumanPlayer::DecideNextMove(const Graph &g) const
 {
     char row = 'a', col = 'a';
     std::cout << "Enter row: ";

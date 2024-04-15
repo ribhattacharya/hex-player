@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <string>
+#include <vector>
 
 #include "../enums.hpp"
 #include "../graph/graph.hpp"
@@ -14,8 +15,11 @@ public:
     virtual ~IPlayer() {};
     virtual std::string GetPlayerName() const = 0;
     virtual Player GetPlayerType() const = 0;
-    virtual Pair DecideNextMove(Graph &) const = 0;
+    virtual Pair DecideNextMove(const Graph &) const = 0;
 };
+
+typedef std::shared_ptr<IPlayer> spIPlayer;
+typedef std::vector<std::shared_ptr<IPlayer>> vspIPlayer;
 
 // void IPlayer::SetStarts(node_vect nodes)
 // {
