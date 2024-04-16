@@ -34,6 +34,23 @@ std::ostream &operator<<(std::ostream &os, const vspNode &value)
     return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const PlayerOrientation &value)
+{
+    switch (value) 
+    {
+        case PlayerOrientation::VERTICAL:
+            os << "VERTICAL";
+            break;
+        case PlayerOrientation::HORIZONTAL:
+            os << "HORIZONTAL";
+            break;
+        default:
+            os << "UNKNOWN";
+    }
+
+    return os;
+}
+
 void printGraph(const Graph &g)
 {
     int SIZE = g.getSize();

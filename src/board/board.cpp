@@ -61,9 +61,9 @@ void Board::_initPlayerGameData(spPlayer player, PlayerOrientation orientation)
 
 bool Board::_checkWinner(spPlayer player)
 {
-    auto starts = _playersGameData[player].getStarts();
-    auto goals = _playersGameData[player].getGoals();
-    auto playerType = player->getType();
+    uspNode starts = _playersGameData[player].getStarts();
+    uspNode goals = _playersGameData[player].getGoals();
+    PlayerType playerType = player->getType();
     return _g.isBridgeFormed(starts, goals, playerType);
 }
 
@@ -94,6 +94,7 @@ void Board::playGame()
     {   int instance = 0;
         for (auto player : _players)
         {   
+            std::cout << player->getName() << "'s turn! You move " << _playersGameData[player].getOrientation() << '\n';
             _makeMove(player);
             // cout << "make move" << ++instance << "\n";
             // Graph gCopy(_g);

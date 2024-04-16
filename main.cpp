@@ -27,9 +27,6 @@ int main(int argc, char **argv)
         }
     }
 
-    // TODO: Show player orientation during its move every screen refresh
-
-
     spPlayer compPlayer = PlayerFactory::createCompPlayer(ComputerLogic::MONTE_CARLO);
     spPlayer humanPlayer = PlayerFactory::createHumanPlayer("Tony Stark");
     vspPlayer players(2);
