@@ -36,7 +36,7 @@ std::ostream &operator<<(std::ostream &os, const vspNode &value)
 
 void printGraph(const Graph &g)
 {
-    int SIZE = g.GetSize();
+    int SIZE = g.getSize();
 
     std::unordered_map<Player, char> symbols;
     symbols.insert(std::make_pair(Player::HUMAN, 'X'));
@@ -59,7 +59,7 @@ void printGraph(const Graph &g)
         for (int j = 0; j < SIZE; j++)
         {
             Pair idx = std::make_pair(i, j);
-            Player p = g.GetNode(idx)->GetPlayer();
+            Player p = g.getNode(idx)->getPlayer();
             const char player_symbol = symbols[p];
 
             cout << player_symbol;

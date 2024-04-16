@@ -21,18 +21,17 @@ class Node
     const Pair _IDX;
     const int _ID;
     Player _player;
-    // TODO: possible optimization here in &_neighbours
     vspNode _neighbours;
 
 public:
     Node(int i, int j, int id);
 
-    Pair GetIDX() const;
-    int GetID() const;
-    Player GetPlayer();
-    void SetPlayer(Player p);
-    vspNode GetNeighbours();
-    void SetNeighbours(vspNode &neighbours);
+    Pair getIDX() const;
+    int getID() const;
+    Player getPlayer();
+    void setPlayer(Player p);
+    vspNode getNeighbours();
+    void setNeighbours(vspNode &neighbours);
 };
 
 #endif // NODE_H

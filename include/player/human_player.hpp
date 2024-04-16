@@ -17,9 +17,9 @@ private:
 public:
     HumanPlayer(std::string name); 
     
-    std::string GetPlayerName() const override;
-    Player GetPlayerType() const override;
-    Pair DecideNextMove(const Graph &g) const override;
+    std::string getPlayerName() const override;
+    Player getPlayerType() const override;
+    Pair decideNextMove(const Graph &g) const override;
 };
 
 #endif // HUMAN_PLAYER_H

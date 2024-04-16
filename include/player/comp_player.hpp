@@ -18,9 +18,9 @@ private:
 public:
     CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic);
 
-    std::string GetPlayerName() const override;
-    Player GetPlayerType() const override;
-    Pair DecideNextMove(const Graph &g) const override;
+    std::string getPlayerName() const override;
+    Player getPlayerType() const override;
+    Pair decideNextMove(const Graph &g) const override;
 };
 
 #endif // COMP_PLAYER_H

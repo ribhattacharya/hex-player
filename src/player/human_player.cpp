@@ -9,11 +9,11 @@
 
 HumanPlayer::HumanPlayer(std::string name) : _playerName(name) {}
 
-std::string HumanPlayer::GetPlayerName() const { return _playerName; }
+std::string HumanPlayer::getPlayerName() const { return _playerName; }
 
-Player HumanPlayer::GetPlayerType() const { return _playerType; }
+Player HumanPlayer::getPlayerType() const { return _playerType; }
 
-Pair HumanPlayer::DecideNextMove(const Graph &g) const
+Pair HumanPlayer::decideNextMove(const Graph &g) const
 {
     char row = 'a', col = 'a';
     std::cout << "Enter row: ";

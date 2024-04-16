@@ -49,34 +49,34 @@ void Board::_saveStartAndGoalNodes(spIPlayer player, string orientation)
             goalIdx = std::make_pair(k, _SIZE - 1);
         }
 
-        _starts[player->GetPlayerType()].insert(_g.GetNode(startIdx));
-        _goals[player->GetPlayerType()].insert(_g.GetNode(goalIdx));
+        _starts[player->getPlayerType()].insert(_g.getNode(startIdx));
+        _goals[player->getPlayerType()].insert(_g.getNode(goalIdx));
     }
 }
 
 bool Board::_checkWinner(spIPlayer player)
 {
-    Player playerType = player->GetPlayerType();
+    Player playerType = player->getPlayerType();
     uspNode starts = {_starts[playerType]};
     uspNode goals {_goals[playerType]};
 
-    return _g.IsBridgeFormed(starts, goals, playerType);
+    return _g.isBridgeFormed(starts, goals, playerType);
 }
 
 void Board::_makeMove(spIPlayer player)
 {
     // Graph gCopy(_g);
-    Pair idx = player->DecideNextMove(_g);
+    Pair idx = player->decideNextMove(_g);
 
-    while (!_g.IsAvailable(idx))
+    while (!_g.isAvailable(idx))
     {
         std::cout << idx << "Node not available, try again!\n";
-        idx = player->DecideNextMove(_g);
+        idx = player->decideNextMove(_g);
     }
     
 
-    Player playertype = player->GetPlayerType();
-    _g.SetPlayer(idx, playertype);
+    Player playertype = player->getPlayerType();
+    _g.setPlayer(idx, playertype);
 
     std::cout << "\x1B[2J\x1B[H"; // Clear screen
     printGraph(_g);
@@ -97,7 +97,7 @@ void Board::playGame()
 
             if (_checkWinner(player))
             {
-                cout << '\n' << player->GetPlayerName() << " wins!\n";
+                cout << '\n' << player->getPlayerName() << " wins!\n";
                 return;
             }
         }

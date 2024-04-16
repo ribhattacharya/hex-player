@@ -9,8 +9,8 @@
 class PlayerFactory
 {
 public:
-    static spIPlayer CreateHumanPlayer(std::string name);
-    static spIPlayer CreateCompPlayer(ComputerLogic computerLogic);
+    static spIPlayer createHumanPlayer(std::string name);
+    static spIPlayer createCompPlayer(ComputerLogic computerLogic);
 };
 
 #endif // PLAYER_FACTORY_H

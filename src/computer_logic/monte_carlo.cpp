@@ -10,7 +10,7 @@ MonteCarlo::MonteCarlo(int nTrials) : _nTrials(nTrials) {}
 
 // TODO: Major Refactor Monte Carlo code
 // TODO: Add comments
-Pair MonteCarlo::DecideNextMove(const Graph &curGraph) const
+Pair MonteCarlo::decideNextMove(const Graph &curGraph) const
 {
     // cout << "ADDRESS OF POINTERED GRAPH " << &curGraph << '\n';
     vector<Pair> avaiableMoves;
@@ -18,13 +18,13 @@ Pair MonteCarlo::DecideNextMove(const Graph &curGraph) const
     // cout << curGraph.GetSize() << " ";
 
     // Collect all available nodes, can be optiizzed to maintain such a vector.
-    for (size_t i = 0; i < curGraph.GetSize(); i++)
+    for (size_t i = 0; i < curGraph.getSize(); i++)
     {
-        for (size_t j = 0; j < curGraph.GetSize(); j++)
+        for (size_t j = 0; j < curGraph.getSize(); j++)
         {
             Pair idx = std::make_pair(i, j);
             // cout << i << j << " ";
-            if (curGraph.IsAvailable(idx))
+            if (curGraph.isAvailable(idx))
                 avaiableMoves.push_back(idx);
         }
     }
@@ -53,7 +53,7 @@ Pair MonteCarlo::DecideNextMove(const Graph &curGraph) const
         for (size_t trial = 0; trial < _nTrials; trial++)
         {
             Graph simGraph(curGraph);
-            simGraph.SetPlayer(evalMove, Player::COMP); // make eval move by COMP
+            simGraph.setPlayer(evalMove, Player::COMP); // make eval move by COMP
             // cout << "\nBack into the main loop " << simGraph.GetNode(evalMove) << " " << evalMove << " has " << simGraph.GetNode(evalMove)->GetPlayer() << '\n';
 
             vector<Pair> simAvailableMoves = avaiableMoves;
@@ -66,7 +66,7 @@ Pair MonteCarlo::DecideNextMove(const Graph &curGraph) const
                 int randIdx = dis(gen);
                 Pair next_move = simAvailableMoves[randIdx];
                 simAvailableMoves.erase(simAvailableMoves.begin() + randIdx);
-                simGraph.SetPlayer(next_move, Player::HUMAN);
+                simGraph.setPlayer(next_move, Player::HUMAN);
                 // cout << "Now in simulation " << simGraph.GetNode(next_move) << " " << next_move << " has " << simGraph.GetNode(next_move)->GetPlayer() << '\n';
 
                 if (!simAvailableMoves.empty())
@@ -75,7 +75,7 @@ Pair MonteCarlo::DecideNextMove(const Graph &curGraph) const
                     int randIdx = dis(gen);
                     Pair next_move = simAvailableMoves[randIdx];
                     simAvailableMoves.erase(simAvailableMoves.begin() + randIdx);
-                    simGraph.SetPlayer(next_move, Player::COMP);
+                    simGraph.setPlayer(next_move, Player::COMP);
                     // cout << "Now in simulation " << simGraph.GetNode(next_move) << " " << next_move << " has " << simGraph.GetNode(next_move)->GetPlayer() << '\n';
                 }
             }
@@ -87,20 +87,20 @@ Pair MonteCarlo::DecideNextMove(const Graph &curGraph) const
             uspNode starts, goals;
 
             // TODO: make this modular
-            for (int k = 0; k < simGraph.GetSize(); k++)
+            for (int k = 0; k < simGraph.getSize(); k++)
             {
                 Pair startIdx = std::make_pair(k, 0);
-                Pair goalIdx = std::make_pair(k, simGraph.GetSize() - 1);
+                Pair goalIdx = std::make_pair(k, simGraph.getSize() - 1);
 
-                starts.insert(simGraph.GetNode(startIdx));
-                goals.insert(simGraph.GetNode(goalIdx));
+                starts.insert(simGraph.getNode(startIdx));
+                goals.insert(simGraph.getNode(goalIdx));
             }
             // Player playerType = GetPlayerType();
             // cout << "\n\ninside simulation loop function printing STARTS\n\n";
             // for (auto start : starts)
             //     cout << start << " " << start->GetIDX() << " has " << start->GetPlayer() << '\n';
 
-            if (simGraph.IsBridgeFormed(starts, goals, Player::COMP))
+            if (simGraph.isBridgeFormed(starts, goals, Player::COMP))
             {
                 winsForEvalMove++;
                 // cout << "\n\nComputer wins this round, total wins are: " << ++winsForEvalMove << '\n';

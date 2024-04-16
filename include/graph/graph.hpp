@@ -20,23 +20,22 @@ class Graph
     /*
     DESC: Graph class to create and process the graph.
     */
-    // TODO: add __ to all private methods
-    int SIZE;
-    vvspNode nodes;
-    void createEdges();
+    const int _SIZE;
+    vvspNode _nodes;
+    void _createEdges();
 
     template <typename T>
-    bool IsInSet(T node, std::unordered_set<T> &set) const;
+    bool _isInSet(T node, std::unordered_set<T> &set) const;
 
 public:
     Graph(int);
     Graph(const Graph &other);
 
-    int GetSize() const;
-    spNode GetNode(Pair idx) const;
-    bool IsAvailable(Pair idx) const;
-    void SetPlayer(Pair idx, Player playertype);
-    bool IsBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) const;
+    int getSize() const;
+    spNode getNode(Pair idx) const;
+    bool isAvailable(Pair idx) const;
+    void setPlayer(Pair idx, Player playertype);
+    bool isBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) const;
 };
 
 #endif // GRAPH_H

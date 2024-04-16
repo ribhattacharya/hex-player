@@ -14,37 +14,37 @@ using std::cout;
 using std::string;
 using std::unordered_set;
 
-Graph::Graph(int s) : SIZE(s), nodes(SIZE, vspNode(SIZE))
+Graph::Graph(int s) : _SIZE(s), _nodes(_SIZE, vspNode(_SIZE))
 {
-    cout << "Initialized board with size = " << SIZE << ".\n\n";
+    cout << "Initialized board with size = " << _SIZE << ".\n\n";
 
-    for (int i = 0; i < SIZE; i++)
-        for (int j = 0; j < SIZE; j++)
-            nodes[i][j] = std::make_shared<Node>(i, j, i * SIZE + j);
+    for (int i = 0; i < _SIZE; i++)
+        for (int j = 0; j < _SIZE; j++)
+            _nodes[i][j] = std::make_shared<Node>(i, j, i * _SIZE + j);
 
-    createEdges();
+    _createEdges();
 }
 
-Graph::Graph(const Graph &other) : SIZE(other.SIZE)
+Graph::Graph(const Graph &other) : _SIZE(other._SIZE)
 {
     // Create a new vector of nodes with the same size
-    nodes = vvspNode(SIZE, vspNode(SIZE));
+    _nodes = vvspNode(_SIZE, vspNode(_SIZE));
 
     // Copy the content of each node from the other graph
     // Assuming Node has its own copy constructor or clone method
-    for (int i = 0; i < SIZE; i++)
-        for (int j = 0; j < SIZE; j++)
-            nodes[i][j] = std::make_shared<Node>(*other.nodes[i][j]);
+    for (int i = 0; i < _SIZE; i++)
+        for (int j = 0; j < _SIZE; j++)
+            _nodes[i][j] = std::make_shared<Node>(*other._nodes[i][j]);
 
-    createEdges();
+    _createEdges();
 }
 
 /// @brief Create edges between all nodes.
-void Graph::createEdges()
+void Graph::_createEdges()
 {
-    for (int i = 0; i < SIZE; i++)
+    for (int i = 0; i < _SIZE; i++)
     {
-        for (int j = 0; j < SIZE; j++)
+        for (int j = 0; j < _SIZE; j++)
         {
             // 6 directions
             vector<vector<int> > directions{
@@ -59,40 +59,40 @@ void Graph::createEdges()
             for (const auto dir : directions)
             {
                 int ii = dir[0], jj = dir[1];
-                if (ii >= 0 && ii < SIZE && jj >= 0 && jj < SIZE)
-                    neighbours.push_back(nodes[ii][jj]);
+                if (ii >= 0 && ii < _SIZE && jj >= 0 && jj < _SIZE)
+                    neighbours.push_back(_nodes[ii][jj]);
             }
-            nodes[i][j]->SetNeighbours(neighbours);
+            _nodes[i][j]->setNeighbours(neighbours);
         }
     }
 }
 
-int Graph::GetSize() const { return SIZE; }
+int Graph::getSize() const { return _SIZE; }
 
-spNode Graph::GetNode(Pair idx) const
+spNode Graph::getNode(Pair idx) const
 {
-    return nodes[idx.first][idx.second];
+    return _nodes[idx.first][idx.second];
 }
 
-bool Graph::IsAvailable(Pair idx) const
+bool Graph::isAvailable(Pair idx) const
 {
-    return GetNode(idx)->GetPlayer() == Player::NONE;
+    return getNode(idx)->getPlayer() == Player::NONE;
 }
 
-void Graph::SetPlayer(Pair idx, Player playertype)
+void Graph::setPlayer(Pair idx, Player playertype)
 {
     // cout << "setting " << idx << " to be " << playertype << "\n";
-    GetNode(idx)->SetPlayer(playertype);
+    getNode(idx)->setPlayer(playertype);
     // cout << "set " << idx << " to be " << GetNode(idx)->GetPlayer() << "\n";
 }
 
 template <typename T>
-bool Graph::IsInSet(T node, unordered_set<T> &set) const
+bool Graph::_isInSet(T node, unordered_set<T> &set) const
 {
     return set.find(node) != set.end();
 }
 
-bool Graph::IsBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) const
+bool Graph::isBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) const
 {
     /*
     If one start node branches into a tree, then it will not lead to a goal iff
@@ -126,7 +126,7 @@ bool Graph::IsBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) c
         //     cout << "node " << start->GetIDX() << " is " << start->GetPlayer()
         //          << " and has neighbour " << neighbour->GetIDX() << " of type " << neighbour->GetPlayer() << '\n';
 
-        if (start->GetPlayer() != playertype || IsInSet(start, CLOSED))
+        if (start->getPlayer() != playertype || _isInSet(start, CLOSED))
             continue;
         // cout << "\nfirst step cleared";
         OPEN.push(start);
@@ -141,11 +141,11 @@ bool Graph::IsBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) c
             if (GOALS.find(nodeToExpand) != GOALS.end())
                 return true;
             // cout << "\nisnt in GOALS";
-            for (auto neighbour : nodeToExpand->GetNeighbours())
+            for (auto neighbour : nodeToExpand->getNeighbours())
             {
                 // cout << nodeToExpand->GetIDX() << " has neighbour " << neighbour->GetIDX() << '\n';
                 // cout << neighbour->GetIDX() << " has " << neighbour->GetPlayer() << '\n';
-                if (neighbour->GetPlayer() != playertype || IsInSet(neighbour, CLOSED))
+                if (neighbour->getPlayer() != playertype || _isInSet(neighbour, CLOSED))
                     continue;
 
                 OPEN.push(neighbour);

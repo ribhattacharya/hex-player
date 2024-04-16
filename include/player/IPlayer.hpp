@@ -12,9 +12,9 @@ class IPlayer
 {
 public:
     virtual ~IPlayer() {};
-    virtual std::string GetPlayerName() const = 0;
-    virtual Player GetPlayerType() const = 0;
-    virtual Pair DecideNextMove(const Graph &g) const = 0;
+    virtual std::string getPlayerName() const = 0;
+    virtual Player getPlayerType() const = 0;
+    virtual Pair decideNextMove(const Graph &g) const = 0;
 };
 
 typedef std::shared_ptr<IPlayer> spIPlayer;

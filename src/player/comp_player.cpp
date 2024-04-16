@@ -9,11 +9,11 @@ using std::string;
 
 CompPlayer::CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic) : _playerName(name), _computerLogic(computerLogic) {}
 
-string CompPlayer::GetPlayerName() const { return _playerName; }
+string CompPlayer::getPlayerName() const { return _playerName; }
 
-Player CompPlayer::GetPlayerType() const { return _playerType; }
+Player CompPlayer::getPlayerType() const { return _playerType; }
 
-Pair CompPlayer::DecideNextMove(const Graph &g) const { return _computerLogic->DecideNextMove(g); }
+Pair CompPlayer::decideNextMove(const Graph &g) const { return _computerLogic->decideNextMove(g); }
 
 // Pair CompPlayer::RandomMove(int SIZE)
 // {
