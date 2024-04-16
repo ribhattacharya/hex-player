@@ -11,7 +11,7 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Board::Board(int size, vspIPlayer players) : _SIZE(size), _g(size), _players(players)
+Board::Board(const int size, vspIPlayer players) : _SIZE(size), _g(size), _players(players)
 {
     // cout << "Main graph address: " << &_g << '\n';
     // assert(this->_players.size() == 2);

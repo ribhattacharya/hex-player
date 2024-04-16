@@ -13,7 +13,7 @@
 
 class Board
 {
-    int _SIZE;
+    const int _SIZE;
     Graph _g;
     vspIPlayer _players;
     std::unordered_map<Player, uspNode > _starts;
@@ -27,7 +27,7 @@ class Board
     // void printGraphData() const;
 
 public:
-    Board(int size, vspIPlayer players);
+    Board(const int size, vspIPlayer players);
 
     void playGame();
 };
