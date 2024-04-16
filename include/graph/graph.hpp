@@ -20,6 +20,7 @@ class Graph
     /*
     DESC: Graph class to create and process the graph.
     */
+    // TODO: add __ to all private methods
     int SIZE;
     vvspNode nodes;
     void createEdges();
@@ -32,10 +33,10 @@ public:
     Graph(const Graph &other);
 
     int GetSize() const;
-    spNode GetNode(Pair) const;
+    spNode GetNode(Pair idx) const;
     bool IsAvailable(Pair idx) const;
-    void SetPlayer(Pair, Player);
-    bool IsBridgeFormed(uspNode &, uspNode &, Player) const;
+    void SetPlayer(Pair idx, Player playertype);
+    bool IsBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) const;
 };
 
 #endif // GRAPH_H

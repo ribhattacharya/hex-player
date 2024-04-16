@@ -20,7 +20,7 @@ public:
 
     std::string GetPlayerName() const override;
     Player GetPlayerType() const override;
-    Pair DecideNextMove(const Graph &) const override;
+    Pair DecideNextMove(const Graph &g) const override;
 };
 
 #endif // COMP_PLAYER_H

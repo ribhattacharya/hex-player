@@ -19,9 +19,9 @@ class Board
     std::unordered_map<Player, uspNode > _starts;
     std::unordered_map<Player, uspNode > _goals;
 
-    void _saveStartAndGoalNodes(spIPlayer, std::string);
-    bool _checkWinner(spIPlayer);
-    void _makeMove(spIPlayer);
+    void _saveStartAndGoalNodes(spIPlayer player, std::string orientation);
+    bool _checkWinner(spIPlayer player);
+    void _makeMove(spIPlayer player);
 
     // void printGraph() const;
     // void printGraphData() const;

@@ -8,14 +8,13 @@
 #include "../graph/graph.hpp"
 #include "../custom_types.hpp"
 
-// TODO: Make sure all signatures are consistent (have argument names and types)
 class IPlayer
 {
 public:
     virtual ~IPlayer() {};
     virtual std::string GetPlayerName() const = 0;
     virtual Player GetPlayerType() const = 0;
-    virtual Pair DecideNextMove(const Graph &) const = 0;
+    virtual Pair DecideNextMove(const Graph &g) const = 0;
 };
 
 typedef std::shared_ptr<IPlayer> spIPlayer;

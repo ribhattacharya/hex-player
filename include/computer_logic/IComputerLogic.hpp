@@ -11,7 +11,7 @@ class IComputerLogic
 {
 public:
     virtual ~IComputerLogic() = default;
-    virtual Pair DecideNextMove(const Graph &) const = 0;
+    virtual Pair DecideNextMove(const Graph &g) const = 0;
 };
 
 #endif // COMPUTER_LOGIC_H

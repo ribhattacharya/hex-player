@@ -19,7 +19,7 @@ public:
     
     std::string GetPlayerName() const override;
     Player GetPlayerType() const override;
-    Pair DecideNextMove(const Graph &) const override;
+    Pair DecideNextMove(const Graph &g) const override;
 };
 
 #endif // HUMAN_PLAYER_H
