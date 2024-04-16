@@ -1,23 +1,24 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <string>
 
 #include "../../include/board/board.hpp"
 #include "../../include/graph/node.hpp"
-#include "../../include/player/IPlayer.hpp"
+#include "../../include/player/Player.hpp"
 #include "../../include/utility.hpp"
 
 using std::cout;
 using std::endl;
 using std::string;
 
-Board::Board(const int size, vspIPlayer players) : _SIZE(size), _g(size), _players(players)
+Board::Board(const int size, vspPlayer players) : _SIZE(size), _g(size), _players(players)
 {
     // cout << "Main graph address: " << &_g << '\n';
     // assert(this->_players.size() == 2);
 
-    _saveStartAndGoalNodes(_players[0], "vertical");
-    _saveStartAndGoalNodes(_players[1], "horizontal");
+    _initPlayerGameData(_players[0], PlayerOrientation::VERTICAL);
+    _initPlayerGameData(_players[1], PlayerOrientation::HORIZONTAL);
 
     // for (auto player : _players)
     // {
@@ -32,38 +33,41 @@ Board::Board(const int size, vspIPlayer players) : _SIZE(size), _g(size), _playe
     printGraph(_g);
 }
 
-void Board::_saveStartAndGoalNodes(spIPlayer player, string orientation)
+void Board::_initPlayerGameData(spPlayer player, PlayerOrientation orientation)
 {
+    uspNode starts, goals;
     for (int k = 0; k < _SIZE; k++)
     {
         Pair startIdx, goalIdx;
 
-        if (orientation == "vertical")
+        if (orientation == PlayerOrientation::VERTICAL)
         {
             startIdx = std::make_pair(0, k);
             goalIdx = std::make_pair(_SIZE - 1, k);
         }
-        else if (orientation == "horizontal")
+        else if (orientation == PlayerOrientation::HORIZONTAL)
         {
             startIdx = std::make_pair(k, 0);
             goalIdx = std::make_pair(k, _SIZE - 1);
         }
 
-        _starts[player->getPlayerType()].insert(_g.getNode(startIdx));
-        _goals[player->getPlayerType()].insert(_g.getNode(goalIdx));
+        starts.insert(_g.getNode(startIdx));
+        goals.insert(_g.getNode(goalIdx));
     }
+
+    PlayerGameData playerGameData(orientation, starts, goals);
+    _playersGameData[player] = playerGameData;
 }
 
-bool Board::_checkWinner(spIPlayer player)
+bool Board::_checkWinner(spPlayer player)
 {
-    Player playerType = player->getPlayerType();
-    uspNode starts = {_starts[playerType]};
-    uspNode goals {_goals[playerType]};
-
+    auto starts = _playersGameData[player].getStarts();
+    auto goals = _playersGameData[player].getGoals();
+    auto playerType = player->getType();
     return _g.isBridgeFormed(starts, goals, playerType);
 }
 
-void Board::_makeMove(spIPlayer player)
+void Board::_makeMove(spPlayer player)
 {
     // Graph gCopy(_g);
     Pair idx = player->decideNextMove(_g);
@@ -75,13 +79,14 @@ void Board::_makeMove(spIPlayer player)
     }
     
 
-    Player playertype = player->getPlayerType();
+    PlayerType playertype = player->getType();
     _g.setPlayer(idx, playertype);
 
     std::cout << "\x1B[2J\x1B[H"; // Clear screen
     printGraph(_g);
 }
 
+//TODO: Fix bug where computer loses on first move
 void Board::playGame()
 {
     // By nature of game, it cannot end in draw, so it will terminate.
@@ -97,7 +102,7 @@ void Board::playGame()
 
             if (_checkWinner(player))
             {
-                cout << '\n' << player->getPlayerName() << " wins!\n";
+                cout << '\n' << player->getName() << " wins!\n";
                 return;
             }
         }

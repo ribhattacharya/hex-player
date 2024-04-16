@@ -76,10 +76,10 @@ spNode Graph::getNode(Pair idx) const
 
 bool Graph::isAvailable(Pair idx) const
 {
-    return getNode(idx)->getPlayer() == Player::NONE;
+    return getNode(idx)->getPlayer() == PlayerType::NONE;
 }
 
-void Graph::setPlayer(Pair idx, Player playertype)
+void Graph::setPlayer(Pair idx, PlayerType playertype)
 {
     // cout << "setting " << idx << " to be " << playertype << "\n";
     getNode(idx)->setPlayer(playertype);
@@ -92,7 +92,8 @@ bool Graph::_isInSet(T node, unordered_set<T> &set) const
     return set.find(node) != set.end();
 }
 
-bool Graph::isBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) const
+// TODO: make this spPlayer based instead of playertype based
+bool Graph::isBridgeFormed(uspNode &STARTS, uspNode &GOALS, PlayerType playertype) const
 {
     /*
     If one start node branches into a tree, then it will not lead to a goal iff

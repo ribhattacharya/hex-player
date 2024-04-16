@@ -34,8 +34,8 @@ public:
     int getSize() const;
     spNode getNode(Pair idx) const;
     bool isAvailable(Pair idx) const;
-    void setPlayer(Pair idx, Player playertype);
-    bool isBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) const;
+    void setPlayer(Pair idx, PlayerType playertype);
+    bool isBridgeFormed(uspNode &STARTS, uspNode &GOALS, PlayerType playertype) const;
 };
 
 #endif // GRAPH_H

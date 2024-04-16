@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "../player/IPlayer.hpp"
+#include "../player/Player.hpp"
 #include "../graph/graph.hpp"
 #include "../graph/node.hpp"
 #include "../custom_types.hpp"
@@ -15,19 +15,15 @@ class Board
 {
     const int _SIZE;
     Graph _g;
-    vspIPlayer _players;
-    std::unordered_map<Player, uspNode > _starts;
-    std::unordered_map<Player, uspNode > _goals;
+    vspPlayer _players;
+    std::unordered_map<spPlayer, PlayerGameData> _playersGameData;
 
-    void _saveStartAndGoalNodes(spIPlayer player, std::string orientation);
-    bool _checkWinner(spIPlayer player);
-    void _makeMove(spIPlayer player);
-
-    // void printGraph() const;
-    // void printGraphData() const;
+    void _initPlayerGameData(spPlayer player, PlayerOrientation orientation);
+    bool _checkWinner(spPlayer player);
+    void _makeMove(spPlayer player);
 
 public:
-    Board(const int size, vspIPlayer players);
+    Board(const int size, vspPlayer players);
 
     void playGame();
 };

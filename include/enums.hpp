@@ -1,11 +1,17 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-enum class Player
+enum class PlayerType
 {
     HUMAN,
     COMP,
     NONE
+};
+
+enum class PlayerOrientation
+{
+    HORIZONTAL,
+    VERTICAL
 };
 
 enum class ComputerLogic

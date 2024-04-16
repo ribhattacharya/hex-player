@@ -53,7 +53,7 @@ Pair MonteCarlo::decideNextMove(const Graph &curGraph) const
         for (size_t trial = 0; trial < _nTrials; trial++)
         {
             Graph simGraph(curGraph);
-            simGraph.setPlayer(evalMove, Player::COMP); // make eval move by COMP
+            simGraph.setPlayer(evalMove, PlayerType::COMP); // make eval move by COMP
             // cout << "\nBack into the main loop " << simGraph.GetNode(evalMove) << " " << evalMove << " has " << simGraph.GetNode(evalMove)->GetPlayer() << '\n';
 
             vector<Pair> simAvailableMoves = avaiableMoves;
@@ -66,7 +66,7 @@ Pair MonteCarlo::decideNextMove(const Graph &curGraph) const
                 int randIdx = dis(gen);
                 Pair next_move = simAvailableMoves[randIdx];
                 simAvailableMoves.erase(simAvailableMoves.begin() + randIdx);
-                simGraph.setPlayer(next_move, Player::HUMAN);
+                simGraph.setPlayer(next_move, PlayerType::HUMAN);
                 // cout << "Now in simulation " << simGraph.GetNode(next_move) << " " << next_move << " has " << simGraph.GetNode(next_move)->GetPlayer() << '\n';
 
                 if (!simAvailableMoves.empty())
@@ -75,7 +75,7 @@ Pair MonteCarlo::decideNextMove(const Graph &curGraph) const
                     int randIdx = dis(gen);
                     Pair next_move = simAvailableMoves[randIdx];
                     simAvailableMoves.erase(simAvailableMoves.begin() + randIdx);
-                    simGraph.setPlayer(next_move, Player::COMP);
+                    simGraph.setPlayer(next_move, PlayerType::COMP);
                     // cout << "Now in simulation " << simGraph.GetNode(next_move) << " " << next_move << " has " << simGraph.GetNode(next_move)->GetPlayer() << '\n';
                 }
             }
@@ -100,7 +100,7 @@ Pair MonteCarlo::decideNextMove(const Graph &curGraph) const
             // for (auto start : starts)
             //     cout << start << " " << start->GetIDX() << " has " << start->GetPlayer() << '\n';
 
-            if (simGraph.isBridgeFormed(starts, goals, Player::COMP))
+            if (simGraph.isBridgeFormed(starts, goals, PlayerType::COMP))
             {
                 winsForEvalMove++;
                 // cout << "\n\nComputer wins this round, total wins are: " << ++winsForEvalMove << '\n';

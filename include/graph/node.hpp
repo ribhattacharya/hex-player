@@ -20,7 +20,7 @@ class Node
 {
     const Pair _IDX;
     const int _ID;
-    Player _player;
+    PlayerType _player;
     vspNode _neighbours;
 
 public:
@@ -28,8 +28,8 @@ public:
 
     Pair getIDX() const;
     int getID() const;
-    Player getPlayer();
-    void setPlayer(Player p);
+    PlayerType getPlayer();
+    void setPlayer(PlayerType p);
     vspNode getNeighbours();
     void setNeighbours(vspNode &neighbours);
 };

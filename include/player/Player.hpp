@@ -7,18 +7,25 @@
 #include "../enums.hpp"
 #include "../graph/graph.hpp"
 #include "../custom_types.hpp"
+#include "player_game_data.hpp"
 
-class IPlayer
+class Player
 {
+private:
+    std::string _playerName;
+    PlayerType _playerType;
+
 public:
-    virtual ~IPlayer() {};
-    virtual std::string getPlayerName() const = 0;
-    virtual Player getPlayerType() const = 0;
+    Player(std::string name, PlayerType type);
+    virtual ~Player() {};
     virtual Pair decideNextMove(const Graph &g) const = 0;
+
+    std::string getName() const;
+    PlayerType getType() const;
 };
 
-typedef std::shared_ptr<IPlayer> spIPlayer;
-typedef std::vector<std::shared_ptr<IPlayer>> vspIPlayer;
+typedef std::shared_ptr<Player> spPlayer;
+typedef std::vector<std::shared_ptr<Player>> vspPlayer;
 
 // void IPlayer::SetStarts(node_vect nodes)
 // {

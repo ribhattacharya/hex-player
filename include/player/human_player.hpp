@@ -3,22 +3,17 @@
 
 #include <string>
 
-#include "IPlayer.hpp"
+#include "Player.hpp"
 #include "../enums.hpp"
 #include "../graph/graph.hpp"
 #include "../custom_types.hpp"
 
-class HumanPlayer : public IPlayer
+class HumanPlayer : public Player
 {
-private:
-    std::string _playerName;
-    Player _playerType = Player::HUMAN;
 
 public:
     HumanPlayer(std::string name); 
     
-    std::string getPlayerName() const override;
-    Player getPlayerType() const override;
     Pair decideNextMove(const Graph &g) const override;
 };
 

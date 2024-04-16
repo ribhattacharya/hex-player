@@ -38,10 +38,10 @@ void printGraph(const Graph &g)
 {
     int SIZE = g.getSize();
 
-    std::unordered_map<Player, char> symbols;
-    symbols.insert(std::make_pair(Player::HUMAN, 'X'));
-    symbols.insert(std::make_pair(Player::COMP, 'O'));
-    symbols.insert(std::make_pair(Player::NONE, '.'));
+    std::unordered_map<PlayerType, char> symbols;
+    symbols.insert(std::make_pair(PlayerType::HUMAN, 'X'));
+    symbols.insert(std::make_pair(PlayerType::COMP, 'O'));
+    symbols.insert(std::make_pair(PlayerType::NONE, '.'));
 
     cout << string(3, ' ');
     for (int col = static_cast<int>('a'), j = 0; j < SIZE; j++, col++)
@@ -59,7 +59,7 @@ void printGraph(const Graph &g)
         for (int j = 0; j < SIZE; j++)
         {
             Pair idx = std::make_pair(i, j);
-            Player p = g.getNode(idx)->getPlayer();
+            PlayerType p = g.getNode(idx)->getPlayer();
             const char player_symbol = symbols[p];
 
             cout << player_symbol;

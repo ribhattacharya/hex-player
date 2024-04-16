@@ -9,7 +9,7 @@
 #include "../../include/computer_logic/random_move.hpp"
 #include "../../include/enums.hpp"
 
-std::shared_ptr<IPlayer> PlayerFactory::createHumanPlayer(std::string name)
+std::shared_ptr<Player> PlayerFactory::createHumanPlayer(std::string name)
 {
     if (name == "")
     {
@@ -21,7 +21,7 @@ std::shared_ptr<IPlayer> PlayerFactory::createHumanPlayer(std::string name)
     return std::make_shared<HumanPlayer>(name);
 }
 
-std::shared_ptr<IPlayer> PlayerFactory::createCompPlayer(ComputerLogic computerLogic)
+std::shared_ptr<Player> PlayerFactory::createCompPlayer(ComputerLogic computerLogic)
 {
     switch (computerLogic)
     {
