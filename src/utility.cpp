@@ -61,18 +61,18 @@ void printGraph(const Graph &g)
     symbols.insert(std::make_pair(PlayerType::NONE, '.'));
 
     cout << string(3, ' ');
-    for (int col = static_cast<int>('a'), j = 0; j < SIZE; j++, col++)
+    for (int col = 0, j = 0; j < SIZE; j++, col++)
     {
-        cout << '|' << static_cast<char>(col) << '|';
+        cout << '|' << col << '|';
         if (j != SIZE - 1)
             cout << string(1, ' ');
     }
     cout << "\n";
 
-    for (int margin = 0, i = 0, row = static_cast<int>('a'); i < SIZE; i++, row++)
+    for (int margin = 0, i = 0, row = 0; i < SIZE; i++, row++)
     {
         cout << string(margin++, ' ');
-        cout << '|' << static_cast<char>(row) << '|' << string(1, ' ');
+        cout << '|' << row << '|' << string(1, ' ');
         for (int j = 0; j < SIZE; j++)
         {
             Pair idx = std::make_pair(i, j);
