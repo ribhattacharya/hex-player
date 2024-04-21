@@ -8,9 +8,13 @@
 #include "../enums.hpp"
 class PlayerFactory
 {
+private:
+    static int _playersCount;
+    static PlayerType _getNextPlayerType();
+
 public:
-    static spPlayer createHumanPlayer(std::string name);
-    static spPlayer createCompPlayer(ComputerLogic computerLogic);
+    static spPlayer createPlayer(std::string humanPlayerName);
+    static spPlayer createPlayer(ComputerLogic computerLogic);
 };
 
 #endif // PLAYER_FACTORY_H

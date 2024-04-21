@@ -7,7 +7,7 @@
 // using std::cout;
 // using std::string;
 
-HumanPlayer::HumanPlayer(std::string name) : Player(name, PlayerType::HUMAN) {}
+HumanPlayer::HumanPlayer(std::string name, PlayerType type) : Player(name, type) {}
 
 Pair HumanPlayer::decideNextMove(const Graph &g) const
 {

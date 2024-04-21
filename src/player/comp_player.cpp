@@ -7,8 +7,8 @@
 
 using std::string;
 
-CompPlayer::CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic) 
-: Player(name, PlayerType::COMP), _computerLogic(computerLogic) {}
+CompPlayer::CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic, PlayerType type) 
+: Player(name, type), _computerLogic(computerLogic) {}
 
 Pair CompPlayer::decideNextMove(const Graph &g) const { return _computerLogic->decideNextMove(g); }
 

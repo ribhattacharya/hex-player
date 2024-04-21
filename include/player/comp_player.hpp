@@ -14,7 +14,7 @@ private:
     std::shared_ptr<IComputerLogic> _computerLogic;
 
 public:
-    CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic);
+    CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic, PlayerType type);
 
     Pair decideNextMove(const Graph &g) const override;
 };

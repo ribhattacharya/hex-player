@@ -92,7 +92,6 @@ bool Graph::_isInSet(T node, unordered_set<T> &set) const
     return set.find(node) != set.end();
 }
 
-// TODO: make this spPlayer based instead of playertype based
 bool Graph::isBridgeFormed(uspNode &STARTS, uspNode &GOALS, PlayerType playertype) const
 {
     /*

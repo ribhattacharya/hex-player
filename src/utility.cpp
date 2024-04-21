@@ -56,8 +56,8 @@ void printGraph(const Graph &g)
     int SIZE = g.getSize();
 
     std::unordered_map<PlayerType, char> symbols;
-    symbols.insert(std::make_pair(PlayerType::HUMAN, 'X'));
-    symbols.insert(std::make_pair(PlayerType::COMP, 'O'));
+    symbols.insert(std::make_pair(PlayerType::PLAYER_1, 'X'));
+    symbols.insert(std::make_pair(PlayerType::PLAYER_2, 'O'));
     symbols.insert(std::make_pair(PlayerType::NONE, '.'));
 
     cout << string(3, ' ');

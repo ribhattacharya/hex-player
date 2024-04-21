@@ -27,8 +27,8 @@ int main(int argc, char **argv)
         }
     }
 
-    spPlayer compPlayer = PlayerFactory::createCompPlayer(ComputerLogic::MONTE_CARLO);
-    spPlayer humanPlayer = PlayerFactory::createHumanPlayer("Tony Stark");
+    spPlayer humanPlayer = PlayerFactory::createPlayer("Tony Stark");
+    spPlayer compPlayer = PlayerFactory::createPlayer(ComputerLogic::MONTE_CARLO);
     vspPlayer players(2);
 
     std::cout << "Who should go first? Enter 1 for computer and 2 for human: ";

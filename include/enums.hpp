@@ -3,8 +3,8 @@
 
 enum class PlayerType
 {
-    HUMAN,
-    COMP,
+    PLAYER_1,
+    PLAYER_2,
     NONE
 };
 

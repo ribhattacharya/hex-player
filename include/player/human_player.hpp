@@ -12,7 +12,7 @@ class HumanPlayer : public Player
 {
 
 public:
-    HumanPlayer(std::string name); 
+    HumanPlayer(std::string name, PlayerType type); 
     
     Pair decideNextMove(const Graph &g) const override;
 };
