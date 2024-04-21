@@ -27,24 +27,31 @@ int main(int argc, char **argv)
         }
     }
 
-    spPlayer humanPlayer = PlayerFactory::createPlayer("Tony Stark");
-    spPlayer compPlayer = PlayerFactory::createPlayer(ComputerLogic::MONTE_CARLO);
+    spPlayer player1 = PlayerFactory::createPlayer("Tony Stark");
+    spPlayer player2 = PlayerFactory::createPlayer(ComputerLogic::MONTE_CARLO);
     vspPlayer players(2);
 
-    std::cout << "Who should go first? Enter 1 for computer and 2 for human: ";
     int firstPlayer;
-    std::cin >> firstPlayer;
+    do {
+        std::cout << "Who should go first? Enter 1 for "<< player1->getName() << " and 2 for " << player2->getName() << ": ";
+        std::cin >> firstPlayer;
 
-    if (firstPlayer == 1)
-    {
-        std::cout << "Computer goes first.\n";
-        players = {compPlayer, humanPlayer};
-    }
-    else
-    {
-        std::cout << "Human goes first.\n";
-        players = {humanPlayer, compPlayer};
-    }
+        if (firstPlayer == 1)
+        {
+            std::cout << player1->getName() << " goes first.\n";
+            players = {player1, player2};
+        }
+        else if (firstPlayer == 2) 
+        {
+            std::cout << player2->getName() << " goes first.\n";
+            players = {player2, player1};
+        }
+        else
+        {
+            std::cout << "Invalid input. Please try again and enter 1 or 2.\n";
+        }
+    }while (firstPlayer != 1 && firstPlayer != 2);
+
     
     Board hexBoard(boardSize, players);
     hexBoard.playGame();
