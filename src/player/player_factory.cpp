@@ -37,13 +37,23 @@ std::shared_ptr<Player> PlayerFactory::createPlayer(std::string humanPlayerName)
 std::shared_ptr<Player> PlayerFactory::createPlayer(ComputerLogic computerLogic)
 {
     PlayerType _playerType = _getNextPlayerType();
+    int _playerNum = static_cast<int>(_playerType) + 1;
 
+    std::string _name;
     switch (computerLogic)
     {
         case ComputerLogic::MONTE_CARLO:
-            return std::make_shared<CompPlayer>("Computer (Monte Carlo)", std::make_shared<MonteCarlo>(100), _playerType);
+            _name = "Computer " + std::to_string(_playerNum) + " (Monte Carlo)";
+            return std::make_shared<CompPlayer>(_name, 
+                                                std::make_shared<MonteCarlo>(100), 
+                                                _playerType);
+        
         case ComputerLogic::RANDOM_MOVE:
-            return std::make_shared<CompPlayer>("Computer (Random Move)", std::make_shared<RandomMove>(), _playerType);
+            _name = "Computer " + std::to_string(_playerNum) + " (Random Move)";
+            return std::make_shared<CompPlayer>(_name, 
+                                                std::make_shared<RandomMove>(), 
+                                                _playerType);
+        
         default:
             throw std::invalid_argument("Invalid computer logic passed as argument.");
     }
