@@ -10,28 +10,31 @@
 #include "include/enums.hpp"
 #include "include/player/player_factory.hpp"
 
-int main(int argc, char **argv)
-{
-    int boardSize = 4;
+int getBoardSize(int argc, char **argv)
+{   
+    int defaultBoardSize = 4, newBoardSize = -1;
+    
     if (argc > 1)
     {
         try
         {
-            boardSize = std::stoi(argv[1]);
+            newBoardSize = std::stoi(argv[1]);
         }
         catch (const std::exception &e)
         {
             std::cerr << "Error: Invalid board size argument! Should be an integer, given '" << argv[1] << "'.\n";
             std::cout << "Enter board size: ";
-            std::cin >> boardSize;
+            std::cin >> newBoardSize;
         }
     }
+    
+    return newBoardSize > 0 ? newBoardSize : defaultBoardSize;
+}
 
-    spPlayer player1 = PlayerFactory::createPlayer("Tony Stark");
-    spPlayer player2 = PlayerFactory::createPlayer(ComputerLogic::MONTE_CARLO);
-    vspPlayer players(2);
-
+vspPlayer decidePlayerOrder(spPlayer player1, spPlayer player2)
+{
     int firstPlayer;
+    vspPlayer players(2);
     do {
         std::cout << "Who should go first? Enter 1 for "<< player1->getName() << " and 2 for " << player2->getName() << ": ";
         std::cin >> firstPlayer;
@@ -52,6 +55,16 @@ int main(int argc, char **argv)
         }
     }while (firstPlayer != 1 && firstPlayer != 2);
 
+    return players;
+}
+
+int main(int argc, char **argv)
+{
+    int boardSize = getBoardSize(argc, argv);
+
+    spPlayer player1 = PlayerFactory::createPlayer("Tony Stark");
+    spPlayer player2 = PlayerFactory::createPlayer(ComputerLogic::MONTE_CARLO);
+    vspPlayer players = decidePlayerOrder(player1, player2);
     
     Board hexBoard(boardSize, players);
     hexBoard.playGame();
