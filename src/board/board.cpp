@@ -86,7 +86,6 @@ void Board::_makeMove(spPlayer player)
     printGraph(_g);
 }
 
-//TODO: Fix bug where computer loses on first move
 void Board::playGame()
 {
     // By nature of game, it cannot end in draw, so it will terminate.
