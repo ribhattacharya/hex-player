@@ -9,7 +9,7 @@ class RandomMove : public IComputerLogic
 {
 public:
     RandomMove();
-    Pair decideNextMove(const Graph &g) const override;
+    Pair decideNextMove(const Graph &g, const PlayerType curPlayerType) const override;
 };
 
 #endif // RANDOM_MOVE_H

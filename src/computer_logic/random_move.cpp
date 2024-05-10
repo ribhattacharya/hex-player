@@ -7,7 +7,8 @@
 
 RandomMove::RandomMove() {}
 
-Pair RandomMove::decideNextMove(const Graph &curGraph) const
+// TODO: Make this return valid node (PlayerType::NONE)
+Pair RandomMove::decideNextMove(const Graph &curGraph, const PlayerType curPlayerType) const
 {
     std::random_device rd;
     std::mt19937 gen(rd());

@@ -10,7 +10,7 @@ using std::string;
 CompPlayer::CompPlayer(std::string name, std::shared_ptr<IComputerLogic> computerLogic, PlayerType type) 
 : Player(name, type), _computerLogic(computerLogic) {}
 
-Pair CompPlayer::decideNextMove(const Graph &g) const { return _computerLogic->decideNextMove(g); }
+Pair CompPlayer::decideNextMove(const Graph &g) const { return _computerLogic->decideNextMove(g, getType()); }
 
 // Pair CompPlayer::RandomMove(int SIZE)
 // {
