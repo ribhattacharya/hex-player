@@ -1,37 +1,22 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <vector>
-#include <queue>
-#include <unordered_set>
+#include "../Types.hpp"
 
-#include "../enums.hpp"
-#include "../custom_types.hpp"
-
-class Node; // forward declarion so that typedefs can be defined
-
-typedef std::shared_ptr<Node> spNode;
-typedef std::vector<spNode> vspNode;
-typedef std::vector<vspNode> vvspNode;
-typedef std::unordered_set<spNode> uspNode;
-typedef std::queue<spNode> qspNode;
-
-class Node
-{
-    const Pair _IDX;
-    const int _ID;
-    PlayerType _player;
-    vspNode _neighbours;
-
+class Node {
 public:
-    Node(int i, int j, int id);
+    Node(int i, int j);
+    Node(const Node &other);
+    IntPair getID() const;
+    PlayerIDEnum getOccupancy() const;
+    void setOccupancy(PlayerIDEnum p);
 
-    Pair getIDX() const;
-    int getID() const;
-    PlayerType getPlayer();
-    void setPlayer(PlayerType p);
-    vspNode getNeighbours();
-    void setNeighbours(vspNode &neighbours);
+private:
+    const IntPair _nodeID;
+    PlayerIDEnum _occupancy;
 };
 
-#endif // NODE_H
+typedef std::vector<Node> Vect1DNode;
+typedef std::vector<Vect1DNode> Vect2DNode;
+
+#endif  // NODE_H

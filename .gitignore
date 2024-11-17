@@ -39,3 +39,4 @@
 
 # Build files
 /build
+.old/

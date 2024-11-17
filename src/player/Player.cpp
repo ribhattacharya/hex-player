@@ -1,7 +1,13 @@
 #include "../../include/player/Player.hpp"
 
-Player::Player(std::string name, PlayerType type) : _playerName(name), _playerType(type) {}
+Player::Player(std::string name, PlayerIDEnum playerID)
+    : _playerName(name), _playerID(playerID) {
+}
 
-std::string Player::getName() const { return _playerName; }
+PlayerIDEnum Player::getPlayerID() const {
+    return _playerID;
+}
 
-PlayerType Player::getType() const { return _playerType; }
+std::string Player::getName() const {
+    return _playerName;
+}
