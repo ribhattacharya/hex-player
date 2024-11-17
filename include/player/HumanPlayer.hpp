@@ -6,7 +6,7 @@
 class HumanPlayer : public Player {
 public:
   HumanPlayer(std::string name, PlayerIDEnum playerID);
-  IntPair makeMove() override; 
+  IntPair makeMove(const Board& board) override; 
 };
 
 #endif // HUMANPLAYER_H

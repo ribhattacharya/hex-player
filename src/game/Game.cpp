@@ -22,12 +22,9 @@ int Game::play() {
         for (auto &player : players) {
             std::cout << "Player " << player->getName() << "'s turn"
                       << std::endl;
-            IntPair move = player->makeMove();
-            while (!board.isValidMove(move)) {
-                std::cout << "Invalid move" << std::endl;
-                move = player->makeMove();
-            }
+            IntPair move = player->makeMove(board);
             board.placeMove(move, player->getPlayerID());
+            board.printBoard();
 
             if (board.isGameFinishedForPlayer(player->getPlayerID())) {
                 std::cout << "Player " << player->getName() << " wins!"

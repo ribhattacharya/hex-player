@@ -2,11 +2,13 @@
 #define PLAYER_H
 
 #include "../Types.hpp"
+#include "../board/Board.hpp"
+
 class Player {
 public:
     Player(std::string name, PlayerIDEnum playerID);
     virtual ~Player() = default;
-    virtual IntPair makeMove() = 0;  // Pure virtual for polymorphism
+    virtual IntPair makeMove(const Board& board) = 0;
     std::string getName() const;
     PlayerIDEnum getPlayerID() const;
 
