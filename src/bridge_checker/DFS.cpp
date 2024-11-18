@@ -1,8 +1,9 @@
 #include "../../include/bridge_checker/DFS.hpp"
+
 #include <iostream>
 
-#include "../../include/graph/Node.hpp"
 #include "../../include/Utility.hpp"
+#include "../../include/graph/Node.hpp"
 
 DFS::DFS() {
 }
@@ -12,43 +13,33 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
     NodePtrStack OPEN;
     NodePtrSet GOALS, VISITED;
 
-    // Get all starts for the given direction
-    if (direction == DirectionEnum::HORICONTAL) {
-        for (int i = 0; i < graph.getSize(); i++) {
-            NodePtr start = graph.getNode({i, 0});
-            // Add start if it is owned by the player
-            if (start->getOccupancy() == playerId) {
-                OPEN.push(start);
-            }
-
-            NodePtr goal = graph.getNode({i, graph.getSize() - 1});
-            // Add goal if it is owned by the player
-            if (goal->getOccupancy() == playerId) {
-                GOALS.insert(goal);
-            }
+    // Add starts and goals
+    for (int i = 0; i < graph.getSize(); i++) {
+        // Add starts
+        IntPair nodeID = (direction == DirectionEnum::HORICONTAL)
+                             ? IntPair({i, 0})
+                             : IntPair({0, i});
+        NodePtr start = graph.getNode(nodeID);
+        // Add start if it is owned by the player
+        if (start->getOccupancy() == playerId) {
+            OPEN.push(start);
         }
-    }
 
-    // Get all starts for the given direction
-    if (direction == DirectionEnum::VERTICAL) {
-        for (int i = 0; i < graph.getSize(); i++) {
-            // Add start if it is owned by the player
-            NodePtr start = graph.getNode({0, i});
-            if (start->getOccupancy() == playerId) {
-                OPEN.push(start);
-            }
-
-            NodePtr goal = graph.getNode({graph.getSize() - 1, 1});
-            // Add goal if it is owned by the player
-            if (goal->getOccupancy() == playerId) {
-                GOALS.insert(goal);
-            }
+        // Add goals
+        nodeID = (direction == DirectionEnum::HORICONTAL)
+                     ? IntPair({i, graph.getSize() - 1})
+                     : IntPair({graph.getSize() - 1, 1});
+        NodePtr goal = graph.getNode(nodeID);
+        // Add goal if it is owned by the player
+        if (goal->getOccupancy() == playerId) {
+            GOALS.insert(goal);
         }
     }
 
     // 6 directions
     Vect2DInt delta{{0, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 0}, {1, -1}};
 
+    // DFS
     while (!OPEN.empty() && !GOALS.empty()) {
         NodePtr node = OPEN.top();
         OPEN.pop();
@@ -63,7 +54,7 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
         for (const auto &dir : delta) {
             IntPair neighbourID = {node->getID().first + dir[0],
                                    node->getID().second + dir[1]};
-            // Check if the neighbour is out of bounds
+            // Check if the neighbour node exists
             if (neighbourID.first < 0 || neighbourID.first >= graph.getSize() ||
                 neighbourID.second < 0 ||
                 neighbourID.second >= graph.getSize()) {
@@ -71,14 +62,18 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
             }
 
             NodePtr neighbour = graph.getNode(neighbourID);
-
-            if (GOALS.find(neighbour) != GOALS.end()) {
-                return true;
-            }
+            // Check if the neighbour node is owned by the player or if it is
+            // already visited
             if (neighbour->getOccupancy() != playerId ||
                 VISITED.find(neighbour) != VISITED.end()) {
                 continue;
             }
+
+            // Check if the neighbour node is a goal
+            if (GOALS.find(neighbour) != GOALS.end()) {
+                return true;
+            }
+            
             OPEN.push(neighbour);
         }
     }

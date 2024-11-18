@@ -1,6 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <queue>
 #include <stack>
 #include <unordered_set>
 
@@ -23,6 +24,7 @@ typedef std::vector<Node> Vect1DNode;
 typedef std::vector<Vect1DNode> Vect2DNode;
 typedef const Node *NodePtr;
 typedef std::stack<NodePtr> NodePtrStack;
+typedef std::queue<NodePtr> NodePtrQueue;
 typedef std::unordered_set<NodePtr> NodePtrSet;
 
 #endif  // NODE_H
