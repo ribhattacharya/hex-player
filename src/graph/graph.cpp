@@ -1,4 +1,5 @@
 #include "../../include/graph/Graph.hpp"
+
 #include "../../include/graph/Node.hpp"
 
 Graph::Graph(int size) : _size(size) {
@@ -19,10 +20,17 @@ Graph::Graph(const Graph &other) : _size(other._size) {
     }
 }
 
+int Graph::getSize() const {
+    return _size;
+}
 PlayerIDEnum Graph::getNodeOccupancy(IntPair pos) const {
     return _nodes[pos.first][pos.second].getOccupancy();
 }
 
 void Graph::setNodeOccupancy(IntPair pos, PlayerIDEnum playerId) {
     _nodes[pos.first][pos.second].setOccupancy(playerId);
+}
+
+const Node *Graph::getNode(IntPair pos) const {
+    return &_nodes[pos.first][pos.second];
 }

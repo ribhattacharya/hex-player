@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
     PlayerPtr player1 =
         std::move(PlayerFactory::getInstance().createPlayer("Tony Stark"));
     PlayerPtr player2 = std::move(PlayerFactory::getInstance().createPlayer(
-        ComputerStrategyEnum::MONTE_CARLO));
+        ComputerStrategyEnum::RANDOM_MOVE));
 
     Game game(boardSize, std::move(player1), std::move(player2));
     game.play();

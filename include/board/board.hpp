@@ -8,7 +8,7 @@
 class Board {
 public:
     Board(int size, BridgeCheckerPtr bridgeChecker);
-    void placeMove(IntPair move, PlayerIDEnum playerId);
+    int placeMove(IntPair move, PlayerIDEnum playerId);
     bool isValidMove(IntPair move) const;
     bool isGameFinishedForPlayer(PlayerIDEnum playerId) const;
     void printBoard() const;
