@@ -8,8 +8,8 @@ class PlayerFactory {
 public:
     // Get the singleton instance
     static PlayerFactory &getInstance() {
-        static PlayerFactory
-            playerFactory;  // Static else instance will be destroyed
+        // Static else instance will be destroyed
+        static PlayerFactory playerFactory;
         return playerFactory;
     }
 

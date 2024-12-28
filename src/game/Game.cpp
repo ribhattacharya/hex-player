@@ -8,43 +8,54 @@
 #include "../../include/bridge_checker/DFS.hpp"
 #include "../../include/player/Player.hpp"
 
+using std::cout;
+using std::endl;
+
 Game::Game(int boardSize, PlayerPtr player1, PlayerPtr player2)
     : board(boardSize, std::make_unique<DFS>()) {
     players.push_back(std::move(player1));
     players.push_back(std::move(player2));
 }
 
-bool Game::isGameFinishedForPlayer(PlayerIDEnum playerId) const {
-    return false;
+bool Game::_isGameFinishedForPlayer(PlayerIDEnum playerId) const {
+    return board.isGameFinishedForPlayer(playerId);
 }
 
-int Game::play() {
-    while (true) {
+void Game::_makeMove(PlayerPtr &player) {
+    bool isValidMove = false;
+    while (!isValidMove) {
+        IntPair move = player->makeMove(board);
+        isValidMove = board.isValidMove(move);
+        if (!isValidMove) {
+            std::cout << "Invalid move! Retry." << std::endl;
+            continue;
+        }
+
+        std::cout << "Player " << player->getName() << " makes move " << move
+                  << std::endl;
+        board.placeMove(move, player->getPlayerID());
+    }
+}
+void Game::play() {
+    bool isGameFinished = false;
+    while (!isGameFinished) {
         for (auto &player : players) {
+            cout << "\033[2J\033[1;1H";  // Clear screen
             board.printBoard();
 
-            std::cout << "Player " << player->getName() << "'s turn"
-                      << std::endl;
-            // Get Player move until it is valid
-            while (true) {
-                IntPair move = player->makeMove(board);
-                if (board.isValidMove(move)) {
-                    std::cout << "Player " << player->getName()
-                              << " makes move " << move << std::endl;
-                    board.placeMove(move, player->getPlayerID());
-                    break;
-                }
-            }
+            cout << "Player " << player->getName() << "'s turn" << endl;
+            _makeMove(player);
 
-            // Check if game is finished
-            if (board.isGameFinishedForPlayer(player->getPlayerID())) {
+            isGameFinished = _isGameFinishedForPlayer(player->getPlayerID());
+            if (!isGameFinished) {
+                continue;
+            }
+            else {
+                cout << "\033[2J\033[1;1H";  // Clear screen
                 board.printBoard();
-                std::cout << "Player " << player->getName() << " wins!"
-                          << std::endl;
-                return 0;  // Should always terminate here
+                cout << "Player " << player->getName() << " wins!" << endl;
+                break;
             }
         }
     }
-
-    return 1;  // Should never get here
 }

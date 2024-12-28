@@ -1,5 +1,6 @@
 #include "../../include/player/PlayerFactory.hpp"
 
+#include <stdexcept>
 #include <utility>
 
 #include "../../include/computer_strategy/MonteCarlo.hpp"
@@ -11,15 +12,11 @@ PlayerFactory::PlayerFactory() : _numPlayers(0) {
 }
 
 PlayerIDEnum PlayerFactory::_getPlayerID() {
-    _numPlayers++;
-    if (_numPlayers > 2) {
-        throw std::invalid_argument("Maximum number of players reached.");
+    if (_numPlayers >= 2) {
+        throw std::runtime_error("Number of players cannot exceed 2!");
     }
-
-    PlayerIDEnum playerID =
-        _numPlayers == 1 ? PlayerIDEnum::PLAYER_1 : PlayerIDEnum::PLAYER_2;
-
-    return playerID;
+    _numPlayers++;
+    return _numPlayers == 1 ? PlayerIDEnum::PLAYER_1 : PlayerIDEnum::PLAYER_2;
 }
 
 PlayerPtr PlayerFactory::createPlayer(const std::string &humanPlayerName) {

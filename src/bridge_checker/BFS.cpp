@@ -13,6 +13,7 @@ bool BFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
     NodePtrQueue OPEN;
     NodePtrSet GOALS, VISITED;
 
+    // TODO: Refactor according to DFS iomplementstion
     // Add starts and goals
     for (int i = 0; i < graph.getSize(); i++) {
         // Add starts

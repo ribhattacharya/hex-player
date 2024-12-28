@@ -1,6 +1,5 @@
 #include "../../include/board/Board.hpp"
 
-#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <unordered_map>

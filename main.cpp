@@ -5,6 +5,7 @@
 #include "include/player/PlayerFactory.hpp"
 
 int main(int argc, char **argv) {
+    // TODO: Add command line argument parsing for board size
     int boardSize = 5;
 
     PlayerPtr player1 =

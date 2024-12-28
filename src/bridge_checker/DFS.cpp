@@ -8,6 +8,12 @@
 DFS::DFS() {
 }
 
+bool DFS::isValidNeighbour(const IntPair &nodeID, const int MAX_ROWS,
+                           const int MAX_COLS) const {
+    return nodeID.first >= 0 && nodeID.first < MAX_ROWS && nodeID.second >= 0 &&
+           nodeID.second < MAX_COLS;
+}
+
 bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
                          DirectionEnum direction) {
     NodePtrStack OPEN;
@@ -16,20 +22,21 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
     // Add starts and goals
     for (int i = 0; i < graph.getSize(); i++) {
         // Add starts
-        IntPair nodeID = (direction == DirectionEnum::HORICONTAL)
-                             ? IntPair({i, 0})
-                             : IntPair({0, i});
-        NodePtr start = graph.getNode(nodeID);
+        NodePtr start(nullptr), goal(nullptr);
+
+        if (direction == DirectionEnum::HORICONTAL) {
+            start = graph.getNode({i, 0});
+            goal = graph.getNode({i, graph.getSize() - 1});
+        } else {
+            start = graph.getNode({0, i});
+            goal = graph.getNode({graph.getSize() - 1, i});
+        }
+
         // Add start if it is owned by the player
         if (start->getOccupancy() == playerId) {
             OPEN.push(start);
         }
 
-        // Add goals
-        nodeID = (direction == DirectionEnum::HORICONTAL)
-                     ? IntPair({i, graph.getSize() - 1})
-                     : IntPair({graph.getSize() - 1, 1});
-        NodePtr goal = graph.getNode(nodeID);
         // Add goal if it is owned by the player
         if (goal->getOccupancy() == playerId) {
             GOALS.insert(goal);
@@ -55,9 +62,8 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
             IntPair neighbourID = {node->getID().first + dir[0],
                                    node->getID().second + dir[1]};
             // Check if the neighbour node exists
-            if (neighbourID.first < 0 || neighbourID.first >= graph.getSize() ||
-                neighbourID.second < 0 ||
-                neighbourID.second >= graph.getSize()) {
+            if (!isValidNeighbour(neighbourID, graph.getSize(),
+                                  graph.getSize())) {
                 continue;
             }
 
@@ -71,9 +77,10 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
 
             // Check if the neighbour node is a goal
             if (GOALS.find(neighbour) != GOALS.end()) {
+                std::cout << "Final node    " << node->getID() << std::endl;
                 return true;
             }
-            
+
             OPEN.push(neighbour);
         }
     }

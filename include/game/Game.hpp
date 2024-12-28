@@ -7,11 +7,13 @@
 class Game {
 public:
     Game(int boardSize, PlayerPtr player1, PlayerPtr player2);  // Constructor
-    bool isGameFinishedForPlayer(PlayerIDEnum playerId) const;
-    int play();  // Starts the game loop
+    void play();
+
 private:
-    Board board;  // Game board
+    Board board;
     PlayerList players;
+    bool _isGameFinishedForPlayer(PlayerIDEnum playerId) const;
+    void _makeMove(PlayerPtr &player);
 };
 
 #endif  // GAME_H

@@ -2,6 +2,7 @@
 
 #include "../../include/graph/Node.hpp"
 
+//TODO: Construct only used nodes, and not all nodes
 Graph::Graph(int size) : _size(size) {
     _nodes.resize(size);
     for (int i = 0; i < size; i++) {
