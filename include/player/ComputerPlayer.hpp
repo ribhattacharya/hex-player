@@ -7,12 +7,12 @@
 
 class ComputerPlayer : public Player {
 public:
-  ComputerPlayer(std::string name, PlayerIDEnum playerID,
-                 ComputerStrategyPtr computerStrategy);
-  IntPair makeMove(const Board& board) override;
+    ComputerPlayer(std::string name, PlayerIDEnum playerID,
+                   ComputerStrategyPtr computerStrategy);
+    IntPair getMove(const Board& board) const override;
 
 private:
-  const ComputerStrategyPtr _computerStrategy;
+    const ComputerStrategyPtr _computerStrategy;
 };
 
-#endif // COMPUTERPLAYER_H
+#endif  // COMPUTERPLAYER_H

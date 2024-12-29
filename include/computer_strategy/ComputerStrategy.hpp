@@ -7,9 +7,13 @@
 class ComputerStrategy {
 public:
     virtual ~ComputerStrategy() = default;
-    virtual IntPair calculateMove(const Board& board, PlayerIDEnum playerId) = 0;
+    IntPair getMove(const Board& board, PlayerIDEnum curPlayerId) const;
+
+private:
+    virtual IntPair _calculateMove(const Board& board,
+                                   PlayerIDEnum curPlayerId) const = 0;
 };
 
 typedef std::unique_ptr<ComputerStrategy> ComputerStrategyPtr;
 
-#endif // COMPUTERSTRATEGY_H
+#endif  // COMPUTERSTRATEGY_H

@@ -5,6 +5,6 @@ ComputerPlayer::ComputerPlayer(std::string name, PlayerIDEnum playerID,
     : Player(name, playerID), _computerStrategy(std::move(computerStrategy)) {
 }
 
-IntPair ComputerPlayer::makeMove(const Board& board) {
-    return _computerStrategy->calculateMove(board, getPlayerID());
+IntPair ComputerPlayer::getMove(const Board& board) const {
+    return _computerStrategy->getMove(board, getPlayerID());
 }

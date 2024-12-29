@@ -5,8 +5,8 @@
 
 class HumanPlayer : public Player {
 public:
-  HumanPlayer(std::string name, PlayerIDEnum playerID);
-  IntPair makeMove(const Board& board) override; 
+    HumanPlayer(std::string name, PlayerIDEnum playerID);
+    IntPair getMove(const Board& board) const override;
 };
 
-#endif // HUMANPLAYER_H
+#endif  // HUMANPLAYER_H

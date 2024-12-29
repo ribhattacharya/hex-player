@@ -11,4 +11,6 @@ using std::string;
 
 std::ostream &operator<<(std::ostream &os, const IntPair &value);
 
+void pause();
+
 #endif  // UTILITY_H

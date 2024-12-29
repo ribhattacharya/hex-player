@@ -7,7 +7,7 @@ HumanPlayer::HumanPlayer(std::string name, PlayerIDEnum playerID)
     : Player(name, playerID) {
 }
 
-IntPair HumanPlayer::makeMove(const Board& board) {
+IntPair HumanPlayer::getMove(const Board& board) const {
     IntPair move = std::make_pair(-1, -1);
 
     std::cout << "Enter row: ";

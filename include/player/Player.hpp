@@ -8,7 +8,7 @@ class Player {
 public:
     Player(std::string name, PlayerIDEnum playerID);
     virtual ~Player() = default;
-    virtual IntPair makeMove(const Board& board) = 0;
+    virtual IntPair getMove(const Board& board) const = 0;
     std::string getName() const;
     PlayerIDEnum getPlayerID() const;
 

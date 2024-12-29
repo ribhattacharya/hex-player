@@ -1,6 +1,7 @@
 #ifndef BRIDGECHECKER_H
 #define BRIDGECHECKER_H
 
+#include <memory>
 #include "../Types.hpp"
 #include "../graph/Graph.hpp"
 
@@ -11,6 +12,6 @@ public:
                                 DirectionEnum direction) = 0;
 };
 
-typedef std::unique_ptr<BridgeChecker> BridgeCheckerPtr;
+typedef std::shared_ptr<BridgeChecker> BridgeCheckerPtr;
 
 #endif  // BRIDGECHECKER_H

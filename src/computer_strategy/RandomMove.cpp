@@ -3,7 +3,8 @@
 #include <random>
 #include <utility>
 
-IntPair RandomMove::calculateMove(const Board& board, PlayerIDEnum playerId) {
+IntPair RandomMove::_calculateMove(const Board& board,
+                                   PlayerIDEnum curPlayerId) const {
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -13,5 +14,5 @@ IntPair RandomMove::calculateMove(const Board& board, PlayerIDEnum playerId) {
     // Generate a single random integer
     int row = dis(gen), col = dis(gen);
 
-    return std::make_pair(row, col);
+    return {row, col};
 }

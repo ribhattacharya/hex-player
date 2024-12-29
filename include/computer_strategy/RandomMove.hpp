@@ -6,8 +6,8 @@
 #include "ComputerStrategy.hpp"
 
 class RandomMove : public ComputerStrategy{
-public:
-    IntPair calculateMove(const Board& board, PlayerIDEnum playerId) override;
+private:
+    IntPair _calculateMove(const Board& board, PlayerIDEnum curPlayerId) const override;
 };
 
 #endif // RANDOMMOVE_H

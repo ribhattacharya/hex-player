@@ -7,6 +7,7 @@
 typedef std::vector<int> Vect1DInt;
 typedef std::vector<Vect1DInt> Vect2DInt;
 typedef std::pair<int, int> IntPair;
+typedef std::vector<IntPair> VectIntPair;
 
 enum class PlayerIDEnum
 {

@@ -1,34 +1,39 @@
 #include "../../include/board/Board.hpp"
 
 #include <iostream>
+#include <memory>
 #include <string>
 #include <unordered_map>
+
+#include "../../include/bridge_checker/DFS.hpp"
+#include "../../include/Utility.hpp"
 
 using std::cout;
 using std::string;
 
 Board::Board(int size, BridgeCheckerPtr bridgeChecker)
-    : _size(size), _graph(size), _bridgeChecker(std::move(bridgeChecker)) {
+    : _size(size), _graph(size), _bridgeChecker(bridgeChecker) {
 }
 
-int Board::placeMove(IntPair move, PlayerIDEnum playerId) {
-    if (isValidMove(move)) {
-        _graph.setNodeOccupancy(move, playerId);
-        return 0;
-    }
+Board::Board(const Board& other)
+    : _size(other._size),
+      _graph(other._graph),
+      _bridgeChecker(other._bridgeChecker) {
+}
 
-    return 1;
+void Board::placeMove(IntPair move, PlayerIDEnum playerId) {
+    _graph.setNodeOccupancy(move, playerId);
 }
 
 bool Board::isValidMove(IntPair move) const {
     if (move.first < 0 || move.first >= _size || move.second < 0 ||
         move.second >= _size) {
-        std::cout << "Invalid move, out of bounds! Retry." << std::endl;
+        // std::cout << "Invalid move, out of bounds! Retry." << std::endl;
         return false;
     }
 
     if (_graph.getNodeOccupancy(move) != PlayerIDEnum::NONE) {
-        std::cout << "Invalid move, cell already occupied! Retry." << std::endl;
+        // std::cout << "Invalid move, cell " << move << " already occupied! Retry." << std::endl;
         return false;
     }
 
@@ -50,7 +55,6 @@ int Board::getSize() const {
 }
 
 void Board::printBoard() const {
-
     std::unordered_map<PlayerIDEnum, char> symbols;
     symbols.insert(std::make_pair(PlayerIDEnum::PLAYER_1, 'X'));
     symbols.insert(std::make_pair(PlayerIDEnum::PLAYER_2, 'O'));

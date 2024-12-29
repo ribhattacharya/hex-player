@@ -50,7 +50,7 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
     while (!OPEN.empty() && !GOALS.empty()) {
         NodePtr node = OPEN.top();
         OPEN.pop();
-        std::cout << "Visiting node " << node->getID() << std::endl;
+        // std::cout << "Visiting node " << node->getID() << std::endl;
         // Check if the node is already visited, since a START neighbour can be
         // added to the stack AGAIN during DFS.
         if (VISITED.find(node) != VISITED.end()) {
@@ -77,7 +77,7 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
 
             // Check if the neighbour node is a goal
             if (GOALS.find(neighbour) != GOALS.end()) {
-                std::cout << "Final node    " << node->getID() << std::endl;
+                // std::cout << "Final node    " << node->getID() << std::endl;
                 return true;
             }
 
