@@ -5,8 +5,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "../../include/bridge_checker/DFS.hpp"
 #include "../../include/Utility.hpp"
+#include "../../include/bridge_checker/DFS.hpp"
 
 using std::cout;
 using std::string;
@@ -33,7 +33,8 @@ bool Board::isValidMove(IntPair move) const {
     }
 
     if (_graph.getNodeOccupancy(move) != PlayerIDEnum::NONE) {
-        // std::cout << "Invalid move, cell " << move << " already occupied! Retry." << std::endl;
+        // std::cout << "Invalid move, cell " << move << " already occupied!
+        // Retry." << std::endl;
         return false;
     }
 
@@ -43,7 +44,7 @@ bool Board::isValidMove(IntPair move) const {
 bool Board::isGameFinishedForPlayer(PlayerIDEnum playerId) const {
     if (playerId == PlayerIDEnum::PLAYER_1) {
         return _bridgeChecker->isBridgeFormed(_graph, PlayerIDEnum::PLAYER_1,
-                                              DirectionEnum::HORICONTAL);
+                                              DirectionEnum::HORIZONTAL);
     }
 
     return _bridgeChecker->isBridgeFormed(_graph, PlayerIDEnum::PLAYER_2,

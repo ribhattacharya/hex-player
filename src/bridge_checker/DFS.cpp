@@ -24,7 +24,7 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
         // Add starts
         NodePtr start(nullptr), goal(nullptr);
 
-        if (direction == DirectionEnum::HORICONTAL) {
+        if (direction == DirectionEnum::HORIZONTAL) {
             start = graph.getNode({i, 0});
             goal = graph.getNode({i, graph.getSize() - 1});
         } else {

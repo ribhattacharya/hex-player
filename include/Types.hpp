@@ -9,23 +9,10 @@ typedef std::vector<Vect1DInt> Vect2DInt;
 typedef std::pair<int, int> IntPair;
 typedef std::vector<IntPair> VectIntPair;
 
-enum class PlayerIDEnum
-{
-    PLAYER_1,
-    PLAYER_2,
-    NONE
-};
+enum class PlayerIDEnum { PLAYER_1, PLAYER_2, NONE };
 
-enum class DirectionEnum
-{
-    HORICONTAL,
-    VERTICAL
-};
+enum class DirectionEnum { HORIZONTAL, VERTICAL };
 
-enum class ComputerStrategyEnum
-{
-    MONTE_CARLO,
-    RANDOM_MOVE
-};
+enum class ComputerStrategyEnum { MONTE_CARLO, RANDOM_MOVE };
 
-#endif // TYPES_H
+#endif  // TYPES_H

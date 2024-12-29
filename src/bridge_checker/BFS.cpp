@@ -17,7 +17,7 @@ bool BFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
     // Add starts and goals
     for (int i = 0; i < graph.getSize(); i++) {
         // Add starts
-        IntPair nodeID = (direction == DirectionEnum::HORICONTAL)
+        IntPair nodeID = (direction == DirectionEnum::HORIZONTAL)
                              ? IntPair({i, 0})
                              : IntPair({0, i});
         NodePtr start = graph.getNode(nodeID);
@@ -27,7 +27,7 @@ bool BFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
         }
 
         // Add goals
-        nodeID = (direction == DirectionEnum::HORICONTAL)
+        nodeID = (direction == DirectionEnum::HORIZONTAL)
                      ? IntPair({i, graph.getSize() - 1})
                      : IntPair({graph.getSize() - 1, 1});
         NodePtr goal = graph.getNode(nodeID);
@@ -74,7 +74,7 @@ bool BFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
             if (GOALS.find(neighbour) != GOALS.end()) {
                 return true;
             }
-            
+
             OPEN.push(neighbour);
         }
     }
