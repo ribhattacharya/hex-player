@@ -1,9 +1,9 @@
 #include <string>
 #include <utility>
 
-#include "include/Types.hpp"
-#include "include/game/Game.hpp"
-#include "include/player/PlayerFactory.hpp"
+#include "Types.hpp"
+#include "game/Game.hpp"
+#include "player/PlayerFactory.hpp"
 
 int main(int argc, char **argv) {
     int boardSize = std::stoi(argv[1]);

@@ -1,7 +1,6 @@
-#include "../../include/computer_strategy/RandomMove.hpp"
+#include "computer_strategy/RandomMove.hpp"
 
 #include <random>
-#include <utility>
 
 IntPair RandomMove::_calculateMove(const Board& board,
                                    PlayerIDEnum curPlayerId) const {

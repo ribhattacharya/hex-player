@@ -1,8 +1,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "../Types.hpp"
-#include "Node.hpp"
+#include "Types.hpp"
+#include "graph/Node.hpp"
 
 class Graph {
 public:

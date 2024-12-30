@@ -3,9 +3,9 @@
 
 #include <random>
 
-#include "../Types.hpp"
-#include "../board/Board.hpp"
-#include "ComputerStrategy.hpp"
+#include "Types.hpp"
+#include "board/Board.hpp"
+#include "computer_strategy/ComputerStrategy.hpp"
 
 class MonteCarlo : public ComputerStrategy {
 private:

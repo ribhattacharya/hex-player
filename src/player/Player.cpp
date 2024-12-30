@@ -1,4 +1,4 @@
-#include "../../include/player/Player.hpp"
+#include "player/Player.hpp"
 
 Player::Player(std::string name, PlayerIDEnum playerID)
     : _playerName(name), _playerID(playerID) {

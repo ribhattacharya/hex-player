@@ -1,9 +1,9 @@
-#include "../../include/bridge_checker/BFS.hpp"
+#include "bridge_checker/BFS.hpp"
 
 #include <iostream>
 
-#include "../../include/Utility.hpp"
-#include "../../include/graph/Node.hpp"
+#include "Utility.hpp"
+#include "graph/Node.hpp"
 
 BFS::BFS() {
 }

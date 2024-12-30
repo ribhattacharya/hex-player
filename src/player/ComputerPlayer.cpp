@@ -1,4 +1,4 @@
-#include "../../include/player/ComputerPlayer.hpp"
+#include "player/ComputerPlayer.hpp"
 
 ComputerPlayer::ComputerPlayer(std::string name, PlayerIDEnum playerID,
                                ComputerStrategyPtr computerStrategy)

@@ -1,8 +1,8 @@
 #ifndef PLAYERFACTORY_H
 #define PLAYERFACTORY_H
 
-#include "../Types.hpp"
-#include "../player/Player.hpp"
+#include "Types.hpp"
+#include "player/Player.hpp"
 
 class PlayerFactory {
 public:

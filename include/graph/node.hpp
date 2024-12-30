@@ -5,7 +5,7 @@
 #include <stack>
 #include <unordered_set>
 
-#include "../Types.hpp"
+#include "Types.hpp"
 
 class Node {
 public:

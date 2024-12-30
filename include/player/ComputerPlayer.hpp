@@ -1,9 +1,9 @@
 #ifndef COMPUTERPLAYER_H
 #define COMPUTERPLAYER_H
 
-#include "../Types.hpp"
-#include "../computer_strategy/ComputerStrategy.hpp"
-#include "Player.hpp"
+#include "Types.hpp"
+#include "computer_strategy/ComputerStrategy.hpp"
+#include "player/Player.hpp"
 
 class ComputerPlayer : public Player {
 public:

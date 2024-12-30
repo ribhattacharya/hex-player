@@ -1,9 +1,5 @@
-#include "../../include/bridge_checker/DFS.hpp"
-
-#include <iostream>
-
-#include "../../include/Utility.hpp"
-#include "../../include/graph/Node.hpp"
+#include "bridge_checker/DFS.hpp"
+#include "graph/Node.hpp"
 
 DFS::DFS() {
 }

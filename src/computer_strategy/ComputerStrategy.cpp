@@ -1,4 +1,4 @@
-#include "../../include/computer_strategy/ComputerStrategy.hpp"
+#include "computer_strategy/ComputerStrategy.hpp"
 
 #include <chrono>
 #include <iostream>

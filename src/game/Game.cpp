@@ -1,13 +1,13 @@
-#include "../../include/game/Game.hpp"
+#include "game/Game.hpp"
 
 #include <iostream>
 #include <memory>
 
-#include "../../include/Types.hpp"
-#include "../../include/Utility.hpp"
-#include "../../include/bridge_checker/BFS.hpp"
-#include "../../include/bridge_checker/DFS.hpp"
-#include "../../include/player/Player.hpp"
+#include "Types.hpp"
+#include "Utility.hpp"
+// #include "bridge_checker/BFS.hpp"
+#include "bridge_checker/DFS.hpp"
+#include "player/Player.hpp"
 
 using std::cout;
 using std::endl;

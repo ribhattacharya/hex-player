@@ -1,7 +1,7 @@
 #ifndef BFS_H
 #define BFS_H
 
-#include "BridgeChecker.hpp"
+#include "bridge_checker/BridgeChecker.hpp"
 
 class BFS : public BridgeChecker
 {

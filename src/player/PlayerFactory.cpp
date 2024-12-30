@@ -1,12 +1,12 @@
-#include "../../include/player/PlayerFactory.hpp"
+#include "player/PlayerFactory.hpp"
 
 #include <stdexcept>
 #include <utility>
 
-#include "../../include/computer_strategy/MonteCarlo.hpp"
-#include "../../include/computer_strategy/RandomMove.hpp"
-#include "../../include/player/ComputerPlayer.hpp"
-#include "../../include/player/HumanPlayer.hpp"
+#include "computer_strategy/MonteCarlo.hpp"
+#include "computer_strategy/RandomMove.hpp"
+#include "player/ComputerPlayer.hpp"
+#include "player/HumanPlayer.hpp"
 
 PlayerFactory::PlayerFactory() : _numPlayers(0) {
 }

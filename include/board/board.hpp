@@ -1,9 +1,9 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "../Types.hpp"
-#include "../bridge_checker/BridgeChecker.hpp"
-#include "../graph/Graph.hpp"
+#include "Types.hpp"
+#include "bridge_checker/BridgeChecker.hpp"
+#include "graph/Graph.hpp"
 
 class Board {
 public:

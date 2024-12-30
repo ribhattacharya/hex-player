@@ -2,8 +2,8 @@
 #define BRIDGECHECKER_H
 
 #include <memory>
-#include "../Types.hpp"
-#include "../graph/Graph.hpp"
+#include "Types.hpp"
+#include "graph/Graph.hpp"
 
 class BridgeChecker {
 public:

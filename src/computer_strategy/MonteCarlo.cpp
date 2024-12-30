@@ -1,11 +1,11 @@
-#include "../../include/computer_strategy/MonteCarlo.hpp"
+#include "computer_strategy/MonteCarlo.hpp"
 
 #include <cassert>
 #include <iostream>
 #include <random>
 #include <vector>
 
-#include "../../include/Utility.hpp"
+#include "Utility.hpp"
 
 void MonteCarlo::_resetMoves(Board& simBoard,
                              VectIntPair& availableMoves) const {

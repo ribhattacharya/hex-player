@@ -1,12 +1,11 @@
-#include "../../include/board/Board.hpp"
+#include "board/Board.hpp"
 
 #include <iostream>
 #include <memory>
 #include <string>
 #include <unordered_map>
 
-#include "../../include/Utility.hpp"
-#include "../../include/bridge_checker/DFS.hpp"
+#include "Utility.hpp"
 
 using std::cout;
 using std::string;

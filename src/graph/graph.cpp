@@ -1,6 +1,6 @@
-#include "../../include/graph/Graph.hpp"
+#include "graph/Graph.hpp"
 
-#include "../../include/graph/Node.hpp"
+#include "graph/Node.hpp"
 
 //TODO: Construct only used nodes, and not all nodes
 Graph::Graph(int size) : _size(size) {

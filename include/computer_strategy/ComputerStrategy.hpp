@@ -1,8 +1,8 @@
 #ifndef COMPUTERSTRATEGY_H
 #define COMPUTERSTRATEGY_H
 
-#include "../Types.hpp"
-#include "../board/Board.hpp"
+#include "Types.hpp"
+#include "board/Board.hpp"
 
 class ComputerStrategy {
 public:

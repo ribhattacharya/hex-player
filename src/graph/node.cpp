@@ -1,4 +1,4 @@
-#include "../../include/graph/Node.hpp"
+#include "graph/Node.hpp"
 
 Node::Node(int i, int j)
     : _nodeID(std::make_pair(i, j)), _occupancy(PlayerIDEnum::NONE) {

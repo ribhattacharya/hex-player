@@ -1,4 +1,4 @@
-#include "../../include/player/HumanPlayer.hpp"
+#include "player/HumanPlayer.hpp"
 
 #include <iostream>
 #include <utility>

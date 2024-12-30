@@ -1,8 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "../Types.hpp"
-#include "../board/Board.hpp"
+#include "Types.hpp"
+#include "board/Board.hpp"
 
 class Player {
 public:
