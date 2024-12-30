@@ -14,8 +14,8 @@ using std::endl;
 
 Game::Game(int boardSize, PlayerPtr player1, PlayerPtr player2)
     : board(boardSize, std::make_shared<DFS>()) {
-    players.push_back(std::move(player1));
-    players.push_back(std::move(player2));
+    players.emplace_back(std::move(player1));
+    players.emplace_back(std::move(player2));
 }
 
 bool Game::_isGameFinishedForPlayer(PlayerIDEnum playerId) const {
@@ -28,7 +28,8 @@ void Game::_makeMove(PlayerPtr &player) {
         IntPair move = player->getMove(board);
         isValidMove = board.isValidMove(move);
         if (!isValidMove) {
-            cout << "Invalid move by player " << player->getName() << ". Retry." << endl;
+            cout << "Invalid move by player " << player->getName() << ". Retry."
+                 << endl;
             continue;
         }
 

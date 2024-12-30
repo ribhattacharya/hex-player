@@ -1,3 +1,4 @@
+#include <string>
 #include <utility>
 
 #include "include/Types.hpp"
@@ -5,8 +6,7 @@
 #include "include/player/PlayerFactory.hpp"
 
 int main(int argc, char **argv) {
-    // TODO: Add command line argument parsing for board size
-    int boardSize = 5;
+    int boardSize = std::stoi(argv[1]);
 
     PlayerPtr player1 =
         std::move(PlayerFactory::getInstance().createPlayer("Tony Stark"));

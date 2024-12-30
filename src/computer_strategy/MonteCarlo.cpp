@@ -77,7 +77,7 @@ IntPair MonteCarlo::_calculateMove(const Board& board,
             maxWinsMove = testMove;
         }
     }
-    std::cout << "\nSelected AI move: " << maxWinsMove;
+    std::cout << "\nSelected AI move: " << maxWinsMove << std::endl;
     return maxWinsMove;
 }
 
