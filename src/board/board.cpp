@@ -1,170 +1,93 @@
-#include <iostream>
-#include <vector>
-#include <string>
+#include "../../include/board/Board.hpp"
 
-#include "../../include/board/board.hpp"
-#include "../../include/graph/node.hpp"
-#include "../../include/player/IPlayer.hpp"
-#include "../../include/utility.hpp"
+#include <iostream>
+#include <memory>
+#include <string>
+#include <unordered_map>
+
+#include "../../include/Utility.hpp"
+#include "../../include/bridge_checker/DFS.hpp"
 
 using std::cout;
-using std::endl;
 using std::string;
 
-Board::Board(const int size, vspIPlayer players) : _SIZE(size), _g(size), _players(players)
-{
-    // cout << "Main graph address: " << &_g << '\n';
-    // assert(this->_players.size() == 2);
-
-    _saveStartAndGoalNodes(_players[0], "vertical");
-    _saveStartAndGoalNodes(_players[1], "horizontal");
-
-    // for (auto player : _players)
-    // {
-    //     if (player->GetPlayerType() == Player::COMP)
-    //     {
-    //         Graph gCopy(_g);
-    //         cout << "Argyument before passing address: " << &gCopy << '\n';
-    //         player->PassGraph(gCopy);
-    //     }
-    // }
-
-    printGraph(_g);
+Board::Board(int size, BridgeCheckerPtr bridgeChecker)
+    : _size(size), _graph(size), _bridgeChecker(bridgeChecker) {
 }
 
-void Board::_saveStartAndGoalNodes(spIPlayer player, string orientation)
-{
-    for (int k = 0; k < _SIZE; k++)
-    {
-        Pair startIdx, goalIdx;
+Board::Board(const Board& other)
+    : _size(other._size),
+      _graph(other._graph),
+      _bridgeChecker(other._bridgeChecker) {
+}
 
-        if (orientation == "vertical")
-        {
-            startIdx = std::make_pair(0, k);
-            goalIdx = std::make_pair(_SIZE - 1, k);
-        }
-        else if (orientation == "horizontal")
-        {
-            startIdx = std::make_pair(k, 0);
-            goalIdx = std::make_pair(k, _SIZE - 1);
-        }
+void Board::placeMove(IntPair move, PlayerIDEnum playerId) {
+    _graph.setNodeOccupancy(move, playerId);
+}
 
-        _starts[player->getPlayerType()].insert(_g.getNode(startIdx));
-        _goals[player->getPlayerType()].insert(_g.getNode(goalIdx));
+bool Board::isValidMove(IntPair move) const {
+    if (move.first < 0 || move.first >= _size || move.second < 0 ||
+        move.second >= _size) {
+        // std::cout << "Invalid move, out of bounds! Retry." << std::endl;
+        return false;
     }
-}
 
-bool Board::_checkWinner(spIPlayer player)
-{
-    Player playerType = player->getPlayerType();
-    uspNode starts = {_starts[playerType]};
-    uspNode goals {_goals[playerType]};
-
-    return _g.isBridgeFormed(starts, goals, playerType);
-}
-
-void Board::_makeMove(spIPlayer player)
-{
-    // Graph gCopy(_g);
-    Pair idx = player->decideNextMove(_g);
-
-    while (!_g.isAvailable(idx))
-    {
-        std::cout << idx << "Node not available, try again!\n";
-        idx = player->decideNextMove(_g);
+    if (_graph.getNodeOccupancy(move) != PlayerIDEnum::NONE) {
+        // std::cout << "Invalid move, cell " << move << " already occupied!
+        // Retry." << std::endl;
+        return false;
     }
-    
 
-    Player playertype = player->getPlayerType();
-    _g.setPlayer(idx, playertype);
-
-    std::cout << "\x1B[2J\x1B[H"; // Clear screen
-    printGraph(_g);
+    return true;
 }
 
-void Board::playGame()
-{
-    // By nature of game, it cannot end in draw, so it will terminate.
-    while (true)
-    {   int instance = 0;
-        for (auto player : _players)
-        {   
-            _makeMove(player);
-            // cout << "make move" << ++instance << "\n";
-            // Graph gCopy(_g);
-            // cout << "Argument before passing address: " << &gCopy << '\n';
-            // _players[1]->PassGraph(gCopy);
+bool Board::isGameFinishedForPlayer(PlayerIDEnum playerId) const {
+    if (playerId == PlayerIDEnum::PLAYER_1) {
+        return _bridgeChecker->isBridgeFormed(_graph, PlayerIDEnum::PLAYER_1,
+                                              DirectionEnum::HORIZONTAL);
+    }
 
-            if (_checkWinner(player))
-            {
-                cout << '\n' << player->getPlayerName() << " wins!\n";
-                return;
+    return _bridgeChecker->isBridgeFormed(_graph, PlayerIDEnum::PLAYER_2,
+                                          DirectionEnum::VERTICAL);
+}
+
+int Board::getSize() const {
+    return _size;
+}
+
+void Board::printBoard() const {
+    std::unordered_map<PlayerIDEnum, char> symbols;
+    symbols.insert(std::make_pair(PlayerIDEnum::PLAYER_1, 'X'));
+    symbols.insert(std::make_pair(PlayerIDEnum::PLAYER_2, 'O'));
+    symbols.insert(std::make_pair(PlayerIDEnum::NONE, '.'));
+
+    cout << string(3, ' ');
+    for (int col = 0, j = 0; j < _size; j++, col++) {
+        cout << '|' << col << '|';
+        if (j != _size - 1)
+            cout << string(1, ' ');
+    }
+    cout << "\n";
+
+    for (int margin = 0, i = 0, row = 0; i < _size; i++, row++) {
+        cout << string(margin++, ' ');
+        cout << '|' << row << '|' << string(1, ' ');
+        for (int j = 0; j < _size; j++) {
+            IntPair idx = std::make_pair(i, j);
+            PlayerIDEnum p = _graph.getNodeOccupancy(idx);
+            const char playerSymbol = symbols[p];
+
+            cout << playerSymbol;
+            if (j != _size - 1)
+                cout << " - ";
+        }
+        cout << '\n';
+        if (i != _size - 1) {
+            cout << string(margin++ + 4, ' ');
+            for (int j = 0; j < _size - 1; j++) {
+                cout << "\\ / ";
             }
+            cout << "\\" << '\n';
         }
     }
-
-    cout << "\nGame ends in a draw! There's something WRONG!" << endl;
-    return;
 }
-
-// TODO: Make printing symbols instance based rather than enum based
-// void Board::printGraph() const
-// {
-
-//     unordered_map<Player, char> symbols = {
-//         {Player::HUMAN, 'X'},
-//         {Player::COMP, 'O'},
-//         {Player::NONE, '.'}};
-
-//     cout << string(3, ' ');
-//     for (int col = static_cast<int>('a'), j = 0; j < _SIZE; j++, col++)
-//     {
-//         cout << '|' << static_cast<char>(col) << '|';
-//         if (j != _SIZE - 1)
-//             cout << string(1, ' ');
-//     }
-//     cout << "\n";
-
-//     for (int margin = 0, i = 0, row = static_cast<int>('a'); i < _SIZE; i++, row++)
-//     {
-//         cout << string(margin++, ' ');
-//         cout << '|' << static_cast<char>(row) << '|' << string(1, ' ');
-//         for (int j = 0; j < _SIZE; j++)
-//         {
-//             Pair idx = std::make_pair(i, j);
-//             Player p = _g.GetNode(idx)->GetPlayer();
-//             const char player_symbol = symbols[p];
-
-//             cout << player_symbol;
-//             if (j != _SIZE - 1)
-//                 cout << " - ";
-//         }
-//         cout << '\n';
-//         if (i != _SIZE - 1)
-//         {
-//             cout << string(margin++ + 4, ' ');
-//             for (int j = 0; j < _SIZE - 1; j++)
-//             {
-//                 cout << "\\ / ";
-//             }
-//             cout << "\\" << '\n';
-//         }
-//     }
-// }
-
-// void Board::printGraphData() const
-// {
-//     cout << "Node # "
-//          << " Neighbours" << endl;
-//     for (int i = 0; i < _SIZE; i++)
-//     {
-//         for (int j = 0; j < _SIZE; j++)
-//         {
-//             cout << left << setw(8) << _g.GetNode(std::make_pair(i, j))->GetID();
-//             for (const auto neighbour : _g.GetNode(std::make_pair(i, j))->GetNeighbours())
-//                 cout << neighbour->GetID() << " ";
-//             cout << endl;
-//         }
-//     }
-// }
-

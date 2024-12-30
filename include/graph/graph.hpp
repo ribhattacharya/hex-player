@@ -1,41 +1,21 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <iostream>
-#include <random>
-#include <cstdlib>
-#include <iomanip>
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-#include <queue>
+#include "../Types.hpp"
+#include "Node.hpp"
 
-#include "node.hpp"
-#include "../enums.hpp"
-#include "../custom_types.hpp"
-
-class Graph
-{
-    /*
-    DESC: Graph class to create and process the graph.
-    */
-    const int _SIZE;
-    vvspNode _nodes;
-    void _createEdges();
-
-    template <typename T>
-    bool _isInSet(T node, std::unordered_set<T> &set) const;
-
+class Graph {
 public:
-    Graph(int);
+    Graph(int size);
     Graph(const Graph &other);
-
     int getSize() const;
-    spNode getNode(Pair idx) const;
-    bool isAvailable(Pair idx) const;
-    void setPlayer(Pair idx, Player playertype);
-    bool isBridgeFormed(uspNode &STARTS, uspNode &GOALS, Player playertype) const;
+    PlayerIDEnum getNodeOccupancy(IntPair pos) const;
+    void setNodeOccupancy(IntPair pos, PlayerIDEnum playerId);
+    NodePtr getNode(IntPair pos) const;
+
+private:
+    const int _size;
+    Vect2DNode _nodes;
 };
 
-#endif // GRAPH_H
+#endif  // GRAPH_H
