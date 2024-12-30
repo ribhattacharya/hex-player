@@ -13,7 +13,7 @@ void MonteCarlo::_resetMoves(Board& simBoard,
         simBoard.placeMove(move, PlayerIDEnum::NONE);
     }
 }
-int MonteCarlo::_didPlayerWin(Board& simBoard, VectIntPair& simAvailableMoves,
+bool MonteCarlo::_didPlayerWin(Board& simBoard, VectIntPair& simAvailableMoves,
                               PlayerIDEnum& curPlayerId) const {
     PlayerIDEnum otherPlayerId = _getNextPlayerID(curPlayerId);
     IntPair nextMove;
@@ -22,17 +22,17 @@ int MonteCarlo::_didPlayerWin(Board& simBoard, VectIntPair& simAvailableMoves,
         simBoard.placeMove(nextMove, otherPlayerId);
         if (simBoard.isGameFinishedForPlayer(otherPlayerId) ||
             j == simAvailableMoves.size()) {
-            return 0;
+            return false;
         }
 
         nextMove = simAvailableMoves[j++];
         simBoard.placeMove(nextMove, curPlayerId);
         if (simBoard.isGameFinishedForPlayer(curPlayerId)) {
-            return 1;
+            return true;
         }
     }
 
-    return 0;
+    return false;
 }
 int MonteCarlo::_getWinsFromAllTrials(Board& simBoard,
                                       VectIntPair& simAvailableMoves,
