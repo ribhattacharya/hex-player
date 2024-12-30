@@ -33,7 +33,6 @@
 
 # MacOS files/dirs
 .DS_Store
-.vscode
 *.dSYM
 .cache
 
