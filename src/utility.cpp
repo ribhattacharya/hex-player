@@ -1,12 +1,80 @@
-#include "../include/Utility.hpp"
+#include <iostream>
+#include <unordered_set>
+#include <unordered_map>
+#include <vector>
+#include <string>
 
-std::ostream &operator<<(std::ostream &os, const IntPair &value) {
+#include "../include/utility.hpp"
+#include "../include/graph/node.hpp"
+
+using std::cout;
+using std::string;
+
+std::ostream &operator<<(std::ostream &os, const Pair &value)
+{
     os << "(" << value.first << "," << value.second << ")";
     return os;
 }
 
-void pause() {
-    std::cout << "Press y to continue: ";
-    char pause;
-    std::cin >> pause;
+std::ostream &operator<<(std::ostream &os, const uspNode &value)
+{
+    os << '(';
+    for (auto val : value)
+        os << val << ", ";
+    os << ")\n";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const vspNode &value)
+{
+    os << '[';
+    for (auto val : value)
+        os << val << ", ";
+    os << "]\n";
+    return os;
+}
+
+void printGraph(const Graph &g)
+{
+    int SIZE = g.getSize();
+
+    std::unordered_map<Player, char> symbols;
+    symbols.insert(std::make_pair(Player::HUMAN, 'X'));
+    symbols.insert(std::make_pair(Player::COMP, 'O'));
+    symbols.insert(std::make_pair(Player::NONE, '.'));
+
+    cout << string(3, ' ');
+    for (int col = static_cast<int>('a'), j = 0; j < SIZE; j++, col++)
+    {
+        cout << '|' << static_cast<char>(col) << '|';
+        if (j != SIZE - 1)
+            cout << string(1, ' ');
+    }
+    cout << "\n";
+
+    for (int margin = 0, i = 0, row = static_cast<int>('a'); i < SIZE; i++, row++)
+    {
+        cout << string(margin++, ' ');
+        cout << '|' << static_cast<char>(row) << '|' << string(1, ' ');
+        for (int j = 0; j < SIZE; j++)
+        {
+            Pair idx = std::make_pair(i, j);
+            Player p = g.getNode(idx)->getPlayer();
+            const char player_symbol = symbols[p];
+
+            cout << player_symbol;
+            if (j != SIZE - 1)
+                cout << " - ";
+        }
+        cout << '\n';
+        if (i != SIZE - 1)
+        {
+            cout << string(margin++ + 4, ' ');
+            for (int j = 0; j < SIZE - 1; j++)
+            {
+                cout << "\\ / ";
+            }
+            cout << "\\" << '\n';
+        }
+    }
 }

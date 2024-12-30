@@ -1,24 +1,35 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "../Types.hpp"
-#include "../bridge_checker/BridgeChecker.hpp"
-#include "../graph/Graph.hpp"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
 
-class Board {
+#include "../player/IPlayer.hpp"
+#include "../graph/graph.hpp"
+#include "../graph/node.hpp"
+#include "../custom_types.hpp"
+
+class Board
+{
+    const int _SIZE;
+    Graph _g;
+    vspIPlayer _players;
+    std::unordered_map<Player, uspNode > _starts;
+    std::unordered_map<Player, uspNode > _goals;
+
+    void _saveStartAndGoalNodes(spIPlayer player, std::string orientation);
+    bool _checkWinner(spIPlayer player);
+    void _makeMove(spIPlayer player);
+
+    // void printGraph() const;
+    // void printGraphData() const;
+
 public:
-    Board(int size, BridgeCheckerPtr bridgeChecker);
-    Board(const Board& other);
-    void placeMove(IntPair move, PlayerIDEnum playerId);
-    bool isValidMove(IntPair move) const;
-    bool isGameFinishedForPlayer(PlayerIDEnum playerId) const;
-    void printBoard() const;
-    int getSize() const;
+    Board(const int size, vspIPlayer players);
 
-private:
-    const int _size;
-    Graph _graph;
-    BridgeCheckerPtr _bridgeChecker;
+    void playGame();
 };
 
-#endif  // BOARD_H
+#endif // BOARD_H

@@ -37,7 +37,5 @@
 *.dSYM
 .cache
 
-# Custom files
+# Build files
 /build
-.old/
-/bin

@@ -1,16 +1,19 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
-#include <iostream>
-#include <string>
+#include <ostream>
+#include <unordered_set>
+#include <vector>
 
-#include "Types.hpp"
+#include "custom_types.hpp"
+#include "graph/graph.hpp"
 
-using std::cout;
-using std::string;
+std::ostream &operator<<(std::ostream &os, const Pair &value);
 
-std::ostream &operator<<(std::ostream &os, const IntPair &value);
+std::ostream &operator<<(std::ostream &os, const uspNode &value);
 
-void pause();
+std::ostream &operator<<(std::ostream &os, const vspNode &value);
 
-#endif  // UTILITY_H
+void printGraph(const Graph &g);
+
+#endif // UTILITY_H

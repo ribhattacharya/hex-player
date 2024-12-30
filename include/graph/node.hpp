@@ -1,30 +1,37 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <vector>
 #include <queue>
-#include <stack>
 #include <unordered_set>
 
-#include "../Types.hpp"
+#include "../enums.hpp"
+#include "../custom_types.hpp"
 
-class Node {
+class Node; // forward declarion so that typedefs can be defined
+
+typedef std::shared_ptr<Node> spNode;
+typedef std::vector<spNode> vspNode;
+typedef std::vector<vspNode> vvspNode;
+typedef std::unordered_set<spNode> uspNode;
+typedef std::queue<spNode> qspNode;
+
+class Node
+{
+    const Pair _IDX;
+    const int _ID;
+    Player _player;
+    vspNode _neighbours;
+
 public:
-    Node(int i, int j);
-    Node(const Node &other);
-    IntPair getID() const;
-    PlayerIDEnum getOccupancy() const;
-    void setOccupancy(PlayerIDEnum p);
+    Node(int i, int j, int id);
 
-private:
-    const IntPair _nodeID;
-    PlayerIDEnum _occupancy;
+    Pair getIDX() const;
+    int getID() const;
+    Player getPlayer();
+    void setPlayer(Player p);
+    vspNode getNeighbours();
+    void setNeighbours(vspNode &neighbours);
 };
 
-typedef std::vector<Node> Vect1DNode;
-typedef std::vector<Vect1DNode> Vect2DNode;
-typedef const Node *NodePtr;
-typedef std::stack<NodePtr> NodePtrStack;
-typedef std::queue<NodePtr> NodePtrQueue;
-typedef std::unordered_set<NodePtr> NodePtrSet;
-
-#endif  // NODE_H
+#endif // NODE_H

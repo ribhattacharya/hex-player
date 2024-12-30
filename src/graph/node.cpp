@@ -1,20 +1,15 @@
-#include "../../include/graph/Node.hpp"
+#include "../../include/graph/node.hpp"
 
-Node::Node(int i, int j)
-    : _nodeID(std::make_pair(i, j)), _occupancy(PlayerIDEnum::NONE) {
-}
-Node::Node(const Node &other)
-    : _nodeID(other._nodeID), _occupancy(other._occupancy) {
-}
+Node::Node(int i, int j, int id) : _IDX(std::make_pair(i, j)), _ID(id), _player(Player::NONE) {}
 
-IntPair Node::getID() const {
-    return _nodeID;
-}
+Pair Node::getIDX() const { return _IDX; }
 
-PlayerIDEnum Node::getOccupancy() const {
-    return _occupancy;
-}
+int Node::getID() const { return _ID; }
 
-void Node::setOccupancy(PlayerIDEnum p) {
-    _occupancy = p;
-}
+Player Node::getPlayer() { return _player; }
+
+void Node::setPlayer(Player p) { _player = p; }
+
+vspNode Node::getNeighbours() { return _neighbours; }
+
+void Node::setNeighbours(vspNode &neighbours) { this->_neighbours = neighbours; }
