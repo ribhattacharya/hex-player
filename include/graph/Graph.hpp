@@ -9,13 +9,14 @@ public:
     Graph(int size);
     Graph(const Graph &other);
     int getSize() const;
-    PlayerIDEnum getNodeOccupancy(IntPair pos) const;
-    void setNodeOccupancy(IntPair pos, PlayerIDEnum playerId);
-    NodePtr getNode(IntPair pos) const;
+    PlayerIDEnum getNodeOccupancy(IntPair &pos) const;
+    void setNodeOccupancy(IntPair &pos, PlayerIDEnum playerId);
+    NodePtr getNode(IntPair &pos) const;
+    bool nodeExists(IntPair &pos) const;
 
 private:
     const int _size;
-    Vect2DNode _nodes;
+    NodePtrMap _nodePointersMap;
 };
 
 #endif  // GRAPH_H

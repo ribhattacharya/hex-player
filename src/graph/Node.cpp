@@ -3,6 +3,11 @@
 Node::Node(int i, int j)
     : _nodeID(std::make_pair(i, j)), _occupancy(PlayerIDEnum::NONE) {
 }
+
+Node::Node(int i, int j, PlayerIDEnum p)
+    : _nodeID(std::make_pair(i, j)), _occupancy(p) {
+}
+
 Node::Node(const Node &other)
     : _nodeID(other._nodeID), _occupancy(other._occupancy) {
 }

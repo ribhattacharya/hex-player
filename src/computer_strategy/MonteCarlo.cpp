@@ -1,11 +1,10 @@
 #include "computer_strategy/MonteCarlo.hpp"
-
+#include "Utility.hpp"
 #include <cassert>
 #include <iostream>
 #include <random>
 #include <vector>
 
-#include "Utility.hpp"
 
 void MonteCarlo::_resetMoves(Board& simBoard,
                              VectIntPair& availableMoves) const {
@@ -13,8 +12,9 @@ void MonteCarlo::_resetMoves(Board& simBoard,
         simBoard.placeMove(move, PlayerIDEnum::NONE);
     }
 }
+
 bool MonteCarlo::_didPlayerWin(Board& simBoard, VectIntPair& simAvailableMoves,
-                              PlayerIDEnum& curPlayerId) const {
+                               PlayerIDEnum& curPlayerId) const {
     PlayerIDEnum otherPlayerId = _getNextPlayerID(curPlayerId);
     IntPair nextMove;
     for (int j = 0; j < simAvailableMoves.size();) {
@@ -34,6 +34,7 @@ bool MonteCarlo::_didPlayerWin(Board& simBoard, VectIntPair& simAvailableMoves,
 
     return false;
 }
+
 int MonteCarlo::_getWinsFromAllTrials(Board& simBoard,
                                       VectIntPair& simAvailableMoves,
                                       PlayerIDEnum& curPlayerId,
@@ -49,6 +50,7 @@ int MonteCarlo::_getWinsFromAllTrials(Board& simBoard,
 
     return wins;
 }
+
 IntPair MonteCarlo::_calculateMove(const Board& board,
                                    PlayerIDEnum curPlayerId) const {
     VectIntPair availableMoves = _getAvailableMoves(board);
@@ -82,9 +84,8 @@ IntPair MonteCarlo::_calculateMove(const Board& board,
 }
 
 PlayerIDEnum MonteCarlo::_getNextPlayerID(PlayerIDEnum& player) const {
-
     assert(player != PlayerIDEnum::NONE);
-    
+
     if (player == PlayerIDEnum::PLAYER_1) {
         return PlayerIDEnum::PLAYER_2;
     }

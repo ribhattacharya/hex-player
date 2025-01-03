@@ -1,4 +1,6 @@
 #include "bridge_checker/DFS.hpp"
+
+#include "Types.hpp"
 #include "graph/Node.hpp"
 
 DFS::DFS() {
@@ -18,24 +20,24 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
     // Add starts and goals
     for (int i = 0; i < graph.getSize(); i++) {
         // Add starts
-        NodePtr start(nullptr), goal(nullptr);
+        IntPair start_pos, goal_pos;
 
         if (direction == DirectionEnum::HORIZONTAL) {
-            start = graph.getNode({i, 0});
-            goal = graph.getNode({i, graph.getSize() - 1});
+            start_pos = {i, 0};
+            goal_pos = {i, graph.getSize() - 1};
         } else {
-            start = graph.getNode({0, i});
-            goal = graph.getNode({graph.getSize() - 1, i});
+            start_pos = {0, i};
+            goal_pos = {graph.getSize() - 1, i};
         }
 
         // Add start if it is owned by the player
-        if (start->getOccupancy() == playerId) {
-            OPEN.push(start);
+        if (graph.getNodeOccupancy(start_pos) == playerId) {
+            OPEN.push(graph.getNode(start_pos));
         }
 
         // Add goal if it is owned by the player
-        if (goal->getOccupancy() == playerId) {
-            GOALS.insert(goal);
+        if (graph.getNodeOccupancy(goal_pos) == playerId) {
+            GOALS.insert(graph.getNode(goal_pos));
         }
     }
 
@@ -58,18 +60,19 @@ bool DFS::isBridgeFormed(const Graph &graph, PlayerIDEnum playerId,
             IntPair neighbourID = {node->getID().first + dir[0],
                                    node->getID().second + dir[1]};
             // Check if the neighbour node exists
-            if (!isValidNeighbour(neighbourID, graph.getSize(),
-                                  graph.getSize())) {
+            if (!graph.nodeExists(neighbourID) ||
+                !isValidNeighbour(neighbourID, graph.getSize(),
+                                  graph.getSize()) ||
+                graph.getNodeOccupancy(neighbourID) != playerId) {
                 continue;
             }
 
             NodePtr neighbour = graph.getNode(neighbourID);
-            // Check if the neighbour node is owned by the player or if it is
+            // Check if the neighbour node is not owned by player or if it is
             // already visited
-            if (neighbour->getOccupancy() != playerId ||
-                VISITED.find(neighbour) != VISITED.end()) {
-                continue;
-            }
+            // if (VISITED.find(neighbour) != VISITED.end()) {
+            //     continue;
+            // }
 
             // Check if the neighbour node is a goal
             if (GOALS.find(neighbour) != GOALS.end()) {

@@ -1,37 +1,48 @@
 #include "graph/Graph.hpp"
 
+#include <stdexcept>
+
 #include "graph/Node.hpp"
 
-//TODO: Construct only used nodes, and not all nodes
-Graph::Graph(int size) : _size(size) {
-    _nodes.resize(size);
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            _nodes[i].emplace_back(Node(i, j));
-        }
-    }
+Graph::Graph(int size) : _size(size), _nodePointersMap() {
 }
 
 Graph::Graph(const Graph &other) : _size(other._size) {
-    _nodes.resize(_size);
-    for (int i = 0; i < _size; i++) {
-        for (int j = 0; j < _size; j++) {
-            _nodes[i].emplace_back(other._nodes[i][j]);
-        }
+    for (auto &nodePointer : other._nodePointersMap) {
+        _nodePointersMap[nodePointer.first] =
+            std::make_shared<Node>(*nodePointer.second);
     }
 }
 
 int Graph::getSize() const {
     return _size;
 }
-PlayerIDEnum Graph::getNodeOccupancy(IntPair pos) const {
-    return _nodes[pos.first][pos.second].getOccupancy();
+
+PlayerIDEnum Graph::getNodeOccupancy(IntPair &pos) const {
+    if (nodeExists(pos)) {
+        return _nodePointersMap.at(pos)->getOccupancy();
+    }
+    return PlayerIDEnum::NONE;
 }
 
-void Graph::setNodeOccupancy(IntPair pos, PlayerIDEnum playerId) {
-    _nodes[pos.first][pos.second].setOccupancy(playerId);
+void Graph::setNodeOccupancy(IntPair &pos, PlayerIDEnum playerId) {
+    if (nodeExists(pos)) {
+        _nodePointersMap[pos]->setOccupancy(playerId);
+    } else {
+        _nodePointersMap[pos] =
+            std::make_shared<Node>(pos.first, pos.second, playerId);
+    }
 }
 
-const Node *Graph::getNode(IntPair pos) const {
-    return &_nodes[pos.first][pos.second];
+NodePtr Graph::getNode(IntPair &pos) const {
+    if (nodeExists(pos)) {
+        return _nodePointersMap.at(pos);
+    }
+    throw std::runtime_error("Node does not exist at position (" +
+                             std::to_string(pos.first) + ", " +
+                             std::to_string(pos.second) + ")");
+}
+
+bool Graph::nodeExists(IntPair &pos) const {
+    return _nodePointersMap.find(pos) != _nodePointersMap.end();
 }

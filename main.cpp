@@ -8,9 +8,10 @@
 int main(int argc, char **argv) {
     int boardSize = std::stoi(argv[1]);
 
-    PlayerPtr player1 = PlayerFactory::getInstance().createPlayer("Tony Stark");
-    PlayerPtr player2 = PlayerFactory::getInstance().createPlayer(
+    // TODO: Player order selection and print direction
+    PlayerPtr player1 = PlayerFactory::getInstance().createPlayer(
         ComputerStrategyEnum::MONTE_CARLO);
+    PlayerPtr player2 = PlayerFactory::getInstance().createPlayer("Tony Stark");
 
     Game game(boardSize, std::move(player1), std::move(player2));
     game.play();
