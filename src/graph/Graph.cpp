@@ -8,9 +8,8 @@ Graph::Graph(int size) : _size(size), _nodePointersMap() {
 }
 
 Graph::Graph(const Graph &other) : _size(other._size) {
-    for (auto &nodePointer : other._nodePointersMap) {
-        _nodePointersMap[nodePointer.first] =
-            std::make_shared<Node>(*nodePointer.second);
+    for (const auto &[nodeID, ptr] : other._nodePointersMap) {
+        _nodePointersMap[nodeID] = std::make_shared<Node>(*ptr);
     }
 }
 
