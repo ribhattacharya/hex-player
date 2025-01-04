@@ -15,12 +15,14 @@ public:
     Node(int i, int j, PlayerIDEnum p);
     Node(const Node &other);
     IntPair getID() const;
-    PlayerIDEnum getOccupancy() const;
-    void setOccupancy(PlayerIDEnum p);
 
 private:
     const IntPair _nodeID;
     PlayerIDEnum _occupancy;
+    PlayerIDEnum getOccupancy() const;
+    void setOccupancy(PlayerIDEnum p);
+
+    friend class Graph;
 };
 
 typedef std::vector<Node> Vect1DNode;

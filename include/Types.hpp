@@ -1,6 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -19,6 +20,7 @@ namespace std {
 }
 
 typedef std::vector<IntPair> VectIntPair;
+typedef std::unordered_set<IntPair> SetIntPair;
 
 enum class PlayerIDEnum { PLAYER_1, PLAYER_2, NONE };
 

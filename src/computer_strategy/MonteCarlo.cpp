@@ -1,51 +1,72 @@
 #include "computer_strategy/MonteCarlo.hpp"
-#include "Utility.hpp"
+
 #include <cassert>
 #include <iostream>
+#include <mutex>
 #include <random>
+#include <thread>
 #include <vector>
 
+#include "Types.hpp"
+#include "Utility.hpp"
+#include "board/Board.hpp"
 
-void MonteCarlo::_resetMoves(Board& simBoard,
-                             VectIntPair& availableMoves) const {
-    for (auto& move : availableMoves) {
+void MonteCarlo::_resetMoves(Board& simBoard, VectIntPair& movesToReset) const {
+    for (auto& move : movesToReset) {
         simBoard.placeMove(move, PlayerIDEnum::NONE);
     }
 }
 
-bool MonteCarlo::_didPlayerWin(Board& simBoard, VectIntPair& simAvailableMoves,
-                               PlayerIDEnum& curPlayerId) const {
-    PlayerIDEnum otherPlayerId = _getNextPlayerID(curPlayerId);
-    IntPair nextMove;
-    for (int j = 0; j < simAvailableMoves.size();) {
-        nextMove = simAvailableMoves[j++];
-        simBoard.placeMove(nextMove, otherPlayerId);
-        if (simBoard.isGameFinishedForPlayer(otherPlayerId) ||
-            j == simAvailableMoves.size()) {
-            return false;
-        }
+int MonteCarlo::_evaluateWinsForMove(const Board& board,
+                                     const IntPair& testMove,
+                                     PlayerIDEnum& curPlayerId) const {
+    int wins = 0;
+    std::mt19937 gen(42);
+    std::mutex winsMutex;
+    std::vector<std::thread> threads;
 
-        nextMove = simAvailableMoves[j++];
-        simBoard.placeMove(nextMove, curPlayerId);
-        if (simBoard.isGameFinishedForPlayer(curPlayerId)) {
-            return true;
+    auto getMonteCarloWins = [&](int start, int end) {
+        int localWins = 0;
+        auto simBoard(board);
+        simBoard.placeMove(testMove, curPlayerId);
+        auto remainingMoves = _getAvailableMoves(simBoard);
+        auto nextPlayerId = _getNextPlayerID(curPlayerId);
+        auto otherPlayerId = _getNextPlayerID(curPlayerId);
+
+        for (int n = start; n < end; n++) {
+            std::shuffle(remainingMoves.begin(), remainingMoves.end(), gen);
+
+            for (auto& curMove : remainingMoves) {
+                simBoard.placeMove(curMove, nextPlayerId);
+                bool didCurPlayerWin =
+                    simBoard.isGameFinishedForPlayer(curPlayerId);
+                bool didOtherPlayerWin =
+                    simBoard.isGameFinishedForPlayer(otherPlayerId);
+                if (didCurPlayerWin) {
+                    localWins++;
+                    break;
+                } else if (didOtherPlayerWin) {
+                    break;
+                }
+
+                nextPlayerId = _getNextPlayerID(nextPlayerId);
+            }
+            _resetMoves(simBoard, remainingMoves);
         }
+        std::lock_guard<std::mutex> lock(winsMutex);
+        wins += localWins;
+    };
+
+    int numThreads = std::thread::hardware_concurrency();
+    int trialsPerThread = _NTRIALS / numThreads;
+    for (int i = 0; i < numThreads; i++) {
+        int start = i * trialsPerThread;
+        int end = (i == numThreads - 1) ? _NTRIALS : start + trialsPerThread;
+        threads.emplace_back(getMonteCarloWins, start, end);
     }
 
-    return false;
-}
-
-int MonteCarlo::_getWinsFromAllTrials(Board& simBoard,
-                                      VectIntPair& simAvailableMoves,
-                                      PlayerIDEnum& curPlayerId,
-                                      std::mt19937& gen) const {
-    int wins = 0;
-    for (int n = 0; n < _NTRIALS; n++) {
-        std::shuffle(simAvailableMoves.begin(), simAvailableMoves.end(), gen);
-        if (_didPlayerWin(simBoard, simAvailableMoves, curPlayerId)) {
-            wins++;
-        }
-        _resetMoves(simBoard, simAvailableMoves);
+    for (auto& thread : threads) {
+        thread.join();
     }
 
     return wins;
@@ -53,25 +74,13 @@ int MonteCarlo::_getWinsFromAllTrials(Board& simBoard,
 
 IntPair MonteCarlo::_calculateMove(const Board& board,
                                    PlayerIDEnum curPlayerId) const {
-    VectIntPair availableMoves = _getAvailableMoves(board);
-    VectIntPair simAvailableMoves;
-    Board simBoard(board);
-    std::mt19937 gen(42);
+    VectIntPair movesToEvaluate = _getAvailableMoves(board);
+    int maxWins = 0;
+    IntPair maxWinsMove;
 
-    int maxWins = 0, winsForTestMove = 0;
-    IntPair maxWinsMove, testMove;
-
-    for (int i = 0; i < availableMoves.size(); i++) {
-        testMove = availableMoves[i];
-        winsForTestMove = 0;
-
-        // Place test move for current player
-        simAvailableMoves = availableMoves;
-        simBoard.placeMove(testMove, curPlayerId);
-        simAvailableMoves.erase(simAvailableMoves.begin() + i);
-
-        winsForTestMove = _getWinsFromAllTrials(simBoard, simAvailableMoves,
-                                                curPlayerId, gen);
+    for (auto& testMove : movesToEvaluate) {
+        int winsForTestMove =
+            _evaluateWinsForMove(board, testMove, curPlayerId);
         // std::cout << "Wins for move " << curMove << " : " << winsForCurMove
         //           << '\n';
         if (winsForTestMove > maxWins) {
