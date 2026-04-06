@@ -8,7 +8,7 @@
 #include "Utility.hpp"
 
 using std::cout;
-using std::string;
+using std::endl;
 
 Board::Board(int size, BridgeCheckerPtr bridgeChecker)
     : _size(size), _graph(size), _bridgeChecker(bridgeChecker) {
@@ -55,10 +55,16 @@ int Board::getSize() const {
 }
 
 void Board::printBoard() const {
-    std::unordered_map<PlayerIDEnum, char> symbols;
-    symbols.insert(std::make_pair(PlayerIDEnum::PLAYER_1, 'X'));
-    symbols.insert(std::make_pair(PlayerIDEnum::PLAYER_2, 'O'));
-    symbols.insert(std::make_pair(PlayerIDEnum::NONE, '.'));
+    cout << BOLD << BLUE << "\n📋 Game Board (" << _size << "x" << _size << ")"
+         << RESET << endl;
+
+    auto getSymbol = [&](PlayerIDEnum p) -> std::string {
+        if (p == PlayerIDEnum::PLAYER_1)
+            return RED + "X" + RESET;
+        if (p == PlayerIDEnum::PLAYER_2)
+            return GREEN + "O" + RESET;
+        return ".";
+    };
 
     cout << string(3, ' ');
     for (int col = 0, j = 0; j < _size; j++, col++) {
@@ -74,7 +80,7 @@ void Board::printBoard() const {
         for (int j = 0; j < _size; j++) {
             IntPair idx = std::make_pair(i, j);
             PlayerIDEnum p = _graph.getNodeOccupancy(idx);
-            const char playerSymbol = symbols[p];
+            const std::string playerSymbol = getSymbol(p);
 
             cout << playerSymbol;
             if (j != _size - 1)
@@ -89,4 +95,5 @@ void Board::printBoard() const {
             cout << "\\" << '\n';
         }
     }
+    cout << DIM << string(40, '-') << RESET << endl;
 }

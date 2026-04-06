@@ -9,6 +9,9 @@ public:
     virtual ~ComputerStrategy() = default;
     IntPair getMove(const Board& board, PlayerIDEnum curPlayerId) const;
 
+protected:
+    VectIntPair _getAvailableMoves(const Board& board) const;
+
 private:
     virtual IntPair _calculateMove(const Board& board,
                                    PlayerIDEnum curPlayerId) const = 0;

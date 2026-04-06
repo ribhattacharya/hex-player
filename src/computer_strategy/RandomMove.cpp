@@ -7,11 +7,14 @@ IntPair RandomMove::_calculateMove(const Board& board,
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    // Define the range for the distribution
-    std::uniform_int_distribution<> dis(0, board.getSize() - 1);
+    // Get all valid moves and return a random one
+    VectIntPair validMoves = _getAvailableMoves(board);
 
-    // Generate a single random integer
-    int row = dis(gen), col = dis(gen);
+    if (validMoves.empty()) {
+        // Should not happen unless board is full
+        return {-1, -1};
+    }
 
-    return {row, col};
+    std::uniform_int_distribution<> dis(0, validMoves.size() - 1);
+    return validMoves[dis(gen)];
 }

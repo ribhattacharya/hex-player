@@ -30,26 +30,26 @@ int MonteCarlo::_evaluateWinsForMove(const Board& board,
         auto simBoard(board);
         simBoard.placeMove(testMove, curPlayerId);
         auto remainingMoves = _getAvailableMoves(simBoard);
-        auto nextPlayerId = _getNextPlayerID(curPlayerId);
-        auto otherPlayerId = _getNextPlayerID(curPlayerId);
+        auto opponentId = _getNextPlayerID(curPlayerId);
 
         for (int n = start; n < end; n++) {
             std::shuffle(remainingMoves.begin(), remainingMoves.end(), gen);
 
+            auto simCurrentPlayer = opponentId;
             for (auto& curMove : remainingMoves) {
-                simBoard.placeMove(curMove, nextPlayerId);
+                simBoard.placeMove(curMove, simCurrentPlayer);
                 bool didCurPlayerWin =
                     simBoard.isGameFinishedForPlayer(curPlayerId);
-                bool didOtherPlayerWin =
-                    simBoard.isGameFinishedForPlayer(otherPlayerId);
+                bool didOpponentWin =
+                    simBoard.isGameFinishedForPlayer(opponentId);
                 if (didCurPlayerWin) {
                     localWins++;
                     break;
-                } else if (didOtherPlayerWin) {
+                } else if (didOpponentWin) {
                     break;
                 }
 
-                nextPlayerId = _getNextPlayerID(nextPlayerId);
+                simCurrentPlayer = _getNextPlayerID(simCurrentPlayer);
             }
             _resetMoves(simBoard, remainingMoves);
         }
@@ -88,7 +88,8 @@ IntPair MonteCarlo::_calculateMove(const Board& board,
             maxWinsMove = testMove;
         }
     }
-    std::cout << "\nSelected AI move: " << maxWinsMove << std::endl;
+    std::cout << DIM << "🎯 Selected AI move: " << CYAN << maxWinsMove << RESET
+              << std::endl;
     return maxWinsMove;
 }
 
@@ -99,16 +100,4 @@ PlayerIDEnum MonteCarlo::_getNextPlayerID(PlayerIDEnum& player) const {
         return PlayerIDEnum::PLAYER_2;
     }
     return PlayerIDEnum::PLAYER_1;
-}
-
-VectIntPair MonteCarlo::_getAvailableMoves(const Board& board) const {
-    VectIntPair availableMoves;
-    for (int i = 0; i < board.getSize(); i++) {
-        for (int j = 0; j < board.getSize(); j++) {
-            if (board.isValidMove({i, j})) {
-                availableMoves.push_back({i, j});
-            }
-        }
-    }
-    return availableMoves;
 }

@@ -22,39 +22,54 @@ bool Game::_isGameFinishedForPlayer(PlayerIDEnum playerId) const {
     return board.isGameFinishedForPlayer(playerId);
 }
 
-void Game::_makeMove(PlayerPtr &player) {
+void Game::_makeMove(PlayerPtr& player) {
     bool isValidMove = false;
     while (!isValidMove) {
         IntPair move = player->getMove(board);
         isValidMove = board.isValidMove(move);
         if (!isValidMove) {
-            cout << "Invalid move by player " << player->getName() << ". Retry."
-                 << endl;
+            cout << RED << "❌ Invalid move by player " << player->getName()
+                 << ". Please try again." << RESET << endl;
             continue;
         }
 
-        cout << "Player " << player->getName() << " makes move " << move
-             << endl;
+        cout << GREEN << "✓ " << BOLD << player->getName() << RESET << GREEN
+             << " makes move " << CYAN << move << RESET << endl;
         board.placeMove(move, player->getPlayerID());
     }
 }
 void Game::play() {
+    cout << BOLD << CYAN << "\n🎮 Welcome to Hex Game!" << RESET << endl;
+    cout << DIM << "Players: " << players[0]->getName() << " (X) vs "
+         << players[1]->getName() << " (O)" << RESET << endl;
+    cout << string(50, '=') << endl;
+
     bool isGameFinished = false;
+    int turnCount = 0;
+
     while (!isGameFinished) {
-        for (auto &player : players) {
+        for (auto& player : players) {
+            turnCount++;
+            cout << "\n"
+                 << BOLD << YELLOW << "🔄 Turn " << turnCount << RESET << endl;
+            cout << BOLD << MAGENTA << "🎯 " << player->getName() << "'s turn"
+                 << RESET << endl;
+
             // cout << "\033[2J\033[1;1H";  // Clear screen
             board.printBoard();
 
-            cout << "Player " << player->getName() << "'s turn" << endl;
             _makeMove(player);
 
             isGameFinished = _isGameFinishedForPlayer(player->getPlayerID());
-            if (!isGameFinished) {
-                continue;
-            } else {
+            if (isGameFinished) {
+                cout << "\n" << string(50, '=') << endl;
                 // cout << "\033[2J\033[1;1H";  // Clear screen
                 board.printBoard();
-                cout << "Player " << player->getName() << " wins!" << endl;
+
+                cout << BLINKING_GREEN_HIGHLIGHT << BOLD << "🏆 GAME OVER! "
+                     << player->getName() << " WINS! 🏆" << RESET << endl;
+                cout << DIM << "Total turns played: " << turnCount << RESET
+                     << endl;
                 break;
             }
         }
